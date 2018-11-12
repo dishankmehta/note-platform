@@ -1,0 +1,33 @@
+*.py[cod]
+
+
+# Translations
+*.mo
+
+# Mr Developer
+.mr.developer.cfg
+.project
+.pydevproject
+
+# Virtualenvs
+env/
+
+# npm
+frontend/node_modules/
+
+# Development database
+*.db
+
+# Pycharm
+.idea/
+*.iml
+*.iws
+*.pyc
+
+#VSCode
+.vscode
+
+# Mac
+.DS_Store
+
+/**/*.pyc
