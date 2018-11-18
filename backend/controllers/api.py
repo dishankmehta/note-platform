@@ -62,7 +62,9 @@ def login():
     user = User.query.filter_by(username=username).first()
     if user and user.check_password(password):
         login_user(user)
-        return jsonify(user=user.to_dict(), success=True), 200
+        user_data = dict()
+        user_data['username'] = user.username
+        return jsonify(user=user_data, success=True), 200
     return jsonify(error='Invalid credentials', success=False), 422
 
 
