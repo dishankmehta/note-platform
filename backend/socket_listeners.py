@@ -1,7 +1,7 @@
 import os
 import json
 from backend import create_app
-from models import User, Note
+from .models import User, Note
 from flask_socketio import  SocketIO, join_room, leave_room, emit
 
 env = os.environ.get('BACKEND_ENV', 'dev')

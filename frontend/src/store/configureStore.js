@@ -11,7 +11,7 @@ const initialState = {}
 const enhancers = []
 const middleware = [
     thunkMiddleware,
-    sagaMiddleware
+    // sagaMiddleware
 ]
 
 if (process.env.NODE_ENV === 'development') {
