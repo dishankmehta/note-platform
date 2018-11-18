@@ -9,6 +9,7 @@ const defaultState = {
 function sessionReducer(state = defaultState, action) {
     switch(action.type) {
         case SessionActionTypes.LOGIN_REQUEST:
+        console.log(action.payload);
             return {
                 ...state,
                 currentUser: action.payload
