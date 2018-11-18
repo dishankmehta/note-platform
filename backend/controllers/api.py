@@ -4,7 +4,7 @@ from flask_cors import CORS
 
 from backend.extensions import cache
 from backend.forms import LoginForm
-from backend.models import User
+from backend.models import User, Note
 
 api = Blueprint('api', __name__, url_prefix="/")
 # CORS(api)
@@ -24,7 +24,6 @@ def api_after_request(response):
 
 
 @api.route('/')
-@cache.cached(timeout=1000)
 def home():
     return render_template('index.html')
 
@@ -33,27 +32,44 @@ def sample():
     print('sample called')
     return jsonify(data='sample api')
 
+@api.route("/register", methods=["POST"])
+def register():
+    data = request.get_json() or dict()
 
-@api.route("/login", methods=["GET", "POST"])
+    if not data:
+        return jsonify(error='Fill all the fields!!')
+
+    username = data.get('username')
+    password = data.get('password')
+    tags = data.get('tags')
+    education_level = data.get('education_level')
+    user = User(username, password, tags, education_level)
+    db.session.add(user)
+    db.session.commit()
+    return jsonify(success=True)
+
+
+@api.route("/login", methods=["POST"])
 def login():
-    form = LoginForm()
+    data = request.get_json() or dict()
 
-    if form.validate_on_submit():
-        user = User.query.filter_by(username=form.username.data).one()
+    username = data.get('username')
+    password = data.get('password')
+
+    if not username or not password:
+        return jsonify(error='Invalid credentials', success=False), 422
+
+    user = User.query.filter_by(username=username).first()
+    if user and user.check_password(password):
         login_user(user)
-
-        flash("Logged in successfully.", "success")
-        return redirect(request.args.get("next") or url_for(".home"))
-
-    return render_template("login.html", form=form)
+        return jsonify(user=user.to_dict(), success=True), 200
+    return jsonify(error='Invalid credentials', success=False), 422
 
 
 @api.route("/logout")
 def logout():
     logout_user()
-    flash("You have been logged out.", "success")
-
-    return redirect(url_for(".home"))
+    return jsonify(success=True)
 
 
 @api.route("/restricted")
