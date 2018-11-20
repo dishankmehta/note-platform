@@ -14,8 +14,9 @@ class Note(db.Model):
     downvotes = db.Column(db.Integer())
     views = db.Column(db.Integer())
     tags = db.column(db.String())
+    color = db.column(db.String())
 
-    def __init__(self, title, note_type, note_body, upvotes, downvotes, views, tags):
+    def __init__(self, title, note_type, note_body, upvotes, downvotes, views, tags, color):
         self.title = title
         self.note_type = note_type
         self.note_body = note_body
@@ -23,6 +24,7 @@ class Note(db.Model):
         self.downvotes = downvotes
         self.views = views
         self.tags = tags
+        self.color = color
 
     def to_dict(self):
         return dict(
@@ -32,27 +34,29 @@ class Note(db.Model):
             upvotes = self.upvotes,
             downvotes = self.downvotes,
             views = self.views,
-            tags=self.tags
+            tags=self.tags,
+            color = self.color
         )
 
 class User(db.Model, UserMixin):
     __tablename__ = 'user'
     id = db.Column(db.Integer(), primary_key=True)
+    name = db.Column(db.String())
     username = db.Column(db.String())
     password = db.Column(db.String())
     email = db.Column(db.String())
     tags = db.Column(db.String())
-    education_level = db.Column(db.String())
-    note_id = db.Column(db.Integer, db.ForeignKey('note.id', onupdate="cascade", ondelete="CASCADE"))
-    note = db.relationship(Note, foreign_keys=note_id,
-                           lazy='joined')
+    major = db.Column(db.String())
+    interests = db.Column(db.String())
 
-    def __init__(self, username, password, email, tags, education_level):
+    def __init__(self, name, username, password, email, tags, major, interests):
         self.username = username
+        self.name = name
         self.set_password(password)
-        self.email=email
+        self.email = email
         self.tags = tags
-        self.education_level = education_level
+        self.major = major
+        self.interests = interests
 
     def set_password(self, password):
         self.password = generate_password_hash(password)
@@ -83,7 +87,10 @@ class User(db.Model, UserMixin):
             username = self.username,
             email=self.email,
             tags = self.tags,
-            education_level=self.education_level,
+            major=self.major,
+            password=self.password,
+            name = self.name,
+            interests = self.interests
         )
 
     def __repr__(self):
