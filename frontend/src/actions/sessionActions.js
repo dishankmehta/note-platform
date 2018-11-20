@@ -17,9 +17,15 @@ export function loginRequest(data) {
 
 function handleCurrentUser(data){
     return {
-        type: SessionActionTypes.LOGIN_REQUEST,
+        type: SessionActionTypes.LOGIN_REQUEST_SUCCESS,
         payload: data
     }
 }
 
+// function handleUser(){
+//     return {
+//         type: SessionActionTypes.LOGIN_REQUEST_FAILED,
+//         payload: null
+//     }
+// }
 
