@@ -37,6 +37,7 @@ def sample():
 @api.route('/edit_note', methods=["POST", "OPTIONS"])
 def edit_note():
 
+
     print("fssars")
     data = request.get_json()
     title = data.get('title')
