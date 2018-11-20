@@ -14,6 +14,17 @@ export function loginRequest(data) {
     }
 }
 
+export function sendNoteData(data) {
+    return (dispatch) => {
+        API.sendNoteData(data)
+            .then((res) => {
+                console.log(res);
+                dispatch(handleCurrentUser(res.data.user.username));
+            }).catch(() => {
+                dispatch(handleCurrentUser(''));
+            });
+    }   
+}
 
 function handleCurrentUser(data){
     return {
@@ -21,5 +32,7 @@ function handleCurrentUser(data){
         payload: data
     }
 }
+
+
 
 

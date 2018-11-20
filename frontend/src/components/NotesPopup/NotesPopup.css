@@ -1,0 +1,120 @@
+.ButtonStyle{
+	margin-top: 32px;
+    display: inline-block;
+    text-decoration: none;
+    width: 150px;
+    /*height: 46px;
+    */background-image: linear-gradient(0deg,#137ECE 2%,#288BD5 98%);
+    border: 0;
+    text-align: center;
+    overflow: hidden;
+    font-size: .86667rem;
+    line-height: 46px;
+    letter-spacing: .8px;
+    padding: 0 30px;
+    cursor: pointer;
+    -webkit-app-region: no-drag;
+    border-radius: 3px;
+    box-shadow: 0 3px 6px 0 rgba(52,74,97,.1);
+    transition: all .15s ease-in-out;
+    transition-property: background-image,transform,box-shadow;
+    color: #FFF;
+    font-family: "Crisp Proxima Nova Regular",sans-serif;
+    font-weight: 400!important;
+    -webkit-font-smoothing: subpixel-antialiased;
+    outline-style: none;
+    margin: 20px;
+    user-select: none;
+}
+
+button{
+	align-items: flex-start;
+    background-color: buttonface;
+    box-sizing: border-box;
+    text-rendering: auto;
+    word-spacing: normal;
+    text-transform: none;
+    text-indent: 0px;
+    text-shadow: none;
+    font: 400 13.3333px Arial;
+    -webkit-writing-mode: horizontal-tb !important;
+    -webkit-appearance: button;
+    margin-top: 20px;
+    /*width: 200px;*/
+}
+
+.insideButtonStyle{
+	position: relative;
+	font-weight: 400!important;
+    -webkit-font-smoothing: subpixel-antialiased;
+    outline-style: none;
+    margin: 20px;
+    padding: 0;
+    user-select: none;
+    text-align: center;
+    font-size: .86667rem;
+    line-height: 46px;
+    letter-spacing: .8px;
+    cursor: pointer;
+    color: #FFF;
+ /*   width : 200px;
+    height: 40px;*/
+}
+
+.close{
+    cursor: pointer;
+    position: absolute;
+    display: block;
+    padding: 2px 5px;
+    line-height: 20px;
+    right: -10px;
+    top: -10px;
+    font-size: 24px;
+    background: #ffffff;
+    border-radius: 18px;
+    border: 1px solid #cfcece;
+}
+
+.titleStyle{
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 18px;
+    font-family: "Crisp Proxima Nova Regular",sans-serif;
+}
+
+.DescriptionStyle{
+    width: 100%;
+    height: 140px;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 18px; 
+    font-family: "Crisp Proxima Nova Regular",sans-serif;
+   
+}
+
+.header{
+    width : 500px;
+    height: auto;
+}
+
+.labelStyle{
+    margin-top: 40px;
+    font-size: 20px;
+    text-align: left;
+    margin-bottom: 35px;
+}
+
+.radioButtonStyle{
+    margin-top: 25px;
+    text-align: left;
+
+}

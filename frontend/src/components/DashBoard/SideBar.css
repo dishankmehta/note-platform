@@ -1,0 +1,71 @@
+/*html,
+body {
+  margin: 0;
+}*/
+
+/*#App {
+  font-family: sans-serif;
+  height: 100vh;
+}
+*/
+
+/*#page-wrap {
+  text-align: center;
+  overflow: auto;
+}*/
+
+.bm-item {
+  display: inline-block;
+  text-align: left;
+  text-decoration: none;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  color: #137ECE;
+  transition: color 1.9s;
+}
+
+.bm-item:hover {
+  color: white;
+}
+
+.bm-burger-button {
+  position: fixed;
+  width: 36px;
+  height: 30px;
+  left: 36px;
+  top: 36px;
+}
+
+.bm-burger-bars {
+  background: #137ECE;
+}
+
+.bm-cross-button {
+  height: 24px;
+  width: 24px;
+}
+
+.bm-cross {
+  background: #137ECE;
+}
+
+.bm-menu {
+  background: #FFFFFF;
+  padding: 2.5em 1.5em 0;
+  font-size: 1.15em;
+}
+
+.bm-morph-shape {
+  fill: #137ECE;
+}
+
+.bm-item-list {
+  color: #137ECE;
+}
+
+.bm-overlay {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+
+
