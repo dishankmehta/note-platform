@@ -4,8 +4,8 @@ import { TwitterPicker } from 'react-color';
 import { RadioGroup, RadioButton, ReversedRadioButton } from 'react-radio-buttons';
 import { connect } from 'react-redux';
 import { bindActionCreators } from  'redux';
-import './NotesPopup.css';
 import { sendNoteData } from '../../actions/sessionActions';
+import './NotesPopup.css';
 
 const contentStyle = {
   maxWidth: "600px",

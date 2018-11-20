@@ -33,6 +33,27 @@ def sample():
     print('sample called')
     return jsonify(data='sample api')
 
+
+@api.route('/edit_note', methods=["POST", "OPTIONS"])
+def edit_note():
+
+
+    print("fssars")
+    data = request.get_json()
+    title = data.get('title')
+    note_type = data.get('note_type')
+    note_body = data.get('note_body')
+    upvotes = data.get('upvotes')
+    downvotes = data.get('downvotes')
+    views = data.get('views')
+    tags = data.get('tags')
+    color = data.get('color')
+    print(data)
+    note = Note(title, note_type, note_body, upvotes, downvotes, views, tags, color)
+    db.session.add(note)
+    db.session.commit()
+
+
 @api.route('/createnote', methods=["POST"])
 def create_note():
     data = request.get_json() or dict()
@@ -85,8 +106,7 @@ def register():
     email = data.get('email')
     tags = data.get('tags')
     major = data.get('major')
-    interests = data.get('interests')
-    user = User(name, username, password, email, tags, major, interests)
+    user = User(name, username, password, email, tags, major)
     db.session.add(user)
     db.session.commit()
     return jsonify(success=True)

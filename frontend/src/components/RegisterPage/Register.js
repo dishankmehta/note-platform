@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from  'redux';
-// import { loginRequest } from '../../actions/sessionActions';
+import { registrationRequest } from '../../actions/sessionActions';
 import './Register.css';
 
 class Register extends Component{
@@ -44,9 +44,8 @@ class Register extends Component{
                     <input type="text" name="major" placeholder="Major" required="required" onChange={e => this.setState({major: e.target.value})}/><br/>
                    	<input type="text" name="interests" placeholder="Interests" required="required" onChange={e => this.setState({interests: e.target.value})}/><br/>
                    	
-                    <button type="submit">Sign in</button>
+                    <button type="submit">Register</button>
                 </form>
-                <button onClick={() => this.props.history.replace('/register')}>Register</button>
             </div>	
 		)
 	}

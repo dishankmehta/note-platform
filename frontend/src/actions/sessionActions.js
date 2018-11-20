@@ -28,7 +28,7 @@ export function loginRequest(data) {
 
 export function registrationRequest(data){
     return(dispatch) => {
-        API.registration(data.name,data.username,data.email,data.password,data.major,data.interests)
+        API.register(data)
             .then((res) => {
                 console.log(res);
                 history.push('/');
@@ -36,6 +36,7 @@ export function registrationRequest(data){
                 console.log('error');
             });
     }
+}
 
 export function sendNoteData(data) {
     return (dispatch) => {
@@ -63,6 +64,3 @@ function handleLoginFailure(data){
         payload:data
     }
 }
-
-
-

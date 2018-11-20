@@ -14,19 +14,12 @@ const AppRoutes = () => (
 		<Switch>
 			<Route exact path="/" component={LoginPage}/>
 			<Route path="/register" component={Register}/>
-			<Route path="/dashboard" component={null}/>
-
-
 			<Route path="/dashboard" component={DashBoard}/>
-
 			<Route path="/demo/:note_id" component={Note}/>
 			<Route path="/demo" component={Demo}/>
 
 		</Switch>
 	</div>
-
-
-
 );
 
 export default AppRoutes;
