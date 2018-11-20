@@ -5,7 +5,12 @@ export default class appAPI {
 		return API.post('/login', {username: username, password: password});
 	}
 
+
 	static sendNoteData(data) {
 		return API.post('/sendNoteData', data);
+	}
+
+	static createNote(data) {
+		return API.post('/createnote', data);
 	}
 }
