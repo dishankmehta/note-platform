@@ -47,16 +47,14 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String())
     tags = db.Column(db.String())
     major = db.Column(db.String())
-    interests = db.Column(db.String())
 
-    def __init__(self, name, username, password, email, tags, major, interests):
+    def __init__(self, name, username, password, email, tags, major):
         self.username = username
         self.name = name
         self.set_password(password)
         self.email = email
         self.tags = tags
         self.major = major
-        self.interests = interests
 
     def set_password(self, password):
         self.password = generate_password_hash(password)
@@ -89,8 +87,8 @@ class User(db.Model, UserMixin):
             tags = self.tags,
             major=self.major,
             password=self.password,
-            name = self.name,
-            interests = self.interests
+            name = self.name
+
         )
 
     def __repr__(self):
