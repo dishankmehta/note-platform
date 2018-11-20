@@ -1,10 +1,9 @@
 import { SessionActionTypes } from '../../constants';
 
-
 const defaultState = {
-    currentUser: ''
+    currentUser: '',
+    isLoggedIn: null,
 };
-
 
 function sessionReducer(state = defaultState, action) {
     switch(action.type) {
@@ -14,6 +13,11 @@ function sessionReducer(state = defaultState, action) {
                 ...state,
                 currentUser: action.payload
             };
+        case SessionActionTypes.LOGIN_REQUEST_FAILED:
+            return{
+                ...state,
+                isLoggedIn: action.payload
+            }
         default:
             return state;
     }

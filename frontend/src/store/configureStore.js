@@ -1,17 +1,14 @@
 import thunkMiddleware from 'redux-thunk';
-// import createSagaMiddleware from 'redux-saga';
 import loggerMiddleware from 'redux-logger';
 import { applyMiddleware, createStore, compose } from 'redux';
 import rootReducer from './reducers';
 
-// const sagaMiddleware = createSagaMiddleware;
 const logger = loggerMiddleware;
 
 const initialState = {}
 const enhancers = []
 const middleware = [
     thunkMiddleware,
-    // sagaMiddleware
 ]
 
 if (process.env.NODE_ENV === 'development') {
