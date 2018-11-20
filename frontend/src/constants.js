@@ -6,3 +6,24 @@ export const SessionActionTypes = KeyMirror({
     LOGIN_REQUEST: null,
 
 });
+
+
+export const AppActionTypes = KeyMirror({
+    CREATE_NOTE: null,
+});
+
+
+
+export const SocketActionTypes = KeyMirror({
+    INIT_SOCKET: null,
+    INIT_NOTE: null,
+});
+
+export const SOCKET_EVENTS = {
+    connect: 'connect',
+    join_room: 'join_room',
+    note_body: 'note_body'
+}
+
+export const CONNECT = 'CONNECT';
+export const TYPE_JOINED = 'JOINED';

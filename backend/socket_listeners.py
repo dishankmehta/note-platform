@@ -2,7 +2,7 @@ import os
 import json
 from backend import create_app
 from .models import User, Note
-from flask_socketio import  SocketIO, join_room, leave_room, emit
+from flask_socketio import  SocketIO, join_room, leave_room, emit, send
 
 env = os.environ.get('BACKEND_ENV', 'dev')
 app = create_app('backend.settings.%sConfig' % env.capitalize())
@@ -11,15 +11,16 @@ socketio = SocketIO(app)
 
 ROOMS = dict()
 
+GROUP_META_DATA = dict()
+
 CONNECT = 'CONNECT'
 TYPE_JOINED = 'JOINED'
 
 
 @socketio.on('connect')
 def connect():
-    print("Connected to socket!")
     payload = dict(type=CONNECT)
-    socketio.emit(CONNECT, payload)
+    emit('connect', payload)
 
 @socketio.on('disconnect')
 def disconnect():
@@ -33,16 +34,25 @@ def change_color(color):
 @socketio.on('join_note')
 def join_note(data):
     print("joining note")
-    note_id = data.get('note_id', None)
     user_id = data.get('user_id', None)
     if not note_id or not user_id:
         return
-    # room = ROOMS.get(note_id, None)
-    # if not room:
-    #     ROOMS[note_id] = []
-    socketio.join_room(note_id)
+    socketio.join_room(user_id)
     payload = dict(type=TYPE_JOINED)
-    socketio.emit(TYPE_JOINED, payload)
+    socketio.emit('join_note', payload)
+
+@socketio.on('note_body')
+def note_body(data):
+    print("spitting note content", data)
+    note_id = data.get('note_id', None)
+    note_body = data.get('note_body', None)
+    if note_id:
+        GROUP_META_DATA[note_id] = note_body
+    payload = dict(note_body=note_body)
+    socketio.emit('note_body', payload)
+
+# @socketio.on('initial_note')
+
 
 @socketio.on("leave_note")
 def leave_note(data):
