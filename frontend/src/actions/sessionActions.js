@@ -25,6 +25,7 @@ export function loginRequest(data) {
     }
 }
 
+
 export function registrationRequest(data){
     return(dispatch) => {
         API.registration(data.name,data.username,data.email,data.password,data.major,data.interests)
@@ -35,6 +36,18 @@ export function registrationRequest(data){
                 console.log('error');
             });
     }
+
+export function sendNoteData(data) {
+    return (dispatch) => {
+        API.sendNoteData(data)
+            .then((res) => {
+                console.log(res);
+                dispatch(handleCurrentUser(res.data.user.username));
+            }).catch(() => {
+                dispatch(handleCurrentUser(''));
+            });
+    }   
+
 }
 
 function handleCurrentUser(data){
@@ -50,4 +63,6 @@ function handleLoginFailure(data){
         payload:data
     }
 }
+
+
 
