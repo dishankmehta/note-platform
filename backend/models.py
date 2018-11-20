@@ -15,13 +15,14 @@ class Note(db.Model):
     views = db.Column(db.Integer())
     tags = db.column(db.String())
 
-    def __init__(self, title, note_type, note_body, upvotes, downvotes, views):
+    def __init__(self, title, note_type, note_body, upvotes, downvotes, views, tags):
         self.title = title
         self.note_type = note_type
         self.note_body = note_body
         self.upvotes = upvotes
         self.downvotes = downvotes
         self.views = views
+        self.tags = tags
 
     def to_dict(self):
         return dict(
@@ -31,6 +32,7 @@ class Note(db.Model):
             upvotes = self.upvotes,
             downvotes = self.downvotes,
             views = self.views,
+            tags=self.tags
         )
 
 class User(db.Model, UserMixin):
@@ -39,11 +41,11 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String())
     password = db.Column(db.String())
     email = db.Column(db.String())
-    tags = db.column(db.String())
+    tags = db.Column(db.String())
     education_level = db.Column(db.String())
-    # note_id = db.Column(db.Integer, db.ForeignKey('note.id', onupdate="cascade", ondelete="CASCADE"))
-    # note = db.relationship(Note, foreign_keys=note_id,
-    #                        lazy='joined')
+    note_id = db.Column(db.Integer, db.ForeignKey('note.id', onupdate="cascade", ondelete="CASCADE"))
+    note = db.relationship(Note, foreign_keys=note_id,
+                           lazy='joined')
 
     def __init__(self, username, password, email, tags, education_level):
         self.username = username

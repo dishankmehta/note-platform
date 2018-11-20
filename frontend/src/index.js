@@ -4,11 +4,11 @@ import { Provider } from 'react-redux';
 import './index.css';
 import AppRoutes from './containers/routes';
 import { Router } from 'react-router-dom';
-import createHistory from 'history/createBrowserHistory';
+import createHistory from './history';
 import store from './store/configureStore';
 import * as serviceWorker from './serviceWorker';
 
-const history = createHistory();
+const history = createHistory;
 
 ReactDOM.render(
     <Provider store={store}>
