@@ -10,7 +10,7 @@ export default class appAPI {
 
 
 	static sendNoteData(data) {
-		return API.post('/sendNoteData', data);
+		return API.post('/add_note', data);
 	}
 
 	static createNote(data) {

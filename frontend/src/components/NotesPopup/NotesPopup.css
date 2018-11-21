@@ -113,8 +113,43 @@ button{
     margin-bottom: 35px;
 }
 
-.radioButtonStyle{
+.radioButtonStylePrivate{
     margin-top: 25px;
     text-align: left;
-
+    font-size: 18px;
+    display: block;
+    float: left;
 }
+
+.radioButtonStylePublic{
+    float:right;
+    margin-left: 50px;
+    margin-top: 25px;
+    font-size: 18px;
+    display: block;
+    
+}
+
+.tagContainer{
+    border: 1px solid #ddd;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.tagItems{
+    display: inline-block;
+    padding: 2px;
+    border: 1px solid blue;
+    font-family: Helvetica, sans-serif;
+    border-radius: 5px;
+    margin-right: 5px;
+    cursor: pointer;
+}
+
+.inputStyle{
+    outline: none;
+    border: none;
+    font-size:  14px;
+    font-family: Helvetica, sans-serif;
+}
+
