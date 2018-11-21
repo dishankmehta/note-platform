@@ -70,7 +70,7 @@ def create_note():
     return jsonify(note=note, success=True)
 
 
-@api.route('/add_note', methods=["POST", "OPTIONS"])
+@api.route('/add_note', methods=["POST"])
 def add_note():
 
     print("fssars")
