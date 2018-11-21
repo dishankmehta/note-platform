@@ -33,6 +33,27 @@ def sample():
     print('sample called')
     return jsonify(data='sample api')
 
+
+@api.route('/edit_note', methods=["POST", "OPTIONS"])
+def edit_note():
+
+
+    print("fssars")
+    data = request.get_json()
+    title = data.get('title')
+    note_type = data.get('note_type')
+    note_body = data.get('note_body')
+    upvotes = data.get('upvotes')
+    downvotes = data.get('downvotes')
+    views = data.get('views')
+    tags = data.get('tags')
+    color = data.get('color')
+    print(data)
+    note = Note(title, note_type, note_body, upvotes, downvotes, views, tags, color)
+    db.session.add(note)
+    db.session.commit()
+
+
 @api.route('/createnote', methods=["POST"])
 def create_note():
     data = request.get_json() or dict()
@@ -48,18 +69,44 @@ def create_note():
     note['user_id'] = user.id
     return jsonify(note=note, success=True)
 
-@api.route("/register", methods=["POST"])
-def register():
-    data = request.get_json() or dict()
 
+@api.route('/add_note', methods=["POST", "OPTIONS"])
+def add_note():
+
+    print("fssars")
+    data = request.get_json()
+    title = data.get('title')
+    note_type = data.get('note_type')
+    note_body = data.get('note_body')
+    upvotes = data.get('upvotes')
+    downvotes = data.get('downvotes')
+    views = data.get('views')
+    tags = data.get('tags')
+    color = data.get('color')
+    print(data)
+    note = Note(title, note_type, note_body, upvotes, downvotes, views, tags, color)
+    db.session.add(note)
+    db.session.commit()
+
+    return jsonify(note=[], success=True)
+
+
+@api.route("/register", methods=["POST", "OPTIONS"])
+def register():
+
+    print("inside register")
+    data = request.get_json()
     if not data:
         return jsonify(error='Fill all the fields!!')
 
+    print(data)
+    name = data.get('name')
     username = data.get('username')
     password = data.get('password')
+    email = data.get('email')
     tags = data.get('tags')
-    education_level = data.get('education_level')
-    user = User(username, password, tags, education_level)
+    major = data.get('major')
+    user = User(name, username, password, email, tags, major)
     db.session.add(user)
     db.session.commit()
     return jsonify(success=True)
