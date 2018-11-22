@@ -36,9 +36,9 @@ def createdb():
     """
     db.drop_all()
     db.create_all()
-    user = User('user', 'user', 'user@gmail.com', 'tag', 'masters')
-    db.session.add(user)
-    db.session.commit()
+    #user = User('user', 'user', 'user@gmail.com', 'tag', 'masters')
+    #db.session.add(user)
+    #db.session.commit()
 
 @manager.command
 def runsocket():

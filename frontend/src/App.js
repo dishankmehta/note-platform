@@ -79,12 +79,19 @@ class App extends Component {
   render() {
     
     return (
+    <div>
+      <h2> Arrived </h2>
+      <div>
+        <SideBar />
+      </div>
       <div style={{ textAlign: "center"}}>
+
         <button onClick={(e) => this.send(e)}>Change color</button>
 
         <button id="blue" onClick={() => this.setColor('blue')}>Blue</button>
         <button id="red" onClick={() => this.setColor('red')}>Red</button>
       </div>
+    </div>
       // <Editor value={this.state.value} onChange={this.onChange} />
     );
   }
