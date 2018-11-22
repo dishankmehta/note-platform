@@ -51,7 +51,6 @@ def note_body(data):
     payload = dict(note_body=note_body)
     socketio.emit('note_body', payload)
 
-# @socketio.on('initial_note')
 
 
 @socketio.on("leave_note")

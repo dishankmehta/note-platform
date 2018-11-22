@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@atlaskit/editor-core": "^88.2.7",
     "@material-ui/core": "^3.4.0",
     "@material-ui/icons": "^3.0.1",
     "axios": "^0.18.0",
