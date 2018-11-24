@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import Popup from "reactjs-popup";
 import { TwitterPicker } from 'react-color';
 import { RadioGroup, RadioButton, ReversedRadioButton } from 'react-radio-buttons';
-import TagsInput from 'react-tagsinput';
-import { WithContext as ReactTags } from 'react-tag-input';
+// // import TagsInput from 'react-tagsinput';
+// import { WithContext as ReactTags } from 'react-tag-input';
 import { connect } from 'react-redux';
 import { bindActionCreators } from  'redux';
-import './NotesPopup.css';
 import { sendNoteData } from '../../actions/sessionActions';
+import './NotesPopup.css';
 
 const contentStyle = {
   maxWidth: "600px",
@@ -20,12 +20,15 @@ class NotesPopup extends Component{
 		this.state = {
 			user: 'maitreyi',
 			title: '',
-			content: '',
+			note_body: '',
 			color: '',
-			selectedTypeofNote: '',
+			note_type: '',
 			tags: [],
 			focused : false,
-			tagInput : ''
+			tagInput : '',
+			upvotes: 0,
+			downvotes: 0,
+			views: 0
 		};
 		this.handleTagInputChange = this.handleTagInputChange.bind(this);
     	this.handleTagInputKeyDown = this.handleTagInputKeyDown.bind(this);
@@ -74,15 +77,15 @@ class NotesPopup extends Component{
 
 	handleOptionChange = changeEvent => {
   		this.setState({
-    		selectedTypeofNote: changeEvent.target.value
+    		note_type: changeEvent.target.value
   		})
 	}
 
 	render(){
 		console.log("title" ,this.state.title);
-		console.log("content", this.state.content);
+		console.log("note_body", this.state.note_body);
 		console.log("color", this.state.color);
-		console.log("type" , this.state.selectedTypeofNote);
+		console.log("type" , this.state.note_type);
 		console.log("tags", this.state.tags);
 		// console.log("tag", this.state.tag);
 		return(
@@ -101,7 +104,7 @@ class NotesPopup extends Component{
             	<input className = "titleStyle" placeholder = "Title..." type="text" onChange={(e) => this.setState({ title: e.target.value })} /> <br />
      	  	</div>
           	<div>
-            	<textarea className = "DescriptionStyle" placeholder="Enter Description ..." type="text" onChange={(e) => this.setState({ content: e.target.value })} /> <br />
+            	<textarea className = "DescriptionStyle" placeholder="Enter Description ..." type="text" onChange={(e) => this.setState({ note_body: e.target.value })} /> <br />
           	</div>
           	<div >
             	<TwitterPicker 
@@ -113,7 +116,7 @@ class NotesPopup extends Component{
 			<div className = "radioButtonStylePrivate">
 				<label>
 		        <input type="radio" value="private" 
-		                      checked={this.state.selectedTypeofNote === 'private'} 
+		                      checked={this.state.note_type === 'private'} 
 		                      onChange={this.handleOptionChange} />
 		        Private
 		      	</label>
@@ -121,7 +124,7 @@ class NotesPopup extends Component{
 		    <div className="radioButtonStylePublic">
 		        <label>
 		        <input type="radio" value="public" 
-		                      checked={this.state.selectedTypeofNote === 'public'} 
+		                      checked={this.state.note_type === 'public'} 
 		                      onChange={this.handleOptionChange} />
 		        Public
 		      	</label>
