@@ -76,15 +76,17 @@ def add_note():
     # if private note
     last_item = Note.query.order_by(Note.id.desc()).first()
     print("Last item is:", last_item.id)
+    last = str(last_item.id)
+    last += ","
 
     if note_type == 1:
         user_data = PrivateNotes.query.filter_by(user_id=user_id).first()
-        print ("User data; ", user_data)
+        print("User data; ", user_data)
         if user_data is not None:
-            user_data.note_id += last_item.id
+            user_data.note_id += last
             db.session.commit()
         else:
-            private_note = PrivateNotes(user_id, last_item.id)
+            private_note = PrivateNotes(user_id, last)
             db.session.add(private_note)
             db.session.commit()
 
@@ -92,10 +94,10 @@ def add_note():
     if note_type == 2:
         user_data = PublicNotes.query.filter_by(user_id=user_id).first()
         if user_data is not None:
-            user_data.note_id += last_item.id
+            user_data.note_id += last
             db.session.commit()
         else:
-            public_notes = PublicNotes(user_id, last_item.id)
+            public_notes = PublicNotes(user_id, last)
             db.session.add(public_notes)
             db.session.commit()
 
@@ -190,5 +192,13 @@ def get_private_notes():
     else:
         note_id_list = PrivateNotes.query.filter_by(user_id=data.get('user_id')).first()
         print("Note_id_list", note_id_list)
+        note_object = {}
         note_id_list = note_id_list.split(",")
+        i = 0
 
+        for id in note_id_list:
+            note = Note.query.filter_by(id=id).first()
+            note_object[i] = note
+            i += 1
+
+        return jsonify(notes=note_object, success=True)
