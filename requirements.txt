@@ -4,6 +4,7 @@ atomicwrites==1.2.1
 attrs==18.2.0
 blinker==1.4
 Click==7.0
+colorama==0.4.0
 coverage==4.5.1
 cssmin==0.2.0
 dnspython==1.15.0
