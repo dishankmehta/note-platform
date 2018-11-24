@@ -18,7 +18,7 @@ class NotesPopup extends Component{
 	constructor(props){
 		super(props);
 		this.state = {
-			user: 'maitreyi',
+			user_id: 'maitreyi',
 			title: '',
 			note_body: '',
 			color: '',
