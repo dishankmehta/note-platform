@@ -75,6 +75,7 @@ def add_note():
 
     print("fssars")
     data = request.get_json()
+    print(data)
     title = data.get('title')
     note_type = data.get('note_type')
     note_body = data.get('note_body')
