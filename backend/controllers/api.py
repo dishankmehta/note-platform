@@ -58,7 +58,7 @@ def edit_note():
 def create_note():
     data = request.get_json() or dict()
     username = data.get('username')
-    note_obj = Note('test', 'private', '', 0, 0, 0, '')
+    note_obj = Note('test', 'private', '', 0, 0, 0, '', '')
     db.session.add(note_obj)
     user = User.query.filter_by(username=username).first()
     user.note = note_obj
