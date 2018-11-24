@@ -134,8 +134,16 @@ def register():
     print(data)
     name = data.get('name')
     username = data.get('username')
+    user = User.query.filter_by(username=username).first()
+    print (user)
+    if user is not None:
+        return jsonify(error='Username already taken', success=False)
     password = data.get('password')
     email = data.get('email')
+    user = User.query.filter_by(email=email).first()
+    if user is not None:
+        return jsonify(error='Email is already registered', success=False)
+
     tags = data.get('tags')
     major = data.get('major')
     user = User(name, username, password, email, tags, major)
@@ -170,3 +178,17 @@ def logout():
 @login_required
 def restricted():
     return "You can only see this if you are logged in!", 200
+
+
+@api.route("/get_private_notes", methods=["GET"])
+def get_private_notes():
+
+    data = request.get_json()
+    private_note = PrivateNotes.query.filter_by(user_id=data.get('user_id')).first()
+    if private_note is None:
+        return jsonify(note=None, success=True)
+    else:
+        note_id_list = PrivateNotes.query.filter_by(user_id=data.get('user_id')).first()
+        print("Note_id_list", note_id_list)
+        note_id_list = note_id_list.split(",")
+
