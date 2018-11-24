@@ -2,10 +2,9 @@ import json
 from flask import Blueprint, render_template, flash, request, redirect, url_for, jsonify
 from flask_login import login_user, logout_user, login_required, current_user
 from flask_cors import CORS
-
 from backend.extensions import cache
 from backend.forms import LoginForm
-from backend.models import db, User, Note
+from backend.models import db, User, Note, PrivateNotes, UserGroupInfo, Group, PublicNotes
 
 api = Blueprint('api', __name__, url_prefix="/")
 # CORS(api)
@@ -34,46 +33,29 @@ def sample():
     return jsonify(data='sample api')
 
 
-@api.route('/edit_note', methods=["POST", "OPTIONS"])
+@api.route('/edit_note', methods=["POST"])
 def edit_note():
-
 
     print("fssars")
     data = request.get_json()
-    title = data.get('title')
-    note_type = data.get('note_type')
-    note_body = data.get('note_body')
-    upvotes = data.get('upvotes')
-    downvotes = data.get('downvotes')
-    views = data.get('views')
-    tags = data.get('tags')
-    color = data.get('color')
-    print(data)
-    note = Note(title, note_type, note_body, upvotes, downvotes, views, tags, color)
-    db.session.add(note)
-    db.session.commit()
+    print("Incoming data in edit note:", data)
 
-
-@api.route('/createnote', methods=["POST"])
-def create_note():
-    data = request.get_json() or dict()
-    username = data.get('username')
-    note_obj = Note('test', 'private', '', 0, 0, 0, '')
-    db.session.add(note_obj)
-    user = User.query.filter_by(username=username).first()
-    user.note = note_obj
+    note = Note.query.filter_by(id=data.get('note_id')).first()
+    note.title = data.get('title')
+    note.note_type = data.get('note_type')
+    note.note_body = data.get('note_body')
+    note.upvotes = data.get('upvotes')
+    note.downvotes = data.get('downvotes')
+    note.views = data.get('views')
+    note.tags = data.get('tags')
+    note.color = data.get('color')
     db.session.commit()
-    note_id = note_obj.id
-    note = dict()
-    note['note_id'] = note_id
-    note['user_id'] = user.id
-    return jsonify(note=note, success=True)
+    return jsonify(note=[], success=True)
 
 
 @api.route('/add_note', methods=["POST"])
 def add_note():
 
-    print("fssars")
     data = request.get_json()
     title = data.get('title')
     note_type = data.get('note_type')
@@ -83,15 +65,65 @@ def add_note():
     views = data.get('views')
     tags = data.get('tags')
     color = data.get('color')
+    user_id = data.get('user_id')
+
     print(data)
     note = Note(title, note_type, note_body, upvotes, downvotes, views, tags, color)
     db.session.add(note)
     db.session.commit()
+    note_type = int(note_type)
+    
+    # if private note
+    last_item = Note.query.order_by(Note.id.desc()).first()
+    print("Last item is:", last_item.id)
+
+    if note_type == 1:
+        user_data = PrivateNotes.query.filter_by(user_id=user_id).first()
+        print ("User data; ", user_data)
+        if user_data is not None:
+            user_data.note_id += last_item.id
+            db.session.commit()
+        else:
+            private_note = PrivateNotes(user_id, last_item.id)
+            db.session.add(private_note)
+            db.session.commit()
+
+    # if public note
+    if note_type == 2:
+        user_data = PublicNotes.query.filter_by(user_id=user_id).first()
+        if user_data is not None:
+            user_data.note_id += last_item.id
+            db.session.commit()
+        else:
+            public_notes = PublicNotes(user_id, last_item.id)
+            db.session.add(public_notes)
+            db.session.commit()
 
     return jsonify(note=[], success=True)
 
 
-@api.route("/register", methods=["POST", "OPTIONS"])
+@api.route("/upvote", methods=["POST"])
+def upvote():
+
+    data = request.get_json()
+    note = Note.query.filter_by(id=data.get('note_id')).first()
+    note.upvotes += 1
+    db.session.commit()
+    return jsonify(note=[], success=True)
+
+
+@api.route("/downvote", methods=["POST"])
+def downvote():
+
+    data = request.get_json()
+    note = Note.query.filter_by(id=data.get('note_id')).first()
+    note.downvotes += 1
+    db.session.commit()
+    return jsonify(note=[], success=True)
+
+
+
+@api.route("/register", methods=["POST"])
 def register():
 
     print("inside register")
