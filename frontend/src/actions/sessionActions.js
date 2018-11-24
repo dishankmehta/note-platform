@@ -43,9 +43,8 @@ export function sendNoteData(data) {
         API.sendNoteData(data)
             .then((res) => {
                 console.log(res);
-                dispatch(handleCurrentUser(res.data.user.username));
             }).catch(() => {
-                dispatch(handleCurrentUser(''));
+                console.log("");
             });
     }   
 
