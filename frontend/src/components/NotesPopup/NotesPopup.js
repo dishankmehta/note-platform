@@ -88,12 +88,6 @@ class NotesPopup extends Component{
 	}
 
 	render(){
-		console.log("title" ,this.state.title);
-		console.log("note_body", this.state.note_body);
-		console.log("color", this.state.color);
-		console.log("type" , this.state.note_type);
-		console.log("tags", this.state.tags);
-		// console.log("tag", this.state.tag);
 		return(
 			<Popup
     			trigger={<button className="ButtonStyle insideButtonStyle"> Create a Note here </button>}
@@ -152,13 +146,19 @@ class NotesPopup extends Component{
 			      </label>		
      	  	</div>
           	<div className="col-xs-12">
-            	<button className="ButtonStyle insideButtonStyle" onClick = {this.onAddNote}  value = "Submit"> Add Note </button>  
+            	<button className="ButtonStyle insideButtonStyle" onClick = {() => {this.onAddNote(); close(); }}  value = "Submit"> Add Note </button>  
           	</div>
         </div>
     )}
     </Popup>
     );
 }
+}
+
+const mapStateToProps = (state) =>{
+    return{
+        session: {...state.session}
+    }; 
 }
 
 function mapDispatchToProps(dispatch){

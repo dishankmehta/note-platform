@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 // // import { connect } from 'react-redux';
 // import { bindActionCreators } from  'redux';
 import NotesPopup from '../NotesPopup/NotesPopup';
+import { Card } from '../CustomComponents/Card';
 import './MainNotes.css';
 import isEmpty from 'lodash/isEmpty';
 
