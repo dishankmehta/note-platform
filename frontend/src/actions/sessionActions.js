@@ -6,7 +6,7 @@ export function loginRequest(data) {
     return (dispatch) => {
         API.login(data.username, data.password)
             .then((res) => {
-                console.log(res);
+                // console.log(res);
                 dispatch(handleCurrentUser(res.data.user.username));
                 const user = res.data.user.username;
                 const success = res.data.success;
@@ -30,6 +30,7 @@ export function getPublicNotes(data){
         API.getPublicNotes(data)
             .then((res) => {
                 console.log(res);
+                dispatch(handleGetAllNotes(res.data.notes));
             }).catch(() => {
                 console.log('error');
             })
@@ -54,10 +55,19 @@ export function sendNoteData(data) {
         API.sendNoteData(data)
             .then((res) => {
                 console.log(res);
+                const new_data = { user_id: data.user_id } 
+                dispatch(getPublicNotes(new_data));
             }).catch(() => {
-                console.log("");
+                console.log("error");
             });
     }   
+}
+
+function handleGetAllNotes(data) {
+    return {
+        type: SessionActionTypes.ALL_NOTES,
+        payload: data
+    }
 }
 
 function handleCurrentUser(data){

@@ -71,7 +71,8 @@ def add_note():
     note = Note(title, note_type, note_body, upvotes, downvotes, views, tags, color)
     db.session.add(note)
     db.session.commit()
-    note_type = int(note_type)
+    if note_type is not '':
+        note_type = int(note_type)
     
     # if private note
     last_item = Note.query.order_by(Note.id.desc()).first()

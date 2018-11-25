@@ -9,6 +9,7 @@ export default class appAPI {
 	}
 
 	static getPublicNotes(data){
+		console.log("userID", data);
 		return API.post('/get_public_notes', data);
 	}
 	static sendNoteData(data) {
