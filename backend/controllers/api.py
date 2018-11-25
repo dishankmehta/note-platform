@@ -192,7 +192,7 @@ def restricted():
     return "You can only see this if you are logged in!", 200
 
 
-@api.route("/get_private_notes", methods=["GET"])
+@api.route("/get_private_notes", methods=["POST"])
 def get_private_notes():
 
     data = request.get_json()
@@ -228,7 +228,7 @@ def get_private_notes():
         return jsonify(notes=note_object, success=True)
 
 
-@api.route("/get_public_notes", methods=["GET"])
+@api.route("/get_public_notes", methods=["POST"])
 def get_public_notes():
 
     data = request.get_json()
@@ -264,7 +264,7 @@ def get_public_notes():
         return jsonify(notes=note_object, success=True)
 
 
-@api.route("/get_cheatsheets", methods=["GET"])
+@api.route("/get_cheatsheets", methods=["POST"])
 def get_cheatsheets():
 
     data = request.get_json()
@@ -299,6 +299,7 @@ def get_cheatsheets():
         print (type(note_object))
         return jsonify(notes=note_object, success=True)
 
+
 @api.route("/delete_note", methods=["POST"])
 def delete_note():
 
@@ -308,11 +309,13 @@ def delete_note():
     if data.get('note_type') == 1:
         private_note = PrivateNotes.query.filter_by(user_id=str(data.get('user_id'))).first()
         note_list = private_note.note_id
+
         note_list = note_list.split(",")
+        print("Note list: ", note_list)
         note_list.remove(data.get('note_id'))
         result = ""
         for item in note_list:
-            result += item + ","
+            result += item + ","s
 
         private_note.note_id = result
         db.session.commit()
