@@ -6,7 +6,7 @@ export function loginRequest(data) {
     return (dispatch) => {
         API.login(data.username, data.password)
             .then((res) => {
-                console.log(res);
+                // console.log(res);
                 dispatch(handleCurrentUser(res.data.user.username));
                 const user = res.data.user.username;
                 const success = res.data.success;
@@ -25,6 +25,17 @@ export function loginRequest(data) {
     }
 }
 
+export function getPublicNotes(data){
+    return(dispatch) => {
+        API.getPublicNotes(data)
+            .then((res) => {
+                console.log(res);
+                dispatch(handleGetAllNotes(res.data.notes));
+            }).catch(() => {
+                console.log('error');
+            })
+    }
+}
 
 export function registrationRequest(data){
     return(dispatch) => {
@@ -41,25 +52,22 @@ export function registrationRequest(data){
 export function sendNoteData(data) {
     return (dispatch) => {
         console.log("data", data.note_type);
-        if(data.note_type === '1'){
         API.sendNoteData(data)
             .then((res) => {
                 console.log(res);
-                history.push('/privatenotes');
+                const new_data = { user_id: data.user_id } 
+                dispatch(getPublicNotes(new_data));
             }).catch(() => {
-                console.log("");
+                console.log("error");
             });
-        }
-        else if(data.note_type === '2'){
-            API.sendNoteData(data)
-            .then((res) => {
-                console.log(res);
-                history.push('/publicnotes');
-            }).catch(() => {
-                console.log("");
-            });   
-        }
     }   
+}
+
+function handleGetAllNotes(data) {
+    return {
+        type: SessionActionTypes.ALL_NOTES,
+        payload: data
+    }
 }
 
 function handleCurrentUser(data){

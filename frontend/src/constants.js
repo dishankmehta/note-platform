@@ -5,7 +5,7 @@ export const API_BASE_PATH = process.env.NODE_ENV !== 'production' ? 'http://loc
 export const SessionActionTypes = KeyMirror({
     LOGIN_REQUEST_SUCCESS: null,
     LOGIN_REQUEST_FAILED: null,
-
+    ALL_NOTES: null,
 });
 
 
