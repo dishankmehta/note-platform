@@ -19,6 +19,7 @@ const AppRoutes = () => (
 			<Route path="/demo/:note_id" component={Note}/>
 			<Route path="/demo" component={Demo}/>
 
+
 		</Switch>
 	</div>
 );

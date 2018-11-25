@@ -40,15 +40,26 @@ export function registrationRequest(data){
 
 export function sendNoteData(data) {
     return (dispatch) => {
+        console.log("data", data.note_type);
+        if(data.note_type === '1'){
         API.sendNoteData(data)
             .then((res) => {
                 console.log(res);
-                dispatch(handleCurrentUser(res.data.user.username));
+                history.push('/privatenotes');
             }).catch(() => {
-                dispatch(handleCurrentUser(''));
+                console.log("");
             });
+        }
+        else if(data.note_type === '2'){
+            API.sendNoteData(data)
+            .then((res) => {
+                console.log(res);
+                history.push('/publicnotes');
+            }).catch(() => {
+                console.log("");
+            });   
+        }
     }   
-
 }
 
 function handleCurrentUser(data){

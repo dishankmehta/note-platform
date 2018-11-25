@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import Popup from "reactjs-popup";
+import Note from '../Note/Note';
 import { TwitterPicker } from 'react-color';
-import { RadioGroup, RadioButton, ReversedRadioButton } from 'react-radio-buttons';
-// // import TagsInput from 'react-tagsinput';
-// import { WithContext as ReactTags } from 'react-tag-input';
+// import { RadioGroup, RadioButton, ReversedRadioButton } from 'react-radio-buttons';
 import { connect } from 'react-redux';
 import { bindActionCreators } from  'redux';
 import { sendNoteData } from '../../actions/sessionActions';
@@ -18,6 +17,7 @@ class NotesPopup extends Component{
 	constructor(props){
 		super(props);
 		this.state = {
+			user_id: this.props.session.currentUser,
 			title: '',
 			note_body: '',
 			color: '',
@@ -68,25 +68,25 @@ class NotesPopup extends Component{
 	}
 
 	onChangeColor = color => {
-		console.log(color.hex);
 		this.setState ({
 			color : color.hex
 		})
 	}
 
 	handleOptionChange = changeEvent => {
-  		this.setState({
-    		note_type: changeEvent.target.value
+  		if(changeEvent.target.value === 'private'){
+			this.setState({
+    		note_type: '1'
   		})
+		}else if(changeEvent.target.value === 'public'){
+			this.setState({
+    		note_type: '2'
+  		})
+		}
 	}
 
 	render(){
-		console.log("title" ,this.state.title);
-		console.log("note_body", this.state.note_body);
-		console.log("color", this.state.color);
-		console.log("type" , this.state.note_type);
-		console.log("tags", this.state.tags);
-		// console.log("tag", this.state.tag);
+		console.log("Notespopup",this.state.user_id);
 		return(
 			<Popup
     			trigger={<button className="ButtonStyle insideButtonStyle"> Create a Note here </button>}
@@ -145,7 +145,7 @@ class NotesPopup extends Component{
 			      </label>		
      	  	</div>
           	<div className="col-xs-12">
-            	<button className="ButtonStyle insideButtonStyle" onClick = {this.onAddNote}  value = "Submit"> Add Note </button>  
+            	<button className="ButtonStyle insideButtonStyle" onClick = {() => {this.onAddNote(); close(); }}  value = "Submit"> Add Note </button>  
           	</div>
         </div>
     )}
@@ -159,5 +159,11 @@ function mapDispatchToProps(dispatch){
 		sendNoteData
 	}, dispatch);
 }
+
+const mapStateToProps = (state) =>{
+    return{
+        session: {...state.session}
+    }; 
+}
  
-export default connect(null, mapDispatchToProps)(NotesPopup);
+export default connect(mapStateToProps, mapDispatchToProps)(NotesPopup);

@@ -12,9 +12,10 @@ class Note(db.Model):
     note_body = db.Column(db.String())
     upvotes = db.Column(db.Integer())
     downvotes = db.Column(db.Integer())
+    tags = db.Column(db.String())
+    color = db.Column(db.String())
     views = db.Column(db.Integer())
-    tags = db.column(db.String())
-    color = db.column(db.String())
+
 
     def __init__(self, title, note_type, note_body, upvotes, downvotes, views, tags, color):
         self.title = title
@@ -94,30 +95,76 @@ class User(db.Model, UserMixin):
     def __repr__(self):
         return '<User %r>' % self.username
 
+
 class PublicNotes(db.Model):
     __tablename__ = 'public_notes'
     id = db.Column(db.Integer(), primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id', onupdate="cascade", ondelete="CASCADE"))
-    user = db.relationship(User, foreign_keys=user_id,
-                           lazy='joined')
-    note_id = db.Column(db.Integer, db.ForeignKey('note.id', onupdate="cascade", ondelete="CASCADE"))
-    note = db.relationship(Note, foreign_keys=note_id,
-                           lazy='joined')
+    user_id = db.Column(db.String())
+    note_id = db.Column(db.String())
+
+    def __init__(self, user_id, note_id):
+        self.user_id = user_id
+        self.note_id = note_id
+
+    def to_dict(self):
+        return dict(
+            user_id=self.user_id,
+            note_id=self.note_id
+        )
 
 
+class PrivateNotes(db.Model):
+
+    __tablename__ = 'private_notes'
+    id = db.Column(db.Integer(), primary_key=True)
+    user_id = db.Column(db.String())
+    note_id = db.Column(db.String())
+
+    def __init__(self, user_id, note_id):
+        self.user_id = user_id
+        self.note_id = note_id
+
+    def to_dict(self):
+        return dict(
+            user_id=self.user_id,
+            note_id=self.note_id
+        )
         
 class UserGroupInfo(db.Model):
     __tablename__ = 'user_group_info'
     id = db.Column(db.Integer(),primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id', onupdate="cascade", ondelete="CASCADE"))
-    user = db.relationship(User, foreign_keys=user_id,
-                           lazy='joined')
+    user_id = db.Column(db.String())
     group_id_list = db.Column(db.String())
+
+    def __init__(self, user_id, group_id_list):
+        self.user_id = user_id
+        self.group_id_list = group_id_list
+
+    def to_dict(self):
+        return dict(
+            user_id=self.user_id,
+            group_id_list=self.group_id_list
+        )
 
 class Group(db.Model):
     __tablename__ = 'group'
     id = db.Column(db.Integer(), primary_key=True)
-    note_id = db.Column(db.Integer, db.ForeignKey('note.id', onupdate="cascade", ondelete="CASCADE"))
-    note = db.relationship(Note, foreign_keys=note_id,
-                           lazy='joined')
+    note_id = db.Column(db.String())
+
+
+class CheatSheet(db.Model):
+    __tablename__ = 'cheatsheet'
+    id = db.Column(db.Integer(), primary_key=True)
+    user_id = db.Column(db.String())
+    note_id = db.Column(db.String())
+
+    def __init__(self, user_id, note_id):
+        self.user_id = user_id
+        self.note_id = note_id
+
+    def to_dict(self):
+        return dict(
+            user_id=self.user_id,
+            note_id=self.note_id
+        )
 
