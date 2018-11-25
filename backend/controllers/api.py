@@ -315,8 +315,7 @@ def delete_note():
         note_list.remove(data.get('note_id'))
         result = ""
         for item in note_list:
-            result += item + ","s
-
+            result += item + ","
         private_note.note_id = result
         db.session.commit()
 
