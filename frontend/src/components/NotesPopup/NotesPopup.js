@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import Popup from "reactjs-popup";
+import Note from '../Note/Note';
 import { TwitterPicker } from 'react-color';
-import { RadioGroup, RadioButton, ReversedRadioButton } from 'react-radio-buttons';
-// // import TagsInput from 'react-tagsinput';
-// import { WithContext as ReactTags } from 'react-tag-input';
+// import { RadioGroup, RadioButton, ReversedRadioButton } from 'react-radio-buttons';
 import { connect } from 'react-redux';
 import { bindActionCreators } from  'redux';
 import { sendNoteData } from '../../actions/sessionActions';
@@ -18,7 +17,7 @@ class NotesPopup extends Component{
 	constructor(props){
 		super(props);
 		this.state = {
-			user_id: 'maitreyi',
+			user_id: this.props.session.currentUser,
 			title: '',
 			note_body: '',
 			color: '',
@@ -69,7 +68,6 @@ class NotesPopup extends Component{
 	}
 
 	onChangeColor = color => {
-		console.log(color.hex);
 		this.setState ({
 			color : color.hex
 		})
@@ -166,5 +164,11 @@ function mapDispatchToProps(dispatch){
 		sendNoteData
 	}, dispatch);
 }
+
+const mapStateToProps = (state) =>{
+    return{
+        session: {...state.session}
+    }; 
+}
  
-export default connect(null, mapDispatchToProps)(NotesPopup);
+export default connect(mapStateToProps, mapDispatchToProps)(NotesPopup);
