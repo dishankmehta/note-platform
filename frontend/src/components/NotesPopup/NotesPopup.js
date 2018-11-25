@@ -18,6 +18,7 @@ class NotesPopup extends Component{
 	constructor(props){
 		super(props);
 		this.state = {
+			user_id: 'maitreyi',
 			title: '',
 			note_body: '',
 			color: '',
@@ -75,9 +76,15 @@ class NotesPopup extends Component{
 	}
 
 	handleOptionChange = changeEvent => {
-  		this.setState({
-    		note_type: changeEvent.target.value
+  		if(changeEvent.target.value === 'private'){
+			this.setState({
+    		note_type: '1'
   		})
+		}else if(changeEvent.target.value === 'public'){
+			this.setState({
+    		note_type: '2'
+  		})
+		}
 	}
 
 	render(){
