@@ -7,6 +7,7 @@ import DashBoard from '../components/DashBoard/DashBoard';
 import TagInput from '../components/NotesPopup/TagInput';
 import Demo from '../components/Note/Demo';
 import Note from '../components/Note/Note';
+import ProfilePage from "../components/ProfilePage/ProfilePage";
 
 
 const AppRoutes = () => (
@@ -18,6 +19,8 @@ const AppRoutes = () => (
 			<Route path="/tags" component={TagInput}/>
 			<Route path="/demo/:note_id" component={Note}/>
 			<Route path="/demo" component={Demo}/>
+            <Route path="/profile" component={ProfilePage}/>
+
 
 
 		</Switch>

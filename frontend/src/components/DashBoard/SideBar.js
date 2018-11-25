@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import { slide as Menu } from 'react-burger-menu';
 import { Link } from 'react-router-dom';
 import './SideBar.css';
+import ProfilePage from "../ProfilePage/ProfilePage";
 
 class SideBar extends Component {
   render(){
