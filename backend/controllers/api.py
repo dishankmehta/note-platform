@@ -38,6 +38,28 @@ def edit_note():
 
     print("fssars")
     data = request.get_json()
+    title = data.get('title')
+    note_type = data.get('note_type')
+    note_body = data.get('note_body')
+    upvotes = data.get('upvotes')
+    downvotes = data.get('downvotes')
+    views = data.get('views')
+    tags = data.get('tags')
+    color = data.get('color')
+    print(data)
+    note = Note(title, note_type, note_body, upvotes, downvotes, views, tags, color)
+    db.session.add(note)
+    db.session.commit()
+
+
+@api.route('/createnote', methods=["POST"])
+def create_note():
+    data = request.get_json() or dict()
+    username = data.get('username')
+    note_obj = Note('test', 'private', '', 0, 0, 0, '', '')
+    db.session.add(note_obj)
+    user = User.query.filter_by(username=username).first()
+    user.note = note_obj
     print("Incoming data in edit note:", data)
 
     note = Note.query.filter_by(id=data.get('note_id')).first()
@@ -71,7 +93,8 @@ def add_note():
     note = Note(title, note_type, note_body, upvotes, downvotes, views, tags, color)
     db.session.add(note)
     db.session.commit()
-    note_type = int(note_type)
+    if note_type is not '':
+        note_type = int(note_type)
     
     # if private note
     last_item = Note.query.order_by(Note.id.desc()).first()
@@ -192,7 +215,7 @@ def restricted():
     return "You can only see this if you are logged in!", 200
 
 
-@api.route("/get_private_notes", methods=["GET"])
+@api.route("/get_private_notes", methods=["POST"])
 def get_private_notes():
 
     data = request.get_json()
@@ -228,7 +251,7 @@ def get_private_notes():
         return jsonify(notes=note_object, success=True)
 
 
-@api.route("/get_public_notes", methods=["GET"])
+@api.route("/get_public_notes", methods=["POST"])
 def get_public_notes():
 
     data = request.get_json()
@@ -264,7 +287,7 @@ def get_public_notes():
         return jsonify(notes=note_object, success=True)
 
 
-@api.route("/get_cheatsheets", methods=["GET"])
+@api.route("/get_cheatsheets", methods=["POST"])
 def get_cheatsheets():
 
     data = request.get_json()
@@ -299,6 +322,7 @@ def get_cheatsheets():
         print (type(note_object))
         return jsonify(notes=note_object, success=True)
 
+
 @api.route("/delete_note", methods=["POST"])
 def delete_note():
 
@@ -308,13 +332,58 @@ def delete_note():
     if data.get('note_type') == 1:
         private_note = PrivateNotes.query.filter_by(user_id=str(data.get('user_id'))).first()
         note_list = private_note.note_id
+
         note_list = note_list.split(",")
-        note_list.remove(data.get('note_id'))
+        print("Note list: ", note_list)
+        note_list.remove(str(data.get('note_id')))
         result = ""
         for item in note_list:
-            result += item + ","
-
+            if item is not None:
+                result += item + ","
         private_note.note_id = result
+        db.session.commit()
+
+    if data.get('note_type') == 1:
+        private_note = PrivateNotes.query.filter_by(user_id=str(data.get('user_id'))).first()
+        note_list = private_note.note_id
+
+        note_list = note_list.split(",")
+        print("Note list: ", note_list)
+        note_list.remove(str(data.get('note_id')))
+        result = ""
+        for item in note_list:
+            if item is not '':
+                result += item + ","
+        private_note.note_id = result
+        db.session.commit()
+
+    if data.get('note_type') == 2:
+        public_note = PublicNotes.query.filter_by(user_id=str(data.get('user_id'))).first()
+        note_list = public_note.note_id
+        note_list = note_list.split(",")
+        print("Note list: ", note_list)
+        note_list.remove(str(data.get('note_id')))
+        result = ""
+        for item in note_list:
+            if item is not '':
+                result += item + ","
+
+        public_note.note_id = result
+        db.session.commit()
+
+    if data.get('note_type') == 3:
+
+        cheatsheet = CheatSheet.query.filter_by(user_id=str(data.get('user_id'))).first()
+        note_list = cheatsheet.note_id
+        note_list = note_list.split(",")
+        print("Note list: ", note_list)
+        note_list.remove(str(data.get('note_id')))
+        result = ""
+        for item in note_list:
+            if item is not '':
+                result += item + ","
+
+        cheatsheet.note_id = result
         db.session.commit()
 
     return jsonify(notes=[], success=True)

@@ -86,7 +86,6 @@ class NotesPopup extends Component{
 	}
 
 	render(){
-		console.log("Notespopup",this.state.user_id);
 		return(
 			<Popup
     			trigger={<button className="ButtonStyle insideButtonStyle"> Create a Note here </button>}
@@ -154,16 +153,16 @@ class NotesPopup extends Component{
 }
 }
 
+const mapStateToProps = (state) =>{
+    return{
+        session: {...state.session}
+    }; 
+}
+
 function mapDispatchToProps(dispatch){
 	return bindActionCreators({
 		sendNoteData
 	}, dispatch);
 }
 
-const mapStateToProps = (state) =>{
-    return{
-        session: {...state.session}
-    }; 
-}
- 
 export default connect(mapStateToProps, mapDispatchToProps)(NotesPopup);

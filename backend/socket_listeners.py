@@ -46,12 +46,19 @@ def note_body(data):
     print("spitting note content", data)
     note_id = data.get('note_id', None)
     note_body = data.get('note_body', None)
+    selection = data.get('selection', None)
     if note_id:
         GROUP_META_DATA[note_id] = note_body
-    payload = dict(note_body=note_body)
+    payload = dict(note_body=note_body, selection=selection)
     socketio.emit('note_body', payload)
 
-# @socketio.on('initial_note')
+@socketio.on('selection')
+def note_selection(data):
+    selection = data.get('selection', None)
+    if not selection:
+        return
+    payload = dict(selection=selection)
+    socketio.emit('selection', payload)
 
 
 @socketio.on("leave_note")
