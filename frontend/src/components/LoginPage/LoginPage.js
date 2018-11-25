@@ -34,7 +34,7 @@ class LoginPage extends Component {
         let data = {username: username, password: password}
         this.props.loginRequest(data);
     }
-
+    
     render() {
         const isLoggedIn = this.props.session.isLoggedIn;
         const loginError = this.props.session.loginError;

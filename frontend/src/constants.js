@@ -7,6 +7,7 @@ export const SessionActionTypes = KeyMirror({
     LOGIN_REQUEST_FAILED: null,
     LOGIN_ERROR: null,
     REGISTER_ERROR: null,
+    ALL_NOTES: null,
 });
 
 

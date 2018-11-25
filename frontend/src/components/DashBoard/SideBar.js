@@ -5,6 +5,7 @@ import history from '../../history';
 import MainNotes from './MainNotes';
 
 import './SideBar.css';
+import ProfilePage from "../ProfilePage/ProfilePage";
 
 class SideBar extends Component {
   render(){

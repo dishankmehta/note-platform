@@ -5,6 +5,7 @@ const defaultState = {
     isLoggedIn: null,
     loginError: '',
     registerError: '',
+    notes: [],
 };
 
 function sessionReducer(state = defaultState, action) {
@@ -28,6 +29,11 @@ function sessionReducer(state = defaultState, action) {
             return{
                 ...state,
                 registerError: action.payload
+            }
+        case SessionActionTypes.ALL_NOTES:
+            return{
+                ...state,
+                notes: action.payload
             }
         default:
             return state;

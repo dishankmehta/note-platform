@@ -12,7 +12,6 @@ class Config(object):
     # SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://postgres:amoi9825049931@127.0.0.1:5432/postgres'
 
 
-
 class ProdConfig(Config):
     ENV = 'prod'
    # SQLALCHEMY_DATABASE_URI = 'sqlite:///../database.db'
