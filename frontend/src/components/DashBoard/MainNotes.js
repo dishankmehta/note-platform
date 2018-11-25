@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-// // import { connect } from 'react-redux';
+import { connect } from 'react-redux';
 // import { bindActionCreators } from  'redux';
 import NotesPopup from '../NotesPopup/NotesPopup';
 import './MainNotes.css';
@@ -25,13 +25,15 @@ class MainNotes extends Component {
   }
 
   render(){
+    const username = this.props.session.currentUser;
+    console.log(username);
     if(!isEmpty(this.arr)){
     return (
       <div>
           <div className = "main-style">
             <span className = "span-style"> </span>
             <div className = "welcome-style">
-              Welcome to Study Genie
+              {`${username}`}, Welcome to Study Genie
             </div>
             <div className = "secondDiv-style">
               <span className = "secondSpan-style"> Note taking made easier! </span>
@@ -54,5 +56,12 @@ class MainNotes extends Component {
   }  
     }
 }
+const mapStateToProps = (state) =>{
+    return{
+        session: {...state.session}
+    }; 
+}
 
-export default MainNotes;
+
+
+export default connect(mapStateToProps,null)(MainNotes);

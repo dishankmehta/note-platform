@@ -4,7 +4,7 @@ from flask_login import login_user, logout_user, login_required, current_user
 from flask_cors import CORS
 from backend.extensions import cache
 from backend.forms import LoginForm
-from backend.models import db, User, Note, PrivateNotes, UserGroupInfo, Group, PublicNotes
+from backend.models import db, User, Note, PrivateNotes, UserGroupInfo, Group, PublicNotes, CheatSheet
 
 api = Blueprint('api', __name__, url_prefix="/")
 # CORS(api)
@@ -123,6 +123,16 @@ def add_note():
             db.session.add(public_notes)
             db.session.commit()
 
+    if note_type == 3:
+        user_data = CheatSheet.query.filter_by(user_id=user_id).first()
+        if user_data is not None:
+            user_data.note_id += last
+            db.session.commit()
+        else:
+            cheatsheet = CheatSheet(user_id, last)
+            db.session.add(cheatsheet)
+            db.session.commit()
+
     return jsonify(note=[], success=True)
 
 
@@ -209,18 +219,124 @@ def get_private_notes():
 
     data = request.get_json()
     private_note = PrivateNotes.query.filter_by(user_id=data.get('user_id')).first()
+
     if private_note is None:
         return jsonify(note=None, success=True)
     else:
-        note_id_list = PrivateNotes.query.filter_by(user_id=data.get('user_id')).first()
+        print(private_note.note_id)
+        note_id_list = private_note.note_id
         print("Note_id_list", note_id_list)
         note_object = {}
         note_id_list = note_id_list.split(",")
         i = 0
 
         for id in note_id_list:
-            note = Note.query.filter_by(id=id).first()
-            note_object[i] = note
-            i += 1
-
+                print("Note id:", id)
+                if id != '':
+                    note = Note.query.filter_by(id=id).first()
+                    note_object[i] = {}
+                    note_object[i]['id'] = note.id
+                    note_object[i]['title'] = note.title
+                    note_object[i]['note_type'] = note.note_type
+                    note_object[i]['note_body']= note.note_body
+                    note_object[i]['upvotes'] = note.upvotes
+                    note_object[i]['downvotes'] = note.downvotes
+                    note_object[i]['views'] = note.views
+                    note_object[i]['tags'] = note.tags
+                    note_object[i]['color']= note.color
+                    i += 1
+        print (note_object)
+        print (type(note_object))
         return jsonify(notes=note_object, success=True)
+
+
+@api.route("/get_public_notes", methods=["GET"])
+def get_public_notes():
+
+    data = request.get_json()
+    public_note = PublicNotes.query.filter_by(user_id=data.get('user_id')).first()
+
+    if public_note is None:
+        return jsonify(note=None, success=True)
+    else:
+        print(public_note.note_id)
+        note_id_list = public_note.note_id
+        print("Note_id_list", note_id_list)
+        note_object = {}
+        note_id_list = note_id_list.split(",")
+        i = 0
+
+        for id in note_id_list:
+                print("Note id:", id)
+                if id != '':
+                    note = Note.query.filter_by(id=id).first()
+                    note_object[i] = {}
+                    note_object[i]['id'] = note.id
+                    note_object[i]['title'] = note.title
+                    note_object[i]['note_type'] = note.note_type
+                    note_object[i]['note_body']= note.note_body
+                    note_object[i]['upvotes'] = note.upvotes
+                    note_object[i]['downvotes'] = note.downvotes
+                    note_object[i]['views'] = note.views
+                    note_object[i]['tags'] = note.tags
+                    note_object[i]['color']= note.color
+                    i += 1
+        print(note_object)
+        print(type(note_object))
+        return jsonify(notes=note_object, success=True)
+
+
+@api.route("/get_cheatsheets", methods=["GET"])
+def get_cheatsheets():
+
+    data = request.get_json()
+    public_note = CheatSheet.query.filter_by(user_id=data.get('user_id')).first()
+
+    if public_note is None:
+        return jsonify(note=None, success=True)
+    else:
+        print(public_note.note_id)
+        note_id_list = public_note.note_id
+        print("Note_id_list", note_id_list)
+        note_object = {}
+        note_id_list = note_id_list.split(",")
+        i = 0
+
+        for id in note_id_list:
+                print("Note id:", id)
+                if id != '':
+                    note = Note.query.filter_by(id=id).first()
+                    note_object[i] = {}
+                    note_object[i]['id'] = note.id
+                    note_object[i]['title'] = note.title
+                    note_object[i]['note_type'] = note.note_type
+                    note_object[i]['note_body']= note.note_body
+                    note_object[i]['upvotes'] = note.upvotes
+                    note_object[i]['downvotes'] = note.downvotes
+                    note_object[i]['views'] = note.views
+                    note_object[i]['tags'] = note.tags
+                    note_object[i]['color'] = note.color
+                    i += 1
+        print (note_object)
+        print (type(note_object))
+        return jsonify(notes=note_object, success=True)
+
+@api.route("/delete_note", methods=["POST"])
+def delete_note():
+
+    data = request.get_json()
+    Note.query.filter_by(id=data.get('note_id')).delete()
+
+    if data.get('note_type') == 1:
+        private_note = PrivateNotes.query.filter_by(user_id=str(data.get('user_id'))).first()
+        note_list = private_note.note_id
+        note_list = note_list.split(",")
+        note_list.remove(data.get('note_id'))
+        result = ""
+        for item in note_list:
+            result += item + ","
+
+        private_note.note_id = result
+        db.session.commit()
+
+    return jsonify(notes=[], success=True)

@@ -151,3 +151,20 @@ class Group(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
     note_id = db.Column(db.String())
 
+
+class CheatSheet(db.Model):
+    __tablename__ = 'cheatsheet'
+    id = db.Column(db.Integer(), primary_key=True)
+    user_id = db.Column(db.String())
+    note_id = db.Column(db.String())
+
+    def __init__(self, user_id, note_id):
+        self.user_id = user_id
+        self.note_id = note_id
+
+    def to_dict(self):
+        return dict(
+            user_id=self.user_id,
+            note_id=self.note_id
+        )
+
