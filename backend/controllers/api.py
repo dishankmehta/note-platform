@@ -312,11 +312,55 @@ def delete_note():
 
         note_list = note_list.split(",")
         print("Note list: ", note_list)
-        note_list.remove(data.get('note_id'))
+        note_list.remove(str(data.get('note_id')))
         result = ""
         for item in note_list:
-            result += item + ","
+            if item is not None:
+                result += item + ","
         private_note.note_id = result
+        db.session.commit()
+
+    if data.get('note_type') == 1:
+        private_note = PrivateNotes.query.filter_by(user_id=str(data.get('user_id'))).first()
+        note_list = private_note.note_id
+
+        note_list = note_list.split(",")
+        print("Note list: ", note_list)
+        note_list.remove(str(data.get('note_id')))
+        result = ""
+        for item in note_list:
+            if item is not '':
+                result += item + ","
+        private_note.note_id = result
+        db.session.commit()
+
+    if data.get('note_type') == 2:
+        public_note = PublicNotes.query.filter_by(user_id=str(data.get('user_id'))).first()
+        note_list = public_note.note_id
+        note_list = note_list.split(",")
+        print("Note list: ", note_list)
+        note_list.remove(str(data.get('note_id')))
+        result = ""
+        for item in note_list:
+            if item is not '':
+                result += item + ","
+
+        public_note.note_id = result
+        db.session.commit()
+
+    if data.get('note_type') == 3:
+
+        cheatsheet = CheatSheet.query.filter_by(user_id=str(data.get('user_id'))).first()
+        note_list = cheatsheet.note_id
+        note_list = note_list.split(",")
+        print("Note list: ", note_list)
+        note_list.remove(str(data.get('note_id')))
+        result = ""
+        for item in note_list:
+            if item is not '':
+                result += item + ","
+
+        cheatsheet.note_id = result
         db.session.commit()
 
     return jsonify(notes=[], success=True)
