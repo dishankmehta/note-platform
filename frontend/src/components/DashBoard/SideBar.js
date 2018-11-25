@@ -10,20 +10,17 @@ class SideBar extends Component {
     return (
       <div className = "container" >
         <Menu>
-          <Link className="menu-item" to ="/">
-            Home  </Link>
+          <Link className="menu-item" to ="/dashboard">
+            My Notes  </Link>
 
           <Link className = "menu-item" to = "/cheatsheet"> 
-            Cheat Sheet </Link>
+            Cheat Sheets </Link>
 
-          <Link className = "menu-item" to = '/trendingnotes'>
-            Trending Notes </Link>
+          <Link className = "menu-item" to = '/recommendednotes'>
+            Recommended Notes </Link>
 
-          <Link className = "menu-item" to = '/mynotes'>
-            My Notes </Link>
-          
-          <Link className = "menu-item" to = '/privatenotes'>
-            My Private Notes </Link>  
+          <Link className = "menu-item" to = '/groupnotes'>
+            Collaborative Notes </Link>
   
           <Link className = "menu-item" to = '/profile'>
             Profile </Link>
