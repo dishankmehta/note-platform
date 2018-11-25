@@ -8,7 +8,9 @@ export default class appAPI {
 		return API.post('/register', data);
 	}
 
-
+	static getPublicNotes(data){
+		return API.post('/get_public_notes', data);
+	}
 	static sendNoteData(data) {
 		console.log("Data:::::::: ", data);
 		return API.post('/add_note', data);

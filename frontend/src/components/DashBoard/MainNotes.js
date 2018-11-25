@@ -1,10 +1,18 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-// import { bindActionCreators } from  'redux';
+import { bindActionCreators } from  'redux';
+import { getPublicNotes } from '../../actions/sessionActions'
 import NotesPopup from '../NotesPopup/NotesPopup';
 import { Card } from '../CustomComponents/Card';
 import './MainNotes.css';
 import isEmpty from 'lodash/isEmpty';
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
+
 
 class MainNotes extends Component {
   constructor(props){
@@ -25,10 +33,14 @@ class MainNotes extends Component {
       ]
   }
 
+  componentDidMount() {
+    this.props.getPublicNotes(this.props.session.currentUser);
+  }
+
   render(){
     const username = this.props.session.currentUser;
     console.log(username);
-    if(!isEmpty(this.arr)){
+    if(isEmpty(this.arr)){
     return (
       <div>
           <div className = "main-style">
@@ -50,9 +62,30 @@ class MainNotes extends Component {
 
     }
     else{
+
       return(
-        <div> hi </div>
-      );
+       <Card >
+        <CardContent>
+          <Typography color="textSecondary" gutterBottom>
+            Word of the Day
+          </Typography>
+          <Typography variant="h5" component="h2">
+            {this.arr.title}
+          </Typography>
+          <Typography  color="textSecondary">
+            adjective
+          </Typography>
+          <Typography component="p">
+            well meaning and kindly.
+            <br />
+            {'"a benevolent smile"'}
+          </Typography>
+        </CardContent>
+        <CardActions>
+          <Button size="small">Learn More</Button>
+        </CardActions>
+        </Card>
+  );
       
   }  
     }
@@ -62,7 +95,8 @@ const mapStateToProps = (state) =>{
         session: {...state.session}
     }; 
 }
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators({ getPublicNotes }, dispatch);
+}
 
-
-
-export default connect(mapStateToProps,null)(MainNotes);
+export default connect(mapStateToProps,mapDispatchToProps)(MainNotes);

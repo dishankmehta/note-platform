@@ -165,10 +165,4 @@ function mapDispatchToProps(dispatch){
 	}, dispatch);
 }
 
-const mapStateToProps = (state) =>{
-    return{
-        session: {...state.session}
-    }; 
-}
- 
 export default connect(mapStateToProps, mapDispatchToProps)(NotesPopup);
