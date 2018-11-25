@@ -48,12 +48,12 @@ class LoginPage extends Component {
                     <PageHeader>Note-Platform</PageHeader>
                     <FieldForm>
                         <FieldText label="Username" name="username" shouldFitContainer
-                            placeholder="Username" type="text" autoFocus required
+                            placeholder="Username" type="text" autoFocus required value={this.state.username}
                             onChange={e => this.setState({username: e.target.value})} />
                         <br/>
                         
                         <FieldText label="Password" name="password" shouldFitContainer
-                            type="password" placeholder="Password" required
+                            type="password" placeholder="Password" required value={this.state.password}
                             onChange={e => this.setState({password: e.target.value})} />
                     </FieldForm>
 
@@ -64,7 +64,7 @@ class LoginPage extends Component {
                     : null}
 
                     <Button shouldFitContainer appearance="primary" className="login-btn" 
-                    onClick={() => this.onSubmit}>Sign in</Button>
+                    onClick={() => this.onSubmit()}>Sign in</Button>
                 
                     <Button shouldFitContainer appearance="primary" className="login-btn" 
                     onClick={() => this.props.history.replace('/register')}>Register</Button>

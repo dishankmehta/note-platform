@@ -1,34 +1,46 @@
 import React, { Component } from 'react';
-// import { connect } from 'react-redux';
-// import { bindActionCreators } from  'redux';
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import { slide as Menu } from 'react-burger-menu';
-import { Link } from 'react-router-dom';
+import history from '../../history';
+import MainNotes from './MainNotes';
+
 import './SideBar.css';
 
 class SideBar extends Component {
   render(){
     return (
-      <div className = "container" >
-        <Menu>
-          <Link className="menu-item" to ="/dashboard">
-            My Notes  </Link>
+      <Router>
+        <div className="container">
+            <div style={{width: "5%"}}>
+              <Menu>
+                <Link className="menu-item" to ="/dashboard">
+                  My Notes  </Link>
 
-          <Link className = "menu-item" to = "/cheatsheet"> 
-            Cheat Sheets </Link>
+                <Link className = "menu-item" to = "/cheatsheet"> 
+                  Cheat Sheets </Link>
 
-          <Link className = "menu-item" to = '/recommendednotes'>
-            Recommended Notes </Link>
+                <Link className = "menu-item" to = '/recommendednotes'>
+                  Recommended Notes </Link>
 
-          <Link className = "menu-item" to = '/groupnotes'>
-            Collaborative Notes </Link>
-  
-          <Link className = "menu-item" to = '/profile'>
-            Profile </Link>
+                <Link className = "menu-item" to = '/groupnotes'>
+                  Collaborative Notes </Link>
+        
+                <Link className = "menu-item" to = '/profile'>
+                  Profile </Link>
 
-          <Link className = "menu-item" to = '/'>
-            Logout </Link>      
-        </Menu>
-      </div>
+                <Link className = "menu-item" to = '/'>
+                  Logout </Link>      
+            </Menu>
+          </div>
+          
+          <div style={{width: "95%"}}>
+            <nav className={"app-nav"}>
+              <Route path={"/dashboard"} exact={true} component={MainNotes}/>
+            </nav>
+          </div>
+        </div>
+      </Router>
+      
     );  
   }  
 }

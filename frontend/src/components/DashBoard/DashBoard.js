@@ -9,7 +9,7 @@ class DashBoard extends Component {
       return(
       <div>
           <SideBar />
-          <MainNotes />   
+          {/* <MainNotes />    */}
       </div>
     );  
   }  
