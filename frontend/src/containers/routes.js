@@ -8,6 +8,7 @@ import TagInput from '../components/NotesPopup/TagInput';
 import Demo from '../components/Note/Demo';
 import Note from '../components/Note/Note';
 import ProfilePage from "../components/ProfilePage/ProfilePage";
+import CheatSheet from "../components/CheatSheet/CheatSheet";
 
 
 const AppRoutes = () => (
@@ -20,7 +21,7 @@ const AppRoutes = () => (
 			<Route path="/demo/:note_id" component={Note}/>
 			<Route path="/demo" component={Demo}/>
             <Route path="/profile" component={ProfilePage}/>
-
+            <Route path="/cheatsheet" component={CheatSheet}/>
 
 
 		</Switch>
