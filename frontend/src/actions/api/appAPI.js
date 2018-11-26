@@ -17,6 +17,11 @@ export default class appAPI {
 		return API.post('/add_note', data);
 	}
 
+	static sendEditedNoteData(data) {
+		console.log("Data:::::::: ", data);
+		return API.post('/edit_note', data);
+	}
+
 	static createNote(data) {
 		return API.post('/createnote', data);
 	}

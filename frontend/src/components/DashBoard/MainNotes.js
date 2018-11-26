@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from  'redux';
 import { getPublicNotes } from '../../actions/sessionActions'
 import NotesPopup from '../NotesPopup/NotesPopup';
+import EditNotes from '../EditNotes/EditNotes';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import { Card } from '../CustomComponents/Card';
 import './MainNotes.css';
@@ -18,7 +19,18 @@ import Typography from '@material-ui/core/Typography';
 class MainNotes extends Component {
   constructor(props){
     super(props);
+    this.state = {
+      isEditOpen : false
+    }
   }
+
+  toggleEditModal = () => {
+    this.setState({
+      isEditOpen: !this.state.isEditOpen
+    });
+  }
+
+
 
   componentDidMount() {
     let data = {user_id:this.props.session.currentUser};
@@ -40,9 +52,19 @@ class MainNotes extends Component {
             {note_item.note_body}
             <br />
             <div>
-              <button onClick = { () => {{this.onEditNotes();}} }> Edit </button>
-              <a> Delete </a>
+            <a> Delete </a>
             </div>
+            <EditNotes 
+              title = {note_item.title}
+              note_body = {note_item.note_body}
+              color = {note_item.color}
+              note_type = {note_item.note_type}
+              tags = {note_item.tags}
+              note_id = { note_item.id }
+              show={this.state.isEditOpen}
+              onClose={this.toggleEditModal}>
+              `Here's some content for the modal`
+          </EditNotes> 
          </div>
           </Card>
         }
