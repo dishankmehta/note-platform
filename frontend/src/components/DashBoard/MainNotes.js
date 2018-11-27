@@ -4,6 +4,8 @@ import { bindActionCreators } from  'redux';
 import { getPublicNotes } from '../../actions/sessionActions'
 import NotesPopup from '../NotesPopup/NotesPopup';
 import EditNotes from '../EditNotes/EditNotes';
+import DeleteNotes from '../DeleteNotes/DeleteNotes';
+
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import { Card } from '../CustomComponents/Card';
 import './MainNotes.css';
@@ -64,8 +66,19 @@ class MainNotes extends Component {
               show={this.state.isEditOpen}
               onClose={this.toggleEditModal}>
               `Here's some content for the modal`
-          </EditNotes> 
-         </div>
+          </EditNotes>
+
+                <DeleteNotes
+                    title = {note_item.title}
+                    note_body = {note_item.note_body}
+                    color = {note_item.color}
+                    note_type = {note_item.note_type}
+                    tags = {note_item.tags}
+                    note_id = { note_item.id }>
+                    `Here's some content for the modal`
+                </DeleteNotes>
+
+            </div>
           </Card>
         }
       ));

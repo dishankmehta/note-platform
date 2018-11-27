@@ -111,7 +111,7 @@ class EditNotes extends Component{
   render(){
     return(
       <Popup
-          trigger={<button className="ButtonStyle insideButtonStyle"> Edit </button>}
+          trigger={<button> Edit </button>}
           modal
           contentStyle={contentStyle}
         >
