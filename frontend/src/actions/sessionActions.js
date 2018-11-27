@@ -73,6 +73,37 @@ export function sendNoteData(data) {
     }   
 }
 
+export function sendEditedNoteData(data) {
+    console.log("reached in edited note data");
+    return (dispatch) => {
+        console.log("data", data.note_type);
+        API.sendEditedNoteData(data)
+            .then((res) => {
+                console.log(res);
+                const new_data = { user_id: data.user_id } 
+                dispatch(getPublicNotes(new_data));
+            }).catch(() => {
+                console.log("error");
+            });
+    }   
+}
+
+export function sendDeleteNoteData(data) {
+    console.log("reached in edited note data");
+    return (dispatch) => {
+        console.log("data", data.note_id);
+        API.sendDeleteNoteData(data)
+            .then((res) => {
+                console.log(res);
+                const new_data = { user_id: data.user_id };
+                dispatch(getPublicNotes(new_data));
+            }).catch(() => {
+            console.log("error");
+        });
+    }
+}
+
+
 function handleGetAllNotes(data) {
     return {
         type: SessionActionTypes.ALL_NOTES,
