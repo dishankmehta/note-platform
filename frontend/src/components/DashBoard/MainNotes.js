@@ -3,6 +3,10 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from  'redux';
 import { getPublicNotes } from '../../actions/sessionActions'
 import NotesPopup from '../NotesPopup/NotesPopup';
+import EditNotes from '../EditNotes/EditNotes';
+import DeleteNotes from '../DeleteNotes/DeleteNotes';
+
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import { Card } from '../CustomComponents/Card';
 import './MainNotes.css';
 import isEmpty from 'lodash/isEmpty';
@@ -17,21 +21,18 @@ import Typography from '@material-ui/core/Typography';
 class MainNotes extends Component {
   constructor(props){
     super(props);
-    this.arr = [
-        // {
-        //   title: 'Title 1',
-        //   content: 'My content in note 1 is unimportant.'
-        // },
-        // {
-        //   title: 'Title 2',
-        //   content: 'My content in note2 is really important.'
-        // },
-        // {
-        //   title: 'Title 3',
-        //   content: 'My content in note 3 is very very important.'
-        // }
-      ]
+    this.state = {
+      isEditOpen : false
+    }
   }
+
+  toggleEditModal = () => {
+    this.setState({
+      isEditOpen: !this.state.isEditOpen
+    });
+  }
+
+
 
   componentDidMount() {
     let data = {user_id:this.props.session.currentUser};
@@ -45,13 +46,56 @@ class MainNotes extends Component {
       Object.keys(notes).map((item) => {
         const note_item = notes[item];
         return <Card key={item} color={note_item.color}>
+          <div>
             {note_item.title}
+            </div>
+            <br />
+            <div>
             {note_item.note_body}
+            <br />
+            <div>
+            <a> Delete </a>
+            </div>
+            <EditNotes 
+              title = {note_item.title}
+              note_body = {note_item.note_body}
+              color = {note_item.color}
+              note_type = {note_item.note_type}
+              tags = {note_item.tags}
+              note_id = { note_item.id }
+              show={this.state.isEditOpen}
+              onClose={this.toggleEditModal}>
+              `Here's some content for the modal`
+          </EditNotes>
+
+                <DeleteNotes
+                    title = {note_item.title}
+                    note_body = {note_item.note_body}
+                    color = {note_item.color}
+                    note_type = {note_item.note_type}
+                    tags = {note_item.tags}
+                    note_id = { note_item.id }>
+                    `Here's some content for the modal`
+                </DeleteNotes>
+
+            </div>
           </Card>
         }
       ));
     return noteArr;
   }
+
+  onEditNotes = () => {
+        console.log("hello")
+
+    return(
+    <div className = "div2ButtonStyle">
+
+                  <NotesPopup />
+                </div>
+                 );
+  }
+
 
   render(){
     const username = this.props.session.currentUser;
@@ -78,37 +122,16 @@ class MainNotes extends Component {
           </div>        
       </div>
     );  
-
     }
     else if(!isEmpty(notes)){
-      // console.log("notes",notes);
-
       return(
-       // <Card >
-        // <CardContent>
-        //   <Typography color="textSecondary" gutterBottom>
-            
-        //   </Typography>
-        //   <Typography variant="h5" component="h2">
-        //     {this.arr.title}
-        //   </Typography>
-        //   <Typography  color="textSecondary">
-        //     adjective
-        //   </Typography>
-        //   <Typography component="p">
-        //     well meaning and kindly.
-        //     <br />
-        //     {'"a benevolent smile"'}
-        //   </Typography>
-        // </CardContent>
-        // <CardActions>
-        //   <Button size="small">Learn More</Button>
-        // </CardActions>
-        // </Card>
         <div>
+          <div className="col-xs-12">
+            <NotesPopup />
+          </div>
+          <h2 className = "notesheadingstyle"> My Public Notes </h2>
           {this.renderAllNotes(notes)}
-        </div>
-        
+        </div>    
       );  
     }      
   }  

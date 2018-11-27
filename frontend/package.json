@@ -50,7 +50,7 @@
     "slate-plain-serializer": "^0.6.28",
     "slate-react": "^0.21.10",
     "socket.io-client": "^2.1.1",
-    "styled-components": "3.4.2"
+    "styled-components": "^3.4.2"
   },
   "scripts": {
     "start": "react-scripts start",
