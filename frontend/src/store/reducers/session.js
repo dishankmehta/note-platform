@@ -7,7 +7,7 @@ const defaultState = {
     registerError: '',
     publicNotes: [],
     privateNotes: [],
-    searchField: ''
+    searchField: '',
 };
 
 function sessionReducer(state = defaultState, action) {

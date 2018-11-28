@@ -1,4 +1,4 @@
-import { SessionActionTypes } from '../constants';
+import { SessionActionTypes } from '../constants';  
 import API from './api/appAPI';
 import history from '../history';
 
@@ -188,5 +188,4 @@ function handleRegisterError(data) {
         payload: data
     }
 }
-
 export const setSearchField = (text) => ({ type: SessionActionTypes.CHANGE_SEARCHFIELD, payload: text })

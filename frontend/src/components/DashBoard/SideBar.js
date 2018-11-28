@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import { withRouter } from 'react-router';
-
+import { setSearchField } from '../../actions/sessionActions';
+import SearchBox from './SearchBox';
 import Avatar from '@material-ui/core/Avatar';
 import AccountIcon from '@material-ui/icons/AccountCircle';
 import LogOutIcon from '@material-ui/icons/ExitToApp';
@@ -31,6 +32,18 @@ import './SideBar.css';
 //     />
 //   );
 // }
+
+const mapStateToProps = (state) => {
+  return {
+    searchField: state.searchRobots.searchField
+  }
+}
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onSearchChange: (event) => dispatch(setSearchField(event.target.value))
+  }
+}
+
 
 class SideBar extends Component {
   state = {
@@ -71,6 +84,7 @@ class SideBar extends Component {
     const { anchorEl } = this.state;
     const open = Boolean(anchorEl);
     console.log(child);
+    const { searchField, onSearchChange } = this.props;
     return (
       <Router>
         <div className="container">
@@ -79,6 +93,8 @@ class SideBar extends Component {
               <MenuIcon style={{color: "#0052cc"}}  />
             </div>
             <div className="app-name-div">Note Platform</div>
+            <SearchBox searchChange={onSearchChange}/>
+
             <Avatar className="avatar" onClick={(e) => {this.setState({ anchorEl: e.currentTarget });}}>U</Avatar>
             <Popover
               id="render-props-popover"

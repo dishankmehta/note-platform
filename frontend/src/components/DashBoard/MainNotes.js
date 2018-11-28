@@ -2,13 +2,10 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from  'redux';
 import { getPublicNotes } from '../../actions/sessionActions'
-<<<<<<< HEAD
 import { getPrivateNotes } from '../../actions/sessionActions'
-=======
 import { sendUpVoteNoteData } from '../../actions/sessionActions';
 import { sendDownVoteNoteData } from '../../actions/sessionActions';
 import { sendDeleteNoteData } from '../../actions/sessionActions';
->>>>>>> 52c631bc3e6913b74b8fa666ee0c522de63c6f7f
 import NotesPopup from '../NotesPopup/NotesPopup';
 import EditNotes from '../EditNotes/EditNotes';
 import DeleteNotes from '../DeleteNotes/DeleteNotes';
