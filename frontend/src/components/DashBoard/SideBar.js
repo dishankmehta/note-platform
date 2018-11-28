@@ -100,7 +100,7 @@ class SideBar extends Component {
             >
               <div>
                 <div className="avatar-div">
-                  <AccountIcon style={{color: "#2196f3"}}/> <Link to="/profile">Profile</Link>
+                  <AccountIcon style={{color: "#0052cc"}}/> <Link to="/profile">Profile</Link>
                 </div>
                 <div className="avatar-div">
                   <LogOutIcon style={{color: "#2196f3"}}/> <a href="#">Logout</a>
@@ -115,19 +115,19 @@ class SideBar extends Component {
                   <NoteIcon style={{marginLeft: "5px", color: "#2196f3"}} />
                 </CustomLinkComponent> */}
                 <div>
-                  <NoteIcon style={{marginLeft: "5px", color: "#2196f3"}} />
+                  <NoteIcon style={{marginLeft: "5px", color: "#0052cc"}} />
                   <Link to ="/dashboard">My Notes</Link>
                 </div>
                 <div>
-                  <CheetSheetIcon style={{marginLeft: "5px", color: "#2196f3"}} />
+                  <CheetSheetIcon style={{marginLeft: "5px", color: "#0052cc"}} />
                   <Link to = "/cheatsheet">Cheat Sheets</Link>
                 </div>
                 <div>
-                  <TrendIcon style={{marginLeft: "5px", color: "#2196f3"}} />
+                  <TrendIcon style={{marginLeft: "5px", color: "#0052cc"}} />
                   <Link to = '/recommendednotes'>Recommended Notes</Link>
                 </div>
                 <div>
-                  <GroupIcon style={{marginLeft: "5px", color: "#2196f3"}} />
+                  <GroupIcon style={{marginLeft: "5px", color: "#0052cc"}} />
                   <Link to = '/groupnotes'>Collaborative Notes</Link>
                 </div>
               </SideNav>

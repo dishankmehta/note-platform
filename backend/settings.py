@@ -7,8 +7,8 @@ class Config(object):
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     CORS_ALLOWED_HOSTS = ['http://localhost:3000']
     # SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://stormcold:password@127.0.0.1:5432/noteplatform'
-    #SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://postgres:password@127.0.0.1:5432/noteplatform'
-    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://postgres:1234@127.0.0.1:5432/postgres'
+    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://postgres:password@127.0.0.1:5432/noteplatform'
+    # SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://postgres:1234@127.0.0.1:5432/postgres'
     # SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://postgres:amoi9825049931@127.0.0.1:5432/postgres'
 
 
