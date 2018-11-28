@@ -89,18 +89,48 @@ export function sendEditedNoteData(data) {
 }
 
 export function sendDeleteNoteData(data) {
-    console.log("reached in edited note data");
+    console.log("reached in delete note data");
     return (dispatch) => {
-        console.log("data", data.note_id);
+        console.log("data", data);
         API.sendDeleteNoteData(data)
             .then((res) => {
                 console.log(res);
-                const new_data = { user_id: data.user_id };
-                dispatch(getPublicNotes(new_data));
+                // const new_data = { user_id: data.user_id };
+                // dispatch(getPublicNotes(new_data));
             }).catch(() => {
             console.log("error");
         });
     }
+}
+
+export function sendUpVoteNoteData(data) {
+    console.log("reached in upvote note data");
+    return (dispatch) => {
+        console.log("data", data);
+        API.sendUpVoteNoteData(data)
+            .then((res) => {
+                console.log(res);
+                // const new_data = { user_id: data.user_id } 
+                // dispatch(getPublicNotes(new_data));
+            }).catch(() => {
+                console.log("error");
+            });
+    }   
+}
+
+export function sendDownVoteNoteData(data) {
+    console.log("reached in upvote note data");
+    return (dispatch) => {
+        console.log("data", data);
+        API.sendDownVoteNoteData(data)
+            .then((res) => {
+                console.log(res);
+                // const new_data = { user_id: data.user_id } 
+                // dispatch(getPublicNotes(new_data));
+            }).catch(() => {
+                console.log("error");
+            });
+    }   
 }
 
 
