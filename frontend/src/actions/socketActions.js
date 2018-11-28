@@ -21,6 +21,7 @@ export function initSocket() {
 export function syncEditorData(data, socket) {
     return (dispatch, getState) => {
         // const socket = getState().socket.socket;
+        socket.emit('selection', data.selection);
         socket.emit('note_body', data);
     }
 }

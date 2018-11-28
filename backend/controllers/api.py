@@ -37,6 +37,28 @@ def sample():
 def edit_note():
 
     data = request.get_json()
+    title = data.get('title')
+    note_type = data.get('note_type')
+    note_body = data.get('note_body')
+    upvotes = data.get('upvotes')
+    downvotes = data.get('downvotes')
+    views = data.get('views')
+    tags = data.get('tags')
+    color = data.get('color')
+    print(data)
+    note = Note(title, note_type, note_body, upvotes, downvotes, views, tags, color)
+    db.session.add(note)
+    db.session.commit()
+
+
+@api.route('/createnote', methods=["POST"])
+def create_note():
+    data = request.get_json() or dict()
+    username = data.get('username')
+    note_obj = Note('test', 'private', '', 0, 0, 0, '', '')
+    db.session.add(note_obj)
+    user = User.query.filter_by(username=username).first()
+    user.note = note_obj
     print("Incoming data in edit note:", data)
 
     note = Note.query.filter_by(id=data.get('note_id')).first()
@@ -131,7 +153,8 @@ def add_note():
     note = Note(title, note_type, note_body, upvotes, downvotes, views, tags, color)
     db.session.add(note)
     db.session.commit()
-    note_type = int(note_type)
+    if note_type is not '':
+        note_type = int(note_type)
     
     # if private note
     last_item = Note.query.order_by(Note.id.desc()).first()
