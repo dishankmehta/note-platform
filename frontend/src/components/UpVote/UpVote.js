@@ -4,7 +4,7 @@ import { bindActionCreators } from  'redux';
 import { sendDeleteNoteData } from '../../actions/sessionActions';
 
 
-class DeleteNotes extends Component{
+class UpVote extends Component{
   constructor(props){
     super(props);
     this.state = {
@@ -43,16 +43,16 @@ class DeleteNotes extends Component{
   }
 
 
-  onDeleteNote = () => {
+  onUpVoteNote = () => {
     console.log("reached");
-    this.props.sendDeleteNoteData(this.state);
+    this.props.sendUpVoteNoteData(this.state);
   };
 
 
   render(){
     return(
           <div className="col-xs-12">
-              <button onClick = {() => {this.onDeleteNote(); }}  value = "Submit"> Delete </button>
+              <button onClick = {() => {this.onUpVoteNote(); }}  value = "Submit"> Up Vote </button>
           </div>
     );
 }
@@ -70,4 +70,4 @@ class DeleteNotes extends Component{
     }, dispatch);
   }
 
-export default connect(mapStateToProps, mapDispatchToProps)(DeleteNotes);
+export default connect(mapStateToProps, mapDispatchToProps)(UpVote);
