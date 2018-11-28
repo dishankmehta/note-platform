@@ -157,6 +157,11 @@ class MainNotes extends Component {
           <h1>Private Notes</h1>
           {this.renderAllNotes(privateNotes)}
         </div>
+          <div className = "divButtonStyle">
+            <div className = "div2ButtonStyle">
+              <NotesPopup />
+            </div>
+          </div>
         </div>
       );  
     }else if(!isEmpty(privateNotes)){
@@ -164,6 +169,11 @@ class MainNotes extends Component {
         <div className = "welcome-style">
           <h1>Private Notes</h1>
           {this.renderAllNotes(privateNotes)}
+          <div className = "divButtonStyle">
+            <div className = "div2ButtonStyle">
+                <NotesPopup />
+            </div>
+          </div>
         </div>);
     }
     else{
@@ -171,6 +181,11 @@ class MainNotes extends Component {
         <div>
           <h1>Public Notes</h1>
           {this.renderAllNotes(publicNotes)}
+          <div className = "divButtonStyle">
+            <div className = "div2ButtonStyle">
+                <NotesPopup />
+            </div>
+          </div>
         </div>
       );  
     }
