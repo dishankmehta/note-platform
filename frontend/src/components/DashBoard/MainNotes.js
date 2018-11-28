@@ -46,7 +46,7 @@ class MainNotes extends Component {
       Object.keys(notes).map((item) => {
         const note_item = notes[item];
         return <Card key={item} color={note_item.color}>
-            <div>
+            <div style={{display: 'flex', lineHeight: '40px', justifyContent:'right', alignItems: 'right'}}>
             <EditNotes
                 title = {note_item.title}
                 note_body = {note_item.note_body}
