@@ -89,7 +89,8 @@ export function sendEditedNoteData(data) {
 }
 
 export function sendDeleteNoteData(data) {
-    console.log("reached in edited note data");
+    console.log(data);
+    console.log("reached in deleted note data");
     return (dispatch) => {
         console.log("data", data.note_id);
         API.sendDeleteNoteData(data)

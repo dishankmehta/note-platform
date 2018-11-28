@@ -32,7 +32,7 @@ class DeleteNotes extends Component{
 	  		...state,
             title : props.title,
 	  		note_body : props.note_body,
-	  		note_type : props.note_type,
+	  		note_type : Number(props.note_type),
 	  		tags : props.tags,
 	  		color : props.color,
 	  		valuesInit : true,
