@@ -14,6 +14,7 @@ Method name: delete_note()
 Params: 
     - note_id
     - user_id: username of the user
+    - note_type: integer
     
     
 GET_CHEATSHEETS end point: 
@@ -36,15 +37,15 @@ Params:
 EDIT_NOTE end point:
 Method name: edit_note()
 Params:
- - note_id
- - title 
- - note_type 
- - note_body
- - upvotes 
- - downvotes 
- - views 
- - tags 
- - color 
+ - note_id: string
+ - title: string 
+ - note_type: int 
+ - note_body: string
+ - upvotes: string 
+ - downvotes:string 
+ - views: 
+ - tags: string 
+ - color: string 
 
 
 
