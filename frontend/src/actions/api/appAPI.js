@@ -27,6 +27,16 @@ export default class appAPI {
         return API.post('/delete_note', data);
     }
 
+    static sendUpVoteNoteData(data) {
+        console.log("Data:::UpVote ", data);
+        return API.post('/upvote', data);
+    }
+
+    static sendDownVoteNoteData(data) {
+        console.log("Data:::DownVote ", data);
+        return API.post('/downvote', data);
+    }
+
 	static createNote(data) {
 		return API.post('/createnote', data);
 	}
