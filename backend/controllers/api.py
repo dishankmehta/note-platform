@@ -49,6 +49,7 @@ def edit_note():
     note = Note(title, note_type, note_body, upvotes, downvotes, views, tags, color)
     db.session.add(note)
     db.session.commit()
+    return jsonify(success = True)
 
 
 @api.route('/createnote', methods=["POST"])
