@@ -145,11 +145,11 @@ button{
 }
 
 .insideButtonStyle{
-	position: relative;
+	position: absolute;
 	font-weight: 400!important;
     -webkit-font-smoothing: subpixel-antialiased;
     outline-style: none;
-    margin: 10px;
+    margin-left: 0px;
     padding: 0;
     user-select: none;
     text-align: center;
@@ -158,5 +158,9 @@ button{
     letter-spacing: .8px;
     cursor: pointer;
     color: #FFF;
+}
 
+.notesheadingstyle{
+    text-align: left;
+    margin-top: 55px;
 }

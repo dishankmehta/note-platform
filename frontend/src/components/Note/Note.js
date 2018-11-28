@@ -14,7 +14,7 @@ import CardContent from '@material-ui/core/CardContent'
 // import { EditorState, RichUtils, convertToRaw, convertFromRaw, SelectionState } from 'draft-js';
 
 import { Editor, EditorContext, WithEditorActions } from '@atlaskit/editor-core';
-// import { CollabEditProvider } from '@atlaskit/editor-core';
+import { CollabEditProvider } from '@atlaskit/editor-core';
 import { colors } from '@atlaskit/theme';
 import Button, { ButtonGroup } from '@atlaskit/button';
 
