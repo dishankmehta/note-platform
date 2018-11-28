@@ -1,4 +1,4 @@
-import { SessionActionTypes } from '../constants';
+import { SessionActionTypes } from '../constants';  
 import API from './api/appAPI';
 import history from '../history';
 
@@ -32,7 +32,19 @@ export function getPublicNotes(data){
         API.getPublicNotes(data)
             .then((res) => {
                 console.log(res);
-                dispatch(handleGetAllNotes(res.data.notes));
+                dispatch(handlePublicNotes(res.data.notes));
+            }).catch(() => {
+                console.log('error');
+            })
+    }
+}
+
+export function getPrivateNotes(data){
+    return(dispatch) => {
+        API.getPrivateNotes(data)
+            .then((res) => {
+                console.log('response',res);
+                dispatch(handlePrivateNotes(res.data.notes));
             }).catch(() => {
                 console.log('error');
             })
@@ -67,11 +79,20 @@ export function sendNoteData(data) {
                 console.log(res);
                 const new_data = { user_id: data.user_id } 
                 dispatch(getPublicNotes(new_data));
+                dispatch(getPrivateNotes(new_data));
             }).catch(() => {
                 console.log("error");
             });
     }   
 }
+
+function handlePublicNotes(data) {
+    return {
+        type: SessionActionTypes.PUBLIC_NOTES,
+        payload: data
+    }
+}
+
 
 export function sendEditedNoteData(data) {
     console.log("reached in edited note data");
@@ -102,7 +123,14 @@ export function sendDeleteNoteData(data) {
         });
     }
 }
+    
 
+function handlePrivateNotes(data) {
+    return {
+        type: SessionActionTypes.PRIVATE_NOTES,
+        payload: data
+    }
+}
 export function sendUpVoteNoteData(data) {
     console.log("reached in upvote note data");
     return (dispatch) => {
@@ -133,14 +161,6 @@ export function sendDownVoteNoteData(data) {
     }   
 }
 
-
-function handleGetAllNotes(data) {
-    return {
-        type: SessionActionTypes.ALL_NOTES,
-        payload: data
-    }
-}
-
 function handleCurrentUser(data){
     return {
         type: SessionActionTypes.LOGIN_REQUEST_SUCCESS,
@@ -168,3 +188,4 @@ function handleRegisterError(data) {
         payload: data
     }
 }
+export const setSearchField = (text) => ({ type: SessionActionTypes.CHANGE_SEARCHFIELD, payload: text })

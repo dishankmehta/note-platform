@@ -14,8 +14,6 @@ export function createNewNote(data) {
     }
 }
 
-
-
 function handleCreateNewNote(data) {
     return {
         type: AppActionTypes.CREATE_NOTE,

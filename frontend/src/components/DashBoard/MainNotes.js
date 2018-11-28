@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from  'redux';
 import { getPublicNotes } from '../../actions/sessionActions'
+import { getPrivateNotes } from '../../actions/sessionActions'
 import { sendUpVoteNoteData } from '../../actions/sessionActions';
 import { sendDownVoteNoteData } from '../../actions/sessionActions';
 import { sendDeleteNoteData } from '../../actions/sessionActions';
@@ -25,6 +26,7 @@ import Typography from '@material-ui/core/Typography';
 class MainNotes extends Component {
   constructor(props){
     super(props);
+
     this.state = {
       isEditOpen : false
     }
@@ -40,8 +42,8 @@ class MainNotes extends Component {
 
   componentDidMount() {
     let data = {user_id:this.props.session.currentUser};
+    this.props.getPrivateNotes(data);
     this.props.getPublicNotes(data);
-    // console.log(this.props.session.currentUser);
   }
 
   onUpVoteNote = (note_id) => {
@@ -122,11 +124,10 @@ class MainNotes extends Component {
 
   render(){
     const username = this.props.session.currentUser;
-    console.log('NOTIFY', this.props.session.notes);
-    const notes = this.props.session.notes;
-    console.log('NOTIFY 2', notes);
-    if(isEmpty(notes)){
-      console.log('NOTIFY 3', notes);
+    const privateNotes = this.props.session.privateNotes;
+    const publicNotes = this.props.session.publicNotes;
+    if(isEmpty(privateNotes) && isEmpty(publicNotes)){
+      console.log('NOTIFY 3', privateNotes);
     return (
       <div>
           <div className = "main-style">
@@ -140,24 +141,56 @@ class MainNotes extends Component {
             <div className = "divButtonStyle">
               <div className = "div2ButtonStyle">
                   <NotesPopup />
-                </div>
+              </div>
             </div>
           </div>        
       </div>
     );  
+    }else if(!isEmpty(privateNotes) && !isEmpty(publicNotes)){
+      return(
+        <div className = "welcome-style">
+        <div>
+          <h1>Public Notes</h1>
+          {this.renderAllNotes(publicNotes)}
+        </div>
+        <div>
+          <h1>Private Notes</h1>
+          {this.renderAllNotes(privateNotes)}
+        </div>
+          <div className = "divButtonStyle">
+            <div className = "div2ButtonStyle">
+              <NotesPopup />
+            </div>
+          </div>
+        </div>
+      );  
+    }else if(!isEmpty(privateNotes)){
+      return(
+        <div className = "welcome-style">
+          <h1>Private Notes</h1>
+          {this.renderAllNotes(privateNotes)}
+          <div className = "divButtonStyle">
+            <div className = "div2ButtonStyle">
+                <NotesPopup />
+            </div>
+          </div>
+        </div>);
     }
-    else if(!isEmpty(notes)){
+    else{
       return(
         <div>
-          <div className="col-xs-12">
-            <NotesPopup />
+          <h1>Public Notes</h1>
+          {this.renderAllNotes(publicNotes)}
+          <div className = "divButtonStyle">
+            <div className = "div2ButtonStyle">
+                <NotesPopup />
+            </div>
           </div>
-          <h2 className = "notesheadingstyle"> My Public Notes </h2>
-          {this.renderAllNotes(notes)}
-        </div>    
+        </div>
       );  
-    }      
-  }  
+    }
+
+}
 }
 
 
@@ -168,7 +201,7 @@ const mapStateToProps = (state) =>{
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ getPublicNotes,  sendUpVoteNoteData, sendDownVoteNoteData, sendDeleteNoteData }, dispatch);
+    return bindActionCreators({ getPublicNotes,getPrivateNotes,  sendUpVoteNoteData, sendDownVoteNoteData, sendDeleteNoteData }, dispatch);
 }
 
 export default connect(mapStateToProps,mapDispatchToProps)(MainNotes);

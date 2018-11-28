@@ -5,11 +5,10 @@ db_file = tempfile.NamedTemporaryFile()
 class Config(object):
     SECRET_KEY = 'secret key'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    CORS_ALLOWED_HOSTS = ['http://localhost:3000']
-    # SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://stormcold:password@127.0.0.1:5432/noteplatform'
-    #SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://postgres:password@127.0.0.1:5432/noteplatform'
-    #SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://postgres:1234@127.0.0.1:5432/postgres'
-    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://postgres:password@127.0.0.1:5432/postgres'
+    CORS_ALLOWED_HOSTS = ['http://localhost:3005']
+    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://stormcold:password@127.0.0.1:5432/noteplatform'
+    #sSQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://postgres:1234@127.0.0.1:5432/postgres'
+    # SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://postgres:password@127.0.0.1:5432/postgres'
 
 
 class ProdConfig(Config):
