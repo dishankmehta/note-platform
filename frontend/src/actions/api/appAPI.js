@@ -12,6 +12,12 @@ export default class appAPI {
 		console.log("userID", data);
 		return API.post('/get_public_notes', data);
 	}
+
+	static getPrivateNotes(data){
+		console.log("userID", data);
+		return API.post('/get_private_notes', data);
+	}
+
 	static sendNoteData(data) {
 		console.log("Data:::::::: ", data);
 		return API.post('/add_note', data);

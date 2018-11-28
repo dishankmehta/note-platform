@@ -1,11 +1,13 @@
-import { SessionActionTypes } from '../../constants';
+import { SessionActionTypes} from '../../constants';
 
 const defaultState = {
     currentUser: '',
     isLoggedIn: null,
     loginError: '',
     registerError: '',
-    notes: [],
+    publicNotes: [],
+    privateNotes: [],
+    searchField: ''
 };
 
 function sessionReducer(state = defaultState, action) {
@@ -30,10 +32,20 @@ function sessionReducer(state = defaultState, action) {
                 ...state,
                 registerError: action.payload
             }
-        case SessionActionTypes.ALL_NOTES:
+        case SessionActionTypes.PUBLIC_NOTES:
             return{
                 ...state,
-                notes: action.payload
+                publicNotes: action.payload
+            }
+        case SessionActionTypes.PRIVATE_NOTES:
+            return{
+                ...state,
+                privateNotes: action.payload
+            }
+        case SessionActionTypes.CHANGE_SEARCHFIELD:
+            return{ 
+                ...state,
+                searchField: action.payload
             }
         default:
             return state;
