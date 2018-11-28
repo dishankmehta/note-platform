@@ -2,11 +2,17 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from  'redux';
 import { getPublicNotes } from '../../actions/sessionActions'
+<<<<<<< HEAD
 import { getPrivateNotes } from '../../actions/sessionActions'
+=======
+import { sendUpVoteNoteData } from '../../actions/sessionActions';
+import { sendDownVoteNoteData } from '../../actions/sessionActions';
+import { sendDeleteNoteData } from '../../actions/sessionActions';
+>>>>>>> 52c631bc3e6913b74b8fa666ee0c522de63c6f7f
 import NotesPopup from '../NotesPopup/NotesPopup';
 import EditNotes from '../EditNotes/EditNotes';
 import DeleteNotes from '../DeleteNotes/DeleteNotes';
-
+import UpVote from '../UpVote/UpVote';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import { Card } from '../CustomComponents/Card';
 import './MainNotes.css';
@@ -17,6 +23,7 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+
 
 
 class MainNotes extends Component {
@@ -41,6 +48,24 @@ class MainNotes extends Component {
     this.props.getPrivateNotes(data);
     this.props.getPublicNotes(data);
   }
+
+  onUpVoteNote = (note_id) => {
+    let data = { note_id  }
+    console.log("reached on upvote", data);
+    this.props.sendUpVoteNoteData(data);
+  };
+
+  onDownVoteNote = (note_id) => {
+    let data = { note_id }
+    console.log("reached on downvote", data);
+    this.props.sendDownVoteNoteData(data);
+  };
+
+  onDeleteNote = (note_id, note_type, user_id) => {
+    let data = { user_id, note_id, note_type }
+    console.log("reached on delete", data);
+    this.props.sendDeleteNoteData(data);
+  };
 
   renderAllNotes = (notes) => {
     let noteArr = [];
@@ -68,18 +93,19 @@ class MainNotes extends Component {
               show={this.state.isEditOpen}
               onClose={this.toggleEditModal}>
               `Here's some content for the modal`
-          </EditNotes>
+            </EditNotes>
+            
+              <div>
+                <button onClick = {() => {this.onDeleteNote(note_item.id, note_item.note_type, this.props.session.currentUser); }}  value = "Submit"> Delete </button>
+              </div>
 
-                <DeleteNotes
-                    title = {note_item.title}
-                    note_body = {note_item.note_body}
-                    color = {note_item.color}
-                    note_type = {note_item.note_type}
-                    tags = {note_item.tags}
-                    note_id = { note_item.id }>
-                    `Here's some content for the modal`
-                </DeleteNotes>
+              <div>
+                <button onClick = {() => {this.onDownVoteNote(note_item.id); }}  value = "Submit"> Down Vote </button>
+              </div>
 
+              <div>
+                <button onClick = {() => {this.onUpVoteNote(note_item.id); }}  value = "Submit"> Up Vote </button>
+              </div>  
             </div>
           </Card>
         }
@@ -163,7 +189,7 @@ const mapStateToProps = (state) =>{
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ getPrivateNotes, getPublicNotes }, dispatch);
+    return bindActionCreators({ getPublicNotes,getPrivateNotes,  sendUpVoteNoteData, sendDownVoteNoteData, sendDeleteNoteData }, dispatch);
 }
 
 export default connect(mapStateToProps,mapDispatchToProps)(MainNotes);

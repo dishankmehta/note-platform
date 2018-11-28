@@ -30,7 +30,7 @@ class DeleteNotes extends Component{
   	if(!state.valuesInit){
   		return{
 	  		...state,
-            title : props.title,
+        title : props.title,
 	  		note_body : props.note_body,
 	  		note_type : props.note_type,
 	  		tags : props.tags,
