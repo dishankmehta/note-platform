@@ -8,6 +8,8 @@ import { bindActionCreators } from  'redux';
 import { sendNoteData } from '../../actions/sessionActions';
 import { sendEditedNoteData } from '../../actions/sessionActions';
 //import './NotesPopup.css';
+import EditIcon from '@material-ui/icons/Edit';
+
 
 const contentStyle = {
   maxWidth: "600px",
@@ -111,7 +113,7 @@ class EditNotes extends Component{
   render(){
     return(
       <Popup
-          trigger={<button> Edit </button>}
+          trigger={<EditIcon>Edit</EditIcon>}
           modal
           contentStyle={contentStyle}
         >

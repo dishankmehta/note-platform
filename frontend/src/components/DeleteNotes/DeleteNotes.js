@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from  'redux';
 import { sendDeleteNoteData } from '../../actions/sessionActions';
+import DeleteIcon from '@material-ui/icons/Delete';
+
 
 
 class DeleteNotes extends Component{
@@ -52,7 +54,7 @@ class DeleteNotes extends Component{
   render(){
     return(
           <div className="col-xs-12">
-              <button onClick = {() => {this.onDeleteNote(); }}  value = "Submit"> Delete </button>
+              <DeleteIcon onClick = {() => {this.onDeleteNote(); }}  value = "Submit"> Delete </DeleteIcon>
           </div>
     );
 }

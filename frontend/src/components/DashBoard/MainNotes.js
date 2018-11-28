@@ -46,6 +46,31 @@ class MainNotes extends Component {
       Object.keys(notes).map((item) => {
         const note_item = notes[item];
         return <Card key={item} color={note_item.color}>
+            <div>
+            <EditNotes
+                title = {note_item.title}
+                note_body = {note_item.note_body}
+                color = {note_item.color}
+                note_type = {note_item.note_type}
+                tags = {note_item.tags}
+                note_id = { note_item.id }
+                show={this.state.isEditOpen}
+                onClose={this.toggleEditModal}>
+                `Here's some content for the modal`
+            </EditNotes>
+
+            <DeleteNotes
+                title = {note_item.title}
+                note_body = {note_item.note_body}
+                color = {note_item.color}
+                note_type = {note_item.note_type}
+                tags = {note_item.tags}
+                note_id = { note_item.id }>
+                `Here's some content for the modal`
+            </DeleteNotes>
+            </div>
+
+
           <div>
             {note_item.title}
             </div>
@@ -56,27 +81,9 @@ class MainNotes extends Component {
             <div>
             <a> Delete </a>
             </div>
-            <EditNotes 
-              title = {note_item.title}
-              note_body = {note_item.note_body}
-              color = {note_item.color}
-              note_type = {note_item.note_type}
-              tags = {note_item.tags}
-              note_id = { note_item.id }
-              show={this.state.isEditOpen}
-              onClose={this.toggleEditModal}>
-              `Here's some content for the modal`
-          </EditNotes>
 
-                <DeleteNotes
-                    title = {note_item.title}
-                    note_body = {note_item.note_body}
-                    color = {note_item.color}
-                    note_type = {note_item.note_type}
-                    tags = {note_item.tags}
-                    note_id = { note_item.id }>
-                    `Here's some content for the modal`
-                </DeleteNotes>
+
+
 
             </div>
           </Card>
