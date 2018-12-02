@@ -1,5 +1,6 @@
 import { SessionActionTypes } from '../constants';  
 import API from './api/appAPI';
+import isEmpty from 'lodash/isEmpty';
 import history from '../history';
 
 export function loginRequest(data) {
@@ -31,7 +32,9 @@ export function getPublicNotes(data){
     return(dispatch) => {
         API.getPublicNotes(data)
             .then((res) => {
-                console.log(res);
+                if(isEmpty(res.data.notes)){
+                    dispatch(handlePublicNotes([]));
+                }
                 dispatch(handlePublicNotes(res.data.notes));
             }).catch(() => {
                 console.log('error');
@@ -43,7 +46,9 @@ export function getPrivateNotes(data){
     return(dispatch) => {
         API.getPrivateNotes(data)
             .then((res) => {
-                console.log('response',res);
+                if(isEmpty(res.data.notes)){
+                    dispatch(handlePrivateNotes([]));
+                }
                 dispatch(handlePrivateNotes(res.data.notes));
             }).catch(() => {
                 console.log('error');
@@ -98,6 +103,7 @@ export function sendEditedNoteData(data) {
     console.log("reached in edited note data");
     return (dispatch) => {
         console.log("data", data.note_type);
+        console.log(data);
         API.sendEditedNoteData(data)
             .then((res) => {
                 console.log(res);
