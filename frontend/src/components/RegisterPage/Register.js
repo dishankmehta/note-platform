@@ -108,6 +108,7 @@ function mapDispatchToProps(dispatch) {
     return bindActionCreators({ registrationRequest }, dispatch);
 }
 
+
 function mapStateToProps(state) {
 	return {
 		session: { ...state.session }

@@ -27,6 +27,7 @@ class EditNotes extends Component{
 		this.state = {
 			user_id: this.props.session.currentUser,
 			title: '',
+			note_id: '',
 			note_body: EditorState.createEmpty(),
 			note_text: '',
 			color: '',
@@ -94,19 +95,20 @@ class EditNotes extends Component{
 		const content = JSON.stringify(convertToRaw(this.state.note_body.getCurrentContent()));
 		const noteText = this.state.note_body.getCurrentContent().getPlainText();
 		let payload = {
+			note_id: this.state.note_id,
 			user_id: this.state.user_id,
 			title: this.state.title,
 			note_body: noteText,
 			// note_text: noteText,
 			color: this.state.color,
-			note_type: this.state.note_type,
+			note_type: parseInt(this.state.note_type, 10),
 			tags: this.state.tags,
 			upvotes: this.state.upvotes,
 			downvotes: this.state.downvotes,
 			views: this.state.views,
 		}
     // this.props.sendNoteData(payload);
-    this.props.sendEditedNoteData(payload);
+    	this.props.sendEditedNoteData(payload);
 	}
 
 	onChangeColor = color => {

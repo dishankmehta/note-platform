@@ -6,6 +6,11 @@ import { getPublicNotes } from '../../actions/sessionActions'
 import NotesPopup from '../NotesPopup/NotesPopup';
 import EditNotes from '../EditNotes/EditNotes';
 import DeleteNotes from '../DeleteNotes/DeleteNotes';
+import { getPrivateNotes } from '../../actions/sessionActions'
+import { sendUpVoteNoteData } from '../../actions/sessionActions';
+import { sendDownVoteNoteData } from '../../actions/sessionActions';
+import { sendDeleteNoteData } from '../../actions/sessionActions';
+import UpVote from '../UpVote/UpVote';
 import { Card } from '../CustomComponents/Card';
 
 
@@ -20,9 +25,11 @@ import Button from '@atlaskit/button';
 import './MainNotes.css';
 
 
+
 class MainNotes extends Component {
   constructor(props){
     super(props);
+
     this.state = {
       isEditOpen : false
     }
@@ -38,8 +45,27 @@ class MainNotes extends Component {
 
   componentDidMount() {
     let data = {user_id:this.props.session.currentUser};
+    this.props.getPrivateNotes(data);
     this.props.getPublicNotes(data);
   }
+
+  onUpVoteNote = (note_id) => {
+    let data = { note_id  }
+    console.log("reached on upvote", data);
+    this.props.sendUpVoteNoteData(data);
+  };
+
+  onDownVoteNote = (note_id) => {
+    let data = { note_id }
+    console.log("reached on downvote", data);
+    this.props.sendDownVoteNoteData(data);
+  };
+
+  onDeleteNote = (note_id, note_type, user_id) => {
+    let data = { user_id, note_id, note_type }
+    console.log("reached on delete", data);
+    this.props.sendDeleteNoteData(data);
+  };
 
   renderAllNotes = (notes) => {
     let noteArr = [];
@@ -68,30 +94,25 @@ class MainNotes extends Component {
               `Here's some content for the modal`
             </EditNotes> */}
             <div style={{float: "right", marginTop: "5px"}}>
-              <LikeIcon style={{padding: "5px", cursor: "pointer"}}/>
-              <DisLikeIcon style={{padding: "5px", cursor: "pointer"}}/>
+              <LikeIcon  onClick = {() => {this.onUpVoteNote(note_item.id)}} 
+              style={{marginLeft: "7px", marginRight: "7px", padding: "5px", cursor: "pointer"}}/>
+              <DisLikeIcon onClick = {() => {this.onDownVoteNote(note_item.id)}} 
+              style={{marginLeft: "7px", marginRight: "7px", padding: "5px", cursor: "pointer"}}/>
               <EditNotes 
+                  style={{marginLeft: "7px", marginRight: "7px", padding: "5px", cursor: "pointer"}}
                   edit={true}
                   title={note_item.title}
                   note_body={note_item.note_body}
                   color={note_item.color}
                   note_type={note_item.note_type}
                   tags={[note_item.tags]}
-                  note_id={note_item.note_id}
+                  note_id={note_item.id}
                   upvotes={note_item.upvotes}
                   downvotes={note_item.downvotes}
                   views={note_item.views} />
-              <DeleteIcon style={{padding: "5px", cursor: "pointer"}}/>
+              <DeleteIcon onClick={() => this.onDeleteNote(note_item.id, note_item.note_type, this.props.session.currentUser)}
+               style={{marginLeft: "7px", marginRight: "7px", padding: "5px", cursor: "pointer"}}/>
             </div>
-            {/* <DeleteNotes
-                title = {note_item.title}
-                note_body = {note_item.note_body}
-                color = {note_item.color}
-                note_type = {note_item.note_type}
-                tags = {note_item.tags}
-                note_id = { note_item.id }>
-                `Here's some content for the modal`
-            </DeleteNotes> */}
           </div>
         </Card>
         }
@@ -101,8 +122,9 @@ class MainNotes extends Component {
 
   render(){
     const username = this.props.session.currentUser;
-    const notes = this.props.session.notes;
-    if(isEmpty(notes)){
+    const privateNotes = this.props.session.privateNotes;
+    const publicNotes = this.props.session.publicNotes;
+    if(isEmpty(privateNotes) && isEmpty(publicNotes)){
       return (
         <div>
             <div className = "main-style">
@@ -118,21 +140,24 @@ class MainNotes extends Component {
             </div>        
         </div>
       );  
-    }
-    else if(!isEmpty(notes)){
+    } else {
       return(
         <div>
-          <div className="col-xs-12" style={{float: "right", marginTop: "5px"}}>
-            <NotesPopup />
-          </div>
-          <h2 className = "notesheadingstyle"> My Public Notes </h2>
-          <div style={{display: "inline"}}>
-            {this.renderAllNotes(notes)}
-          </div>
-        </div>    
+            <div className="col-xs-12" style={{float: "right", marginTop: "5px", marginRight: "10px"}}>
+              <NotesPopup />
+            </div>
+            {!isEmpty(publicNotes) ? <h2 className = "notesheadingstyle">My Public Notes</h2>: null}
+            <div style={{display: "inline-block", overflowY: "auto"}}>
+              {!isEmpty(publicNotes) ? this.renderAllNotes(publicNotes) : null}
+            </div>
+            {!isEmpty(privateNotes) ? <h2 className = "notesheadingstyle">My Private Notes</h2>: null}
+            <div style={{display: "inline-block", overflowY: "auto"}}>
+              {!isEmpty(privateNotes) ? this.renderAllNotes(privateNotes) : null}
+            </div>
+        </div>   
       );  
-    }      
-  }  
+    }
+  }
 }
 
 
@@ -143,7 +168,7 @@ const mapStateToProps = (state) =>{
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ getPublicNotes }, dispatch);
+    return bindActionCreators({ getPublicNotes,getPrivateNotes,  sendUpVoteNoteData, sendDownVoteNoteData, sendDeleteNoteData }, dispatch);
 }
 
 export default connect(mapStateToProps,mapDispatchToProps)(MainNotes);

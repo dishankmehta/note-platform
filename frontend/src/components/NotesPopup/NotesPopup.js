@@ -41,22 +41,21 @@ class NotesPopup extends Component{
 	}
 
 	static getDerivedStateFromProps(props, state) {
-		if(!state.valuesInit && props.edit){
-			return{
-				...state,
-				title : props.title,
-				note_body : props.note_body,
-				color : props.color,
-				note_type : props.note_type,
-				tags : props.tags,
-				note_id : props.note_id,
-				upvotes: 0,
-				downvotes: 0,
-				views: 0,
-				valuesInit : true,
-			}
+		return{
+			user_id: props.session.currentUser,
+			title: '',
+			note_text: '',
+			color: '',
+			note_type: '2',
+			tags: [],
+			upvotes: 0,
+			downvotes: 0,
+			views: 0,
+			tagInput : '',
+			focused : false,
+			checked: false,
+			valuesInit : false,
 		}
-		return null;
 	}
 
 	handleTagInputChange = (evt) => {

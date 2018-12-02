@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from  'redux';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import { withRouter } from 'react-router';
-
+import { setSearchField } from '../../actions/sessionActions';
+import SearchBox from './SearchBox';
 import Avatar from '@material-ui/core/Avatar';
 import AccountIcon from '@material-ui/icons/AccountCircle';
 import LogOutIcon from '@material-ui/icons/ExitToApp';
@@ -31,6 +34,7 @@ import './SideBar.css';
 //     />
 //   );
 // }
+
 
 class SideBar extends Component {
   state = {
@@ -71,6 +75,7 @@ class SideBar extends Component {
     const { anchorEl } = this.state;
     const open = Boolean(anchorEl);
     console.log(child);
+    const { setSearchField, onSearchChange } = this.props;
     return (
       <Router>
         <div className="container">
@@ -79,6 +84,8 @@ class SideBar extends Component {
               <MenuIcon style={{color: "#0052cc"}}  />
             </div>
             <div className="app-name-div">Note Platform</div>
+            <SearchBox searchChange={setSearchField}/>
+
             <Avatar className="avatar" onClick={(e) => {this.setState({ anchorEl: e.currentTarget });}}>U</Avatar>
             <Popover
               id="render-props-popover"
@@ -103,7 +110,7 @@ class SideBar extends Component {
                   <AccountIcon style={{color: "#0052cc"}}/> <Link to="/profile">Profile</Link>
                 </div>
                 <div className="avatar-div">
-                  <LogOutIcon style={{color: "#2196f3"}}/> <a href="#">Logout</a>
+                  <LogOutIcon style={{color: "#0052cc"}}/> <a href="#">Logout</a>
                 </div>
               </div>
             </Popover>
@@ -145,4 +152,14 @@ class SideBar extends Component {
   }  
 }
 
-export default withRouter(SideBar);
+function mapStateToProps(state){
+  return {
+    searchField: state.session.searchField
+  }
+}
+
+function mapDispatchToProps(dispatch){
+  return bindActionCreators({ setSearchField }, dispatch);
+}
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(SideBar));
