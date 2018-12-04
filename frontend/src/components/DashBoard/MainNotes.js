@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from  'redux';
 import { getPublicNotes } from '../../actions/sessionActions'
-
 import NotesPopup from '../NotesPopup/NotesPopup';
 import EditNotes from '../EditNotes/EditNotes';
 import DeleteNotes from '../DeleteNotes/DeleteNotes';
@@ -12,16 +11,12 @@ import { sendDownVoteNoteData } from '../../actions/sessionActions';
 import { sendDeleteNoteData } from '../../actions/sessionActions';
 import UpVote from '../UpVote/UpVote';
 import { Card } from '../CustomComponents/Card';
-
-
 import isEmpty from 'lodash/isEmpty';
 import PropTypes from 'prop-types';
-
 import DeleteIcon from '@material-ui/icons/Delete';
 import LikeIcon from '@material-ui/icons/ThumbUp';
 import DisLikeIcon from '@material-ui/icons/ThumbDown';
 import Button from '@atlaskit/button';
-
 import './MainNotes.css';
 
 
@@ -49,14 +44,14 @@ class MainNotes extends Component {
     this.props.getPublicNotes(data);
   }
 
-  onUpVoteNote = (note_id) => {
-    let data = { note_id  }
+  onUpVoteNote = (note_id,user_id) => {
+    let data = { note_id , user_id }
     console.log("reached on upvote", data);
     this.props.sendUpVoteNoteData(data);
   };
 
-  onDownVoteNote = (note_id) => {
-    let data = { note_id }
+  onDownVoteNote = (note_id, user_id) => {
+    let data = { note_id, user_id }
     console.log("reached on downvote", data);
     this.props.sendDownVoteNoteData(data);
   };
@@ -81,23 +76,20 @@ class MainNotes extends Component {
           <div>
             <div style={{height: "140px", overflow: "auto"}}>
               {note_item.note_body}
+            <div style={{height: "20px"}}>
+              {note_item.upvotes}
+            </div>
+            <div style={{height: "20px"}}>
+              {note_item.downvotes}
             </div>
             <br />
-            {/* <EditNotes 
-              title = {note_item.title}
-              note_body = {note_item.note_body}
-              color = {note_item.color}
-              note_type = {note_item.note_type}
-              tags = {note_item.tags}
-              note_id = { note_item.id }
-              show={this.state.isEditOpen}
-              onClose={this.toggleEditModal}>
-              `Here's some content for the modal`
-            </EditNotes> */}
+            </div>
+            <br />
             <div style={{float: "right", marginTop: "5px"}}>
-              <LikeIcon  onClick = {() => {this.onUpVoteNote(note_item.id)}} 
+              <LikeIcon  onClick = {() => {this.onUpVoteNote(note_item.id, this.props.session.currentUser)}} 
               style={{marginLeft: "7px", marginRight: "7px", padding: "5px", cursor: "pointer"}}/>
-              <DisLikeIcon onClick = {() => {this.onDownVoteNote(note_item.id)}} 
+
+              <DisLikeIcon onClick = {() => {this.onDownVoteNote(note_item.id, this.props.session.currentUser)}} 
               style={{marginLeft: "7px", marginRight: "7px", padding: "5px", cursor: "pointer"}}/>
               <EditNotes 
                   style={{marginLeft: "7px", marginRight: "7px", padding: "5px", cursor: "pointer"}}
@@ -140,7 +132,7 @@ class MainNotes extends Component {
               </div>
             </div>        
         </div>
-      );  
+      ); 
     } else {
       return(
         <div>
@@ -148,7 +140,7 @@ class MainNotes extends Component {
               <NotesPopup />
             </div>
             {!isEmpty(publicNotes) ? <h2 className = "notesheadingstyle">My Public Notes</h2>: null}
-            <div style={{display: "inline-block", overflowY: "auto", overflowX: "hidden"}}>
+            <div style={{display: "inline-block", overflowY: "auto", overflowX: "hidden", marginTop: "5%", marginBottom: "5%"}}>
               {!isEmpty(publicNotes) ? this.renderAllNotes(publicNotes) : null}
             </div>
             {!isEmpty(privateNotes) ? <h2 className = "notesheadingstyle">My Private Notes</h2>: null}

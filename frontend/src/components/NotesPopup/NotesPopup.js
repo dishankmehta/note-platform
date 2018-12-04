@@ -36,7 +36,6 @@ class NotesPopup extends Component{
 			tagInput : '',
 			focused : false,
 			checked: false,
-			valuesInit : false,
 		};
 	}
 
@@ -46,19 +45,15 @@ class NotesPopup extends Component{
 
 	handleTagInputKeyDown = (evt) => {
 	    if ( evt.keyCode === 13 ) {
-	      const {value} = evt.target;
+			evt.preventDefault();
+	      	const {value} = evt.target;
 	      
-	      this.setState(state => ({
-	        tags: [...state.tags, value],
-	        tagInput: ''
-	      }));
-	    }
-
-	    if ( this.state.tags.length && evt.keyCode === 8 && !this.state.tagInput.length ) {
-	      this.setState(state => ({
-	        tags: state.tags.slice(0, state.tags.length - 1)
-	      }));
-	    }
+			this.setState(state => ({
+				tags: [...state.tags, value],
+				tagInput: ''
+			}));
+			evt.currentTarget.value = "";
+		} 
 	}
 
 	handleRemoveTag = (index) => {
@@ -85,6 +80,20 @@ class NotesPopup extends Component{
 			views: this.state.views,
 		}
 		this.props.sendNoteData(payload);
+		this.setState({
+			title: '',
+			note_body: EditorState.createEmpty(),
+			note_text: '',
+			color: '',
+			note_type: '2',
+			tags: [],
+			upvotes: 0,
+			downvotes: 0,
+			views: 0,
+			tagInput : '',
+			focused : false,
+			checked: false,
+		});
 	}
 
 	onChangeColor = color => {
@@ -94,6 +103,7 @@ class NotesPopup extends Component{
 	}
 
 	handleOptionChange = name => event => {
+		console.log(event.target.checked);
   		if(event.target.checked){
 			this.setState({
 				note_type: '1',
@@ -113,7 +123,7 @@ class NotesPopup extends Component{
 	}
 
 	render(){
-		console.log(this.props);
+		console.log(this.state);
 		return(
 			<Popup
     			trigger={<Button houldFitContainer appearance="primary">Create a New Note </Button>}
@@ -146,7 +156,7 @@ class NotesPopup extends Component{
 							/>
 							<div style={{width: "276px", height: "96px", marginTop: "10px", 
 								justifyContent: "center", textAlign: "center", fontSize: "1.5em"}}>
-								{this.state.note_type === '2' ? "Public" : "Private" }
+								Private?
 								<Switch color="primary"  checked={this.state.checked} 
 								onChange={this.handleOptionChange('checked')}/>
 							</div>
@@ -162,14 +172,14 @@ class NotesPopup extends Component{
 											</li>
 										)}
 									</div>
-									<FieldText type="text" name="title" placeholder="Tag..." 
-									shouldFitContainer value={this.state.tagInput}
+									<FieldText type="text" name="title" placeholder="Tag..."
+									shouldFitContainer value={this.state.tagInput || ""}
 									onChange={this.handleTagInputChange}
 									onKeyDown={this.handleTagInputKeyDown}/>
 								</ul>
 							</label>		
 						</div>
-						<Button houldFitContainer appearance="primary" className="add-note-btn" 
+						<Button shouldFitContainer appearance="primary" className="add-note-btn" 
 							onClick = {() => {this.onAddNote(); close(); }}>Add Note</Button>
 					</div>
 				)}

@@ -16,7 +16,11 @@ import GroupIcon from '@material-ui/icons/Group';
 import TrendIcon from '@material-ui/icons/TrendingUp';
 import Popover from '@material-ui/core/Popover';
 
+import LoginPage from '../LoginPage/LoginPage';
+import ProfilePage from '../ProfilePage/ProfilePage';
 import MainNotes from './MainNotes';
+import AuthenticateUser from '../../containers/AuthenticateUser';
+
 import { SideNav } from '../CustomComponents/SideNav';
 
 import './SideBar.css';
@@ -74,7 +78,6 @@ class SideBar extends Component {
     const child = this.getSelectedChild(path);
     const { anchorEl } = this.state;
     const open = Boolean(anchorEl);
-    console.log(child);
     const { setSearchField, onSearchChange } = this.props;
     return (
       <Router>
@@ -110,8 +113,8 @@ class SideBar extends Component {
                 <div className="avatar-div">
                   <AccountIcon style={{color: "#0052cc"}}/> <Link to="/profile">Profile</Link>
                 </div>
-                <div className="avatar-div">
-                  <LogOutIcon style={{color: "#0052cc"}}/> <a href="#">Logout</a>
+                <div className="avatar-div" onClick={() => this.props.history.push("/")}>
+                  <LogOutIcon style={{color: "#0052cc"}}/> <a >Logout</a>
                 </div>
               </div>
             </Popover>
@@ -119,9 +122,6 @@ class SideBar extends Component {
           <div className="sub-container">
             <div style={{width: "17%", height: "97%", marginTop: "1%"}}>
               <SideNav show={this.state.show} child={child}>
-                {/* <CustomLinkComponent label="My Notes" className="menu-item" to ="/dashboard">
-                  <NoteIcon style={{marginLeft: "5px", color: "#2196f3"}} />
-                </CustomLinkComponent> */}
                 <div>
                   <NoteIcon style={{marginLeft: "5px", color: "#0052cc"}} />
                   <Link to ="/dashboard">My Notes</Link>
@@ -143,6 +143,7 @@ class SideBar extends Component {
             <div style={{width: "83%"}}>
               <div className="pages-container">
                 <Route path={"/dashboard"} exact={true} component={MainNotes}/>  
+                <Route path={"/profile"} exact={true} component={ProfilePage}/>  
               </div>
             </div>  
           </div>
