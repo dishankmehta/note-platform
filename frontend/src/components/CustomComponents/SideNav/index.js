@@ -29,9 +29,9 @@ export const SideNav = styled.div`
             background-color: #eeeeee;
         }
 
-        &:nth-child(${props => props.child}) {
-            background-color: #8BD7D2;
-        }
+        // &:nth-child(${props => props.child}) {
+        //     background-color: #8BD7D2;
+        // }
 
         &:last-child {
             border-bottom: 0;

@@ -1,28 +1,23 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from  'redux';
-import { getPublicNotes } from '../../actions/sessionActions'
 
 import NotesPopup from '../NotesPopup/NotesPopup';
 import EditNotes from '../EditNotes/EditNotes';
-import DeleteNotes from '../DeleteNotes/DeleteNotes';
-import { getPrivateNotes } from '../../actions/sessionActions'
+import { getGroupNotes } from '../../actions/sessionActions'
 import { sendUpVoteNoteData } from '../../actions/sessionActions';
 import { sendDownVoteNoteData } from '../../actions/sessionActions';
 import { sendDeleteNoteData } from '../../actions/sessionActions';
-import UpVote from '../UpVote/UpVote';
 import { Card } from '../CustomComponents/Card';
 
 
 import isEmpty from 'lodash/isEmpty';
-import PropTypes from 'prop-types';
 
 import DeleteIcon from '@material-ui/icons/Delete';
 import LikeIcon from '@material-ui/icons/ThumbUp';
 import DisLikeIcon from '@material-ui/icons/ThumbDown';
-import Button from '@atlaskit/button';
 
-import './MainNotes.css';
+import '../DashBoard/MainNotes.css';
 
 
 
@@ -45,8 +40,7 @@ class MainNotes extends Component {
 
   componentDidMount() {
     let data = {user_id:this.props.session.currentUser};
-    this.props.getPrivateNotes(data);
-    this.props.getPublicNotes(data);
+    this.props.getGroupNotes(data);
   }
 
   onUpVoteNote = (note_id) => {
@@ -70,6 +64,9 @@ class MainNotes extends Component {
 
   renderAllNotes = (notes) => {
     let noteArr = [];
+    if(Object.keys(notes).length === 1 && notes['0']['id'] === 15){
+        return noteArr;
+    }
     noteArr.push(
       Object.keys(notes).map((item) => {
         const note_item = notes[item];
@@ -101,6 +98,7 @@ class MainNotes extends Component {
               <EditNotes 
                   style={{marginLeft: "7px", marginRight: "7px", padding: "5px", cursor: "pointer"}}
                   edit={true}
+                  group={true}
                   title={note_item.title}
                   note_body={note_item.note_body}
                   note_text={note_item.note_text}
@@ -110,6 +108,7 @@ class MainNotes extends Component {
                   note_id={note_item.id}
                   upvotes={note_item.upvotes}
                   downvotes={note_item.downvotes}
+                //   emails={note_item.emails}
                   views={note_item.views} />
               <DeleteIcon onClick={() => this.onDeleteNote(note_item.id, note_item.note_type, this.props.session.currentUser)}
                style={{marginLeft: "7px", marginRight: "7px", padding: "5px", cursor: "pointer"}}/>
@@ -123,20 +122,19 @@ class MainNotes extends Component {
 
   render(){
     const username = this.props.session.currentUser;
-    const privateNotes = this.props.session.privateNotes;
-    const publicNotes = this.props.session.publicNotes;
-    if(isEmpty(privateNotes) && isEmpty(publicNotes)){
+    const groupNotes = this.props.session.groupNotes;
+    if(isEmpty(groupNotes)){
       return (
         <div>
             <div className = "main-style">
-              <div className = "welcome-style">
+              {/* <div className = "welcome-style">
                 { this.props.session.currentUser.toUpperCase()} , Welcome to Study Genie
               </div>
               <div className = "secondDiv-style">
                 <span> Note taking made easier! </span>
-              </div>
+              </div> */}
               <div className = "create-new-note">
-                <NotesPopup />
+                <NotesPopup group={true} />
               </div>
             </div>        
         </div>
@@ -145,15 +143,11 @@ class MainNotes extends Component {
       return(
         <div>
             <div className="col-xs-12" style={{float: "right", marginTop: "5px", marginRight: "10px"}}>
-              <NotesPopup />
+              <NotesPopup group={true} />
             </div>
-            {!isEmpty(publicNotes) ? <h2 className = "notesheadingstyle">My Public Notes</h2>: null}
-            <div style={{display: "inline-block", overflowY: "auto", overflowX: "hidden", marginTop: "5%", marginBottom: "5%"}}>
-              {!isEmpty(publicNotes) ? this.renderAllNotes(publicNotes) : null}
-            </div>
-            {!isEmpty(privateNotes) ? <h2 className = "notesheadingstyle">My Private Notes</h2>: null}
-            <div style={{display: "inline-block", overflowY: "auto", overflowX: "hidden"}}>
-              {!isEmpty(privateNotes) ? this.renderAllNotes(privateNotes) : null}
+            {!isEmpty(groupNotes) ? <h2 className = "notesheadingstyle">My Group Notes</h2>: null}
+            <div style={{overflowY: "auto", overflowX: "hidden", marginTop: "5%", marginBottom: "5%"}}>
+              {!isEmpty(groupNotes) ? this.renderAllNotes(groupNotes) : null}
             </div>
         </div>   
       );  
@@ -169,7 +163,7 @@ const mapStateToProps = (state) =>{
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ getPublicNotes,getPrivateNotes,  sendUpVoteNoteData, sendDownVoteNoteData, sendDeleteNoteData }, dispatch);
+    return bindActionCreators({ getGroupNotes,  sendUpVoteNoteData, sendDownVoteNoteData, sendDeleteNoteData }, dispatch);
 }
 
 export default connect(mapStateToProps,mapDispatchToProps)(MainNotes);

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export const Card = styled.div`
 
     display: inline-block;
-    padding: 1.5%;
+    padding: 2.5%;
     margin: 25px;
     width: 250px;
     height: 250px;

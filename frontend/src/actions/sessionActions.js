@@ -42,6 +42,55 @@ export function getPublicNotes(data){
     }
 }
 
+export function sendGroupNoteData(data) {
+    return (dispatch) => {
+        console.log("data", data.note_type);
+        API.sendGroupNoteData(data)
+            .then((res) => {
+                console.log(res);
+                const new_data = { user_id: data.user_id } 
+                dispatch(getGroupNotes(new_data));
+            }).catch(() => {
+                console.log("error");
+            });
+    }   
+}
+
+export function sendEditGroupNoteData(data) {
+    return (dispatch) => {
+        console.log("data", data.note_type);
+        API.sendEditGroupNoteData(data)
+            .then((res) => {
+                console.log(res);
+                const new_data = { user_id: data.user_id } 
+                dispatch(getGroupNotes(new_data));
+            }).catch(() => {
+                console.log("error");
+            });
+    }   
+}
+
+export function getGroupNotes(data){
+    return(dispatch) => {
+        API.getGroupNotes(data)
+            .then((res) => {
+                if(isEmpty(res.data.notes)){
+                    dispatch(handleGroupNotes([]));
+                }
+                dispatch(handleGroupNotes(res.data.notes));
+            }).catch(() => {
+                console.log('error');
+            })
+    }
+}
+
+function handleGroupNotes(data) {
+    return {
+        type: SessionActionTypes.GROUP_NOTES,
+        payload: data
+    }
+}
+
 export function getPrivateNotes(data){
     return(dispatch) => {
         API.getPrivateNotes(data)

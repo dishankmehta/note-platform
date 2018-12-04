@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from  'redux';
 import { sendNoteData } from '../../actions/sessionActions';
 import { sendEditedNoteData } from '../../actions/sessionActions';
+import { sendEditGroupNoteData } from '../../actions/sessionActions';
 
 import Switch from '@material-ui/core/Switch';
 import FieldText from '@atlaskit/field-text';
@@ -32,11 +33,13 @@ class EditNotes extends Component{
 			note_text: '',
 			color: '',
 			note_type: '2',
-			tags: [],
+			tags: '',
 			upvotes: 0,
 			downvotes: 0,
 			views: 0,
 			tagInput : '',
+			emails: '',
+			emailInput: '',
 			focused : false,
 			checked: false,
 			valuesInit : false,
@@ -45,21 +48,52 @@ class EditNotes extends Component{
 
 	static getDerivedStateFromProps(props, state) {
 		if(!state.valuesInit){
+			// EditorState.createWithContent(convertFromRaw(JSON.parse(props.note_body))) ||
 			return{
 				...state,
 				title : props.title,
-				note_body : EditorState.createEmpty(),
+				note_body : props.note_body.length > 0 ? EditorState.createWithContent(convertFromRaw(JSON.parse(props.note_body))) : EditorState.createEmpty(),
+				note_text: props.note_text,
 				color : props.color,
 				note_type : props.note_type,
-				tags : props.tags,
+				tags : props.tags+",",
 				note_id : props.note_id,
 				upvotes: 0,
 				downvotes: 0,
+				// emails: props.emails,
+				emailInput: '',
 				views: 0,
 				valuesInit : true,
 			}
 		}
 		return null;
+	}
+
+	handleEmailInputChange = (evt) => {
+    	this.setState({ emailInput: evt.target.value });
+	}
+
+	handleEmailInputKeyDown = (evt) => {
+	    if ( evt.keyCode === 13 ) {
+			evt.preventDefault();
+	      	const {value} = evt.target;
+			
+			let emails = this.state.emails;
+			emails += value+",";
+			this.setState(state => ({
+				emails: emails,
+				emailInput: ''
+			}));
+			evt.currentTarget.value = "";
+		} 
+	}
+
+	handleRemoveEmailTag = (index) => {
+	    return () => {
+	      this.setState(state => ({
+	        emails: state.emails.split(",").filter((tag, i) => i !== index).join(",")
+	      }));
+	    }
 	}
 
 	handleTagInputChange = (evt) => {
@@ -68,13 +102,16 @@ class EditNotes extends Component{
 
 	handleTagInputKeyDown = (evt) => {
 	    if ( evt.keyCode === 13 ) {
-	      const {value} = evt.target;
+	      	const {value} = evt.target;
 	      
-	      this.setState(state => ({
-	        tags: [...state.tags, value],
-	        tagInput: ''
-	      }));
-	    }
+	      	let tags = this.state.tags;
+			tags += value+",";
+			this.setState(state => ({
+				tags: tags,
+				tagInput: ''
+			}));
+			evt.currentTarget.value = "";
+		}
 
 	    // if ( this.state.tags.length && evt.keyCode === 8 && !this.state.tagInput.length ) {
 	    //   this.setState(state => ({
@@ -84,11 +121,11 @@ class EditNotes extends Component{
 	}
 
 	handleRemoveTag = (index) => {
-	    return () => {
-	      this.setState(state => ({
-	        tags: state.tags.filter((tag, i) => i !== index)
-	      }));
-	    }
+		return () => {
+			this.setState(state => ({
+			  tags: state.tags.split(",").filter((tag, i) => i !== index).join(",")
+			}));
+		}
 	}
 
 	onEditNote = () => {
@@ -98,8 +135,8 @@ class EditNotes extends Component{
 			note_id: this.state.note_id,
 			user_id: this.state.user_id,
 			title: this.state.title,
-			note_body: noteText,
-			// note_text: noteText,
+			note_body: content,
+			note_text: noteText,
 			color: this.state.color,
 			note_type: parseInt(this.state.note_type, 10),
 			tags: this.state.tags,
@@ -107,8 +144,12 @@ class EditNotes extends Component{
 			downvotes: this.state.downvotes,
 			views: this.state.views,
 		}
-    // this.props.sendNoteData(payload);
-		this.props.sendEditedNoteData(payload);
+		if(this.props.group){
+			let new_payload = {...payload, group_user_emails: this.state.emails };
+			this.props.sendEditGroupNoteData(new_payload);
+		}else {
+			this.props.sendEditedNoteData(payload);
+		}
 		this.setState({
 			title: '',
 			note_id: '',
@@ -116,11 +157,13 @@ class EditNotes extends Component{
 			note_text: '',
 			color: '',
 			note_type: '2',
-			tags: [],
+			tags: '',
 			upvotes: 0,
 			downvotes: 0,
 			views: 0,
 			tagInput : '',
+			emails: '',
+			emailInput: '',
 			focused : false,
 			checked: false,
 			valuesInit : false,
@@ -157,6 +200,7 @@ class EditNotes extends Component{
 
 	render(){
 		// console.log(this.state);
+		console.log(this.props.group);
 		return(
 			<Popup
     			trigger={<EditIcon style={{padding: "5px", cursor: "pointer"}}/>}
@@ -187,23 +231,35 @@ class EditNotes extends Component{
 								onChangeComplete = {this.props.changeColor}
 								onChange = {this.onChangeColor}
 							/>
-							<div style={{width: "276px", height: "96px", marginTop: "10px", 
+							{
+								!this.props.group?
+								<div style={{width: "276px", height: "96px", marginTop: "10px", 
+									justifyContent: "center", textAlign: "center", fontSize: "1.5em"}}>
+									Private?
+									<Switch color="primary"  checked={this.state.checked} 
+									onChange={this.handleOptionChange('checked')}/>
+								</div>:null
+							}
+							{/* <div style={{width: "276px", height: "96px", marginTop: "10px", 
 								justifyContent: "center", textAlign: "center", fontSize: "1.5em"}}>
 								Private?
 								<Switch color="primary"  checked={this.state.checked} 
 								onChange={this.handleOptionChange('checked')}/>
-							</div>
+							</div> */}
 						</div>
 						<div>
 							<label>
 								<ul className = "tagContainer">
 									<div>
-										{this.state.tags.map((tag, i) => 
-											<li key={i} className = "tagItems" onClick={this.handleRemoveTag(i)}>
-												{tag}
-												<span>(x)</span>
-											</li>
-										)}
+										{this.state.tags.split(",").map((tag, i) => {
+											if(tag !== ''){
+												return <li key={i} className = "tagItems" onClick={this.handleRemoveTag(i)}>
+													{tag}
+													<span>(x)</span>
+												</li>
+											}
+											return null
+										})}
 									</div>
 									<FieldText type="text" name="title" placeholder="Tag..." 
 									shouldFitContainer value={this.state.tagInput}
@@ -212,6 +268,30 @@ class EditNotes extends Component{
 								</ul>
 							</label>		
 						</div>
+						{
+							this.props.group ? 
+							<div>
+								<label>
+									<ul className = "tagContainer">
+										<div>
+											{this.state.emails.split(",").map((email, i) => {
+												if(email !== ''){
+													return <li key={i} className = "tagItems" onClick={this.handleRemoveEmailTag(i)}>
+														{email}
+														<span>(x)</span>
+													</li>
+												}
+												return null
+											})}
+										</div>
+										<FieldText type="text" name="title" placeholder="Email of Users to share..."
+										shouldFitContainer value={this.state.emailInput || ""}
+										onChange={this.handleEmailInputChange}
+										onKeyDown={this.handleEmailInputKeyDown}/>
+									</ul>
+								</label>		
+							</div>:null
+						}
 						<Button houldFitContainer appearance="primary" className="add-note-btn" 
 							onClick = {() => {this.onEditNote(); close(); }}>
               {this.props.edit ? "Edit Note" : "Add Note"}
@@ -231,8 +311,9 @@ const mapStateToProps = (state) =>{
 
 function mapDispatchToProps(dispatch){
   return bindActionCreators({
-    sendNoteData,
-    sendEditedNoteData
+	sendNoteData,
+	sendEditedNoteData,
+    sendEditGroupNoteData
   }, dispatch);
 }
 
