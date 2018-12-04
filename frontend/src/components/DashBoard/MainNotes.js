@@ -16,7 +16,6 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import LikeIcon from '@material-ui/icons/ThumbUp';
 import DisLikeIcon from '@material-ui/icons/ThumbDown';
 import Button from '@atlaskit/button';
-
 import './MainNotes.css';
 
 
@@ -44,14 +43,14 @@ class MainNotes extends Component {
     this.props.getPublicNotes(data);
   }
 
-  onUpVoteNote = (note_id) => {
-    let data = { note_id  }
+  onUpVoteNote = (note_id,user_id) => {
+    let data = { note_id , user_id }
     console.log("reached on upvote", data);
     this.props.sendUpVoteNoteData(data);
   };
 
-  onDownVoteNote = (note_id) => {
-    let data = { note_id }
+  onDownVoteNote = (note_id, user_id) => {
+    let data = { note_id, user_id }
     console.log("reached on downvote", data);
     this.props.sendDownVoteNoteData(data);
   };
@@ -76,17 +75,20 @@ class MainNotes extends Component {
           <div>
             <div style={{height: "140px", overflow: "auto"}}>
               {note_item.note_body}
-            <div style={{height: "140px", overflow: "auto"}}>
+            <div style={{height: "20px"}}>
               {note_item.upvotes}
+            </div>
+            <div style={{height: "20px"}}>
+              {note_item.downvotes}
             </div>
             <br />
             </div>
             <br />
             <div style={{float: "right", marginTop: "5px"}}>
-              <LikeIcon onClick = {() => {this.onUpVoteNote(note_item.id)}} 
+              <LikeIcon  onClick = {() => {this.onUpVoteNote(note_item.id, this.props.session.currentUser)}} 
               style={{marginLeft: "7px", marginRight: "7px", padding: "5px", cursor: "pointer"}}/>
 
-              <DisLikeIcon onClick = {() => {this.onDownVoteNote(note_item.id)}} 
+              <DisLikeIcon onClick = {() => {this.onDownVoteNote(note_item.id, this.props.session.currentUser)}} 
               style={{marginLeft: "7px", marginRight: "7px", padding: "5px", cursor: "pointer"}}/>
               <EditNotes 
                   style={{marginLeft: "7px", marginRight: "7px", padding: "5px", cursor: "pointer"}}
