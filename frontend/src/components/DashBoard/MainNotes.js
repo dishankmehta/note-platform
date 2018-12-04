@@ -81,22 +81,16 @@ class MainNotes extends Component {
           <div>
             <div style={{height: "140px", overflow: "auto"}}>
               {note_item.note_body}
+            <div style={{height: "140px", overflow: "auto"}}>
+              {note_item.upvotes}
             </div>
             <br />
-            {/* <EditNotes 
-              title = {note_item.title}
-              note_body = {note_item.note_body}
-              color = {note_item.color}
-              note_type = {note_item.note_type}
-              tags = {note_item.tags}
-              note_id = { note_item.id }
-              show={this.state.isEditOpen}
-              onClose={this.toggleEditModal}>
-              `Here's some content for the modal`
-            </EditNotes> */}
+            </div>
+            <br />
             <div style={{float: "right", marginTop: "5px"}}>
               <LikeIcon onClick = {() => {this.onUpVoteNote(note_item.id)}} 
               style={{marginLeft: "7px", marginRight: "7px", padding: "5px", cursor: "pointer"}}/>
+
               <DisLikeIcon onClick = {() => {this.onDownVoteNote(note_item.id)}} 
               style={{marginLeft: "7px", marginRight: "7px", padding: "5px", cursor: "pointer"}}/>
               <EditNotes 
