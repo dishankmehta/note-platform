@@ -89,8 +89,8 @@ class MainNotes extends Component {
             <br />
             <div style={{float: "right", marginTop: "5px"}}>
               <LikeIcon  onClick = {() => {this.onUpVoteNote(note_item.id)}} 
-
               style={{marginLeft: "7px", marginRight: "7px", padding: "5px", cursor: "pointer"}}/>
+
               <DisLikeIcon onClick = {() => {this.onDownVoteNote(note_item.id)}} 
               style={{marginLeft: "7px", marginRight: "7px", padding: "5px", cursor: "pointer"}}/>
               <EditNotes 
