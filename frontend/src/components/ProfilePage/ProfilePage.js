@@ -26,9 +26,7 @@ class ProfilePage extends Component{
 					major:major,
 					tags:tags
 		};
-		console.log(data);
 		this.props.registrationRequest(data);
-
     }
 
 	render(){
@@ -49,6 +47,7 @@ class ProfilePage extends Component{
 		)
 	}
 }
+
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({ registrationRequest }, dispatch);
 }

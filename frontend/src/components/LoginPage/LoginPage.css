@@ -46,3 +46,14 @@
 .bXOmNt {
 	width: 80%;
 }
+
+@media only screen and (max-width: 1300px) {
+	.login-card {
+		position: absolute;
+		top: 20%;
+		padding: 2%;
+		left: 37%;
+		width: 22%;
+		height: 50%;
+	}
+}

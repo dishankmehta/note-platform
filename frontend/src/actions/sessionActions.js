@@ -124,6 +124,7 @@ export function sendDeleteNoteData(data) {
                 console.log(res);
                 const new_data = { user_id: data.user_id };
                 dispatch(getPublicNotes(new_data));
+                dispatch(getPrivateNotes(new_data));
             }).catch(() => {
             console.log("error");
         });

@@ -4,7 +4,7 @@ from flask_login import login_user, logout_user, login_required, current_user
 from flask_cors import CORS
 from backend.extensions import cache
 from backend.forms import LoginForm
-from backend.models import db, User, Note, PrivateNotes, UserGroupInfo, Group, PublicNotes, CheatSheet
+from backend.models import db, User, Note, PrivateNotes, UserGroupInfo, Group, PublicNotes, CheatSheet, GroupNotes
 
 api = Blueprint('api', __name__, url_prefix="/")
 # CORS(api)
@@ -32,6 +32,47 @@ def sample():
     print('sample called')
     return jsonify(data='sample api')
 
+
+@api.route('/group_note', methods=['POST'])
+def group_note():
+    data = request.get_json() or dict()
+
+
+    if not data:
+        return jsonify(success=False)
+    
+    data = request.get_json()
+    title = data.get('title')
+    note_type = data.get('note_type')
+    note_body = data.get('note_body')
+    upvotes = data.get('upvotes')
+    downvotes = data.get('downvotes')
+    views = data.get('views')
+    tags = data.get('tags')
+    color = data.get('color')
+    user_email = data.get('email')
+    group_user_ids = data.get('group_user_emails') 
+    note = Note(title, note_type, note_body, upvotes, downvotes, views, tags, color)
+    db.session.add(note)
+    db.session.commit()
+
+    user_list = []
+    user_list.append(user_email)
+    group_user_ids = group_user_ids.split(",")
+    for item in group_user_ids:
+        user_list.extend(item)
+
+    note_id = note.id
+
+    for user in user_list:
+        user = User.query.filter_by(email=user).first()
+        group_note = GroupNotes(user.id, note_id)
+        db.session.add(group_note)
+        db.session.commit()
+
+
+
+    return jsonify(note=[], success=True)
 
 @api.route('/edit_note', methods=["POST"])
 def edit_note():
@@ -385,20 +426,6 @@ def delete_note():
         result = ""
         for item in note_list:
             if item is not None:
-                result += item + ","
-        private_note.note_id = result
-        db.session.commit()
-
-    if data.get('note_type') == 1:
-        private_note = PrivateNotes.query.filter_by(user_id=str(data.get('user_id'))).first()
-        note_list = private_note.note_id
-
-        note_list = note_list.split(",")
-        print("Note list: ", note_list)
-        note_list.remove(str(data.get('note_id')))
-        result = ""
-        for item in note_list:
-            if item is not '':
                 result += item + ","
         private_note.note_id = result
         db.session.commit()

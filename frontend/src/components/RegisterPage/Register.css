@@ -56,3 +56,26 @@
     margin: 2%;
 	color: red;
 }
+
+
+@media only screen and (max-width: 1300px) {
+	.register-btn {
+		margin-top: 3%;
+		margin-left: 45%;
+		text-align: center;
+		width: 13%;
+	}
+
+	.register-card {
+		position: absolute;
+		top: 5%;
+		padding: 1%;
+		left: 17%;
+		width: 60%;
+		height: 85%;
+	}
+
+	.register-btn span {
+		text-align: center !important;
+	}
+}

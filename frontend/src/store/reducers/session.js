@@ -15,7 +15,8 @@ function sessionReducer(state = defaultState, action) {
         case SessionActionTypes.LOGIN_REQUEST_SUCCESS:
             return {
                 ...state,
-                currentUser: action.payload
+                currentUser: action.payload,
+                isLoggedIn: true
             };
         case SessionActionTypes.LOGIN_REQUEST_FAILED:
             return{
@@ -25,7 +26,8 @@ function sessionReducer(state = defaultState, action) {
         case SessionActionTypes.LOGIN_ERROR:
             return{
                 ...state,
-                loginError: action.payload
+                loginError: action.payload,
+                isLoggedIn: false
             }
         case SessionActionTypes.REGISTER_ERROR:
             return{
