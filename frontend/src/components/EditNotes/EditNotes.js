@@ -76,11 +76,11 @@ class EditNotes extends Component{
 	      }));
 	    }
 
-	    if ( this.state.tags.length && evt.keyCode === 8 && !this.state.tagInput.length ) {
-	      this.setState(state => ({
-	        tags: state.tags.slice(0, state.tags.length - 1)
-	      }));
-	    }
+	    // if ( this.state.tags.length && evt.keyCode === 8 && !this.state.tagInput.length ) {
+	    //   this.setState(state => ({
+	    //     tags: state.tags.slice(0, state.tags.length - 1)
+	    //   }));
+	    // }
 	}
 
 	handleRemoveTag = (index) => {
@@ -108,7 +108,23 @@ class EditNotes extends Component{
 			views: this.state.views,
 		}
     // this.props.sendNoteData(payload);
-    	this.props.sendEditedNoteData(payload);
+		this.props.sendEditedNoteData(payload);
+		this.setState({
+			title: '',
+			note_id: '',
+			note_body: EditorState.createEmpty(),
+			note_text: '',
+			color: '',
+			note_type: '2',
+			tags: [],
+			upvotes: 0,
+			downvotes: 0,
+			views: 0,
+			tagInput : '',
+			focused : false,
+			checked: false,
+			valuesInit : false,
+		});
 	}
 
 	onChangeColor = color => {
@@ -140,7 +156,7 @@ class EditNotes extends Component{
 	}
 
 	render(){
-		console.log(this.state);
+		// console.log(this.state);
 		return(
 			<Popup
     			trigger={<EditIcon style={{padding: "5px", cursor: "pointer"}}/>}
@@ -156,11 +172,6 @@ class EditNotes extends Component{
 								autoFocus shouldFitContainer value={this.state.title}
 								onChange={e => this.setState({title: e.target.value})}/>
 						</div>
-						{/* <div>
-							<textarea className = "DescriptionStyle" placeholder="Enter Description ..." type="text" 
-							value={this.state.note_body}
-							onChange={(e) => this.setState({ note_body: e.target.value })} /> <br />
-						</div> */}
 						<Editor 
 							className={"editor"}
 							editorState={this.state.note_body}
@@ -178,7 +189,7 @@ class EditNotes extends Component{
 							/>
 							<div style={{width: "276px", height: "96px", marginTop: "10px", 
 								justifyContent: "center", textAlign: "center", fontSize: "1.5em"}}>
-								{this.state.note_type === '2' ? "Public" : "Private" }
+								Private?
 								<Switch color="primary"  checked={this.state.checked} 
 								onChange={this.handleOptionChange('checked')}/>
 							</div>
