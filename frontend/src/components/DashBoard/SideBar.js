@@ -104,6 +104,7 @@ class SideBar extends Component {
                 vertical: 'top',
                 horizontal: 'center',
               }}
+              style={{width: "8%"}}
             >
               <div>
                 <div className="avatar-div">

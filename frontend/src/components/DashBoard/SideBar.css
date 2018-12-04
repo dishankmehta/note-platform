@@ -139,7 +139,8 @@
 }
 
 .MuiPopover-paper-13 {
-  width: 9%;
+  width: 100% !important;
+  left: 1283px !important;
 }
 
 .pages-container {
