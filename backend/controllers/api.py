@@ -4,12 +4,10 @@ from flask_login import login_user, logout_user, login_required, current_user
 from flask_cors import CORS
 from backend.extensions import cache
 from backend.forms import LoginForm
-<<<<<<< HEAD
 from backend.models import db, User, Note, PrivateNotes, UserGroupInfo, Group, PublicNotes, CheatSheet
 import operator
-=======
 from backend.models import db, User, Note, PrivateNotes, UserGroupInfo, Group, PublicNotes, CheatSheet, GroupNotes
->>>>>>> c97a7f115a4bd4c8752b91cdf413d65bb208a691
+
 
 api = Blueprint('api', __name__, url_prefix="/")
 # CORS(api)
@@ -88,9 +86,6 @@ def edit_note():
         note = Note.query.filter_by(id=data.get('note_id')).first()
         note.title = data.get('title')
         note.note_type = data.get('note_type')
-
-        if data.get('note_id') == 1:
-
         if data.get('note_type') == 1:
             public_note = PublicNotes.query.filter_by(user_id=str(data.get('user_id'))).first()
             note_list = public_note.note_id
@@ -475,55 +470,58 @@ def get_recommended_notes():
 
     # getting the notes for this user and appending the tags to tag list
     public_note = PublicNotes.query.filter_by(user_id=username).first()
-    note_list = public_note.note_id
-    note_list = note_list.split(",")
-    print("Note list:", note_list)
-    # getting a count for tags for the given user
-    for note_id in note_list:
-        if note_id is not '':
-                print("Note id:", note_id)
+    if public_note is not None:
+            note_list = public_note.note_id
+            note_list = note_list.split(",")
+            print("Note list:", note_list)
+            # getting a count for tags for the given user
+            for note_id in note_list:
+                if note_id is not '':
+                        print("Note id:", note_id)
+                        note = Note.query.filter_by(id=note_id).first()
+                        tags_list = note.tags.split(",")
+                        for tags in tags_list:
+                            if tags in counts:
+                                counts[tags] += 1
+                            else:
+                                counts[tags] = 1
+
+            max_tag = max(counts.items(), key=operator.itemgetter(1))[0]
+            print("Max Tag", max_tag)
+
+
+            final_data = dict()
+            # getting public notes of other users ordering by upvotes
+            notes = Note.query.filter(id != 0).all()
+            for note in notes:
+                if str(note.id) not in note_list:
+                    tags_string = note.tags
+                    if max_tag in tags_string:
+                         final_data[note.id] = note.upvotes
+
+            # now sorting notes by upvotes
+            sorted_by_value = sorted(final_data.items(), key=lambda kv: kv[1])
+            print(type(sorted_by_value))
+            sorted_by_value.reverse()
+            note_object = {}
+            i = 0
+            for items in sorted_by_value:
+
+                note_id = items[0]
                 note = Note.query.filter_by(id=note_id).first()
-                tags_list = note.tags.split(",")
-                for tags in tags_list:
-                    if tags in counts:
-                        counts[tags] += 1
-                    else:
-                        counts[tags] = 1
+                note_object[i] = {}
+                note_object[i]['id'] = note.id
+                note_object[i]['title'] = note.title
+                note_object[i]['note_type'] = note.note_type
+                note_object[i]['note_body'] = note.note_body
+                note_object[i]['upvotes'] = note.upvotes
+                note_object[i]['downvotes'] = note.downvotes
+                note_object[i]['views'] = note.views
+                note_object[i]['tags'] = note.tags
+                note_object[i]['color'] = note.color
+                i += 1
 
-    max_tag = max(counts.items(), key=operator.itemgetter(1))[0]
-    print("Max Tag", max_tag)
+            print(note_object)
+            print(type(note_object))
 
-    final_data = dict()
-    # getting public notes of other users ordering by upvotes
-    notes = Note.query.filter(id != 0).all()
-    for note in notes:
-        if str(note.id) not in note_list:
-            tags_string = note.tags
-            if max_tag in tags_string:
-                 final_data[note.id] = note.upvotes
-
-    # now sorting notes by upvotes
-    sorted_by_value = sorted(final_data.items(), key=lambda kv: kv[1])
-    print(type(sorted_by_value))
-    sorted_by_value.reverse()
-    note_object = {}
-    i = 0
-    for items in sorted_by_value:
-
-        note_id = items[0]
-        note = Note.query.filter_by(id=note_id).first()
-        note_object[i] = {}
-        note_object[i]['id'] = note.id
-        note_object[i]['title'] = note.title
-        note_object[i]['note_type'] = note.note_type
-        note_object[i]['note_body'] = note.note_body
-        note_object[i]['upvotes'] = note.upvotes
-        note_object[i]['downvotes'] = note.downvotes
-        note_object[i]['views'] = note.views
-        note_object[i]['tags'] = note.tags
-        note_object[i]['color'] = note.color
-        i += 1
-
-    print(note_object)
-    print(type(note_object))
     return jsonify(notes=note_object, success=True)
