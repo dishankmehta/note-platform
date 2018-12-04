@@ -61,7 +61,8 @@ class MainNotes extends Component {
     this.props.sendDownVoteNoteData(data);
   };
 
-  onDeleteNote = (note_id, note_type, user_id) => {
+  onDeleteNote = (note_id, note_type_data, user_id) => {
+    const note_type = parseInt(note_type_data,10)
     let data = { user_id, note_id, note_type }
     console.log("reached on delete", data);
     this.props.sendDeleteNoteData(data);
