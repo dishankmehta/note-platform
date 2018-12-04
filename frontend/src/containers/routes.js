@@ -8,6 +8,7 @@ import TagInput from '../components/NotesPopup/TagInput';
 import Demo from '../components/Note/Demo';
 import Note from '../components/Note/Note';
 import ProfilePage from "../components/ProfilePage/ProfilePage";
+import VizLineChart from "../components/Viz/VizLineChart";
 
 
 const AppRoutes = () => (
@@ -16,10 +17,11 @@ const AppRoutes = () => (
 			<Route exact path="/" component={LoginPage}/>
 			<Route path="/register" component={Register}/>
 			<Route path="/dashboard" component={DashBoard}/>
-			<Route path="/tags" component={TagInput}/>
-			<Route path="/demo/:note_id" component={Note}/>
-			<Route path="/demo" component={Demo}/>
+            <Route path="/tags" component={TagInput}/>
+            <Route path="/demo/:note_id" component={Note}/>
+            <Route path="/demo" component={Demo}/>
             <Route path="/profile" component={ProfilePage}/>
+            {/*<Route path="/viz" component={VizLineChart}/>*/}
 
 
 

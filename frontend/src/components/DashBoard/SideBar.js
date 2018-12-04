@@ -20,6 +20,7 @@ import MainNotes from './MainNotes';
 import { SideNav } from '../CustomComponents/SideNav';
 
 import './SideBar.css';
+import VizLineChart from "../Viz/VizLineChart";
 
 // const CustomLinkComponent = props => {
 //   return (
@@ -138,11 +139,17 @@ class SideBar extends Component {
                   <GroupIcon style={{marginLeft: "5px", color: "#0052cc"}} />
                   <Link to = '/groupnotes'>Collaborative Notes</Link>
                 </div>
+                  <div>
+                      <GroupIcon style={{marginLeft: "5px", color: "#0052cc"}} />
+                      <Link to = '/viz'>Visualization</Link>
+                  </div>
               </SideNav>
             </div>
             <div style={{width: "83%"}}>
               <div className="pages-container">
-                <Route path={"/dashboard"} exact={true} component={MainNotes}/>  
+                <Route path={"/dashboard"} exact={true} component={MainNotes}/>
+                <Route path={"/viz"} exact={true} component={VizLineChart}/>
+
               </div>
             </div>  
           </div>
