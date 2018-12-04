@@ -10,7 +10,7 @@ import { getPrivateNotes } from '../../actions/sessionActions'
 import { sendUpVoteNoteData } from '../../actions/sessionActions';
 import { sendDownVoteNoteData } from '../../actions/sessionActions';
 import { sendDeleteNoteData } from '../../actions/sessionActions';
-import UpVote from '../UpVote/UpVote';
+
 import { Card } from '../CustomComponents/Card';
 
 
@@ -95,7 +95,7 @@ class MainNotes extends Component {
               `Here's some content for the modal`
             </EditNotes> */}
             <div style={{float: "right", marginTop: "5px"}}>
-              <LikeIcon  onClick = {() => {this.onUpVoteNote(note_item.id)}} 
+              <LikeIcon onClick = {() => {this.onUpVoteNote(note_item.id)}} 
               style={{marginLeft: "7px", marginRight: "7px", padding: "5px", cursor: "pointer"}}/>
               <DisLikeIcon onClick = {() => {this.onDownVoteNote(note_item.id)}} 
               style={{marginLeft: "7px", marginRight: "7px", padding: "5px", cursor: "pointer"}}/>
@@ -130,7 +130,7 @@ class MainNotes extends Component {
         <div>
             <div className = "main-style">
               <div className = "welcome-style">
-                { this.props.session.currentUser.toUpperCase()} , Welcome to Study Genie
+                { this.props.session.currentUser} , Welcome to Study Genie
               </div>
               <div className = "secondDiv-style">
                 <span> Note taking made easier! </span>

@@ -86,7 +86,7 @@ class SideBar extends Component {
             <div className="menu-icon" onClick={() => { this.setSideBarWidth() }}>
               <MenuIcon style={{color: "#0052cc"}}  />
             </div>
-            <div className="app-name-div">Note Platform</div>
+            <div className="app-name-div">LearnHub</div>
             <SearchBox searchChange={setSearchField}/>
 
             <Avatar className="avatar" onClick={(e) => {this.setState({ anchorEl: e.currentTarget });}}>U</Avatar>
