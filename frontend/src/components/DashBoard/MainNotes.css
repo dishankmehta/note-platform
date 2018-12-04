@@ -1,166 +1,23 @@
-/*div{
-	display: block;
-}*/
-
-body{
-	background: #FFF;
-	font-family: "Crisp Proxima Nova Regular","Helvetica Neue",Helvetica,Arial,sans-serif;
-	line-height: 15px;
-	text-align: center;
-}
-.main-style{
-	text-align: center;
-    width: 480px;
-    min-height: 360px;
-    margin-top: -180px;
-    margin-left: -195px;
-    position: absolute;
-    top: 50%;
-    left: 47%;
-    right: 0;
-    animation-name: fadeIn;
-    animation-duration: .5s;
-    animation-fill-mode: both;
+.main-style {
+    padding: 20% 25%;
 }
 
-.welcome-style{
-	font-size: 1.6rem;
-    color: #3B536D;
-    letter-spacing: -.14px;
-    line-height: 32px;
-    font-family: "Crisp Proxima Nova Bold",sans-serif;
+.welcome-style {
+    font-size: 1.3em;
+    font-weight: 600;
+    padding: 4% 0%;
 }
 
-.span-style{
-	/*background-image: url(http://sunny-delight.fr/wp-content/uploads/2016/08/Gblue.png);*/
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    display: inline-block;
-    width: 67px;
-    height: 54px;
-    margin-bottom: 30px;
+.secondDiv-style {
+    font-size: 1.1em;
+    font-weight: 600;
+    padding: 4% 6%;
 }
 
-.secondDiv-style{
-	margin-top: 10px;
-	font-weight: 400!important;
-    -webkit-font-smoothing: subpixel-antialiased;
-    outline-style: none;
-    margin: 0;
-    padding: 0;
-    user-select: none;
-    text-align: center;
-    font-size: .86667rem;
-    -webkit-box-direction: normal;
+.create-new-note {
+    padding: 4% 12%;
 }
 
-.secondSpan-style{
-	font-size: 1.2rem;
-	color: #6C86A1;
-	letter-spacing: -.11px;
-    line-height: 30px;
-    display: block;
-    font-family: "Crisp Proxima Nova Regular",sans-serif;
-    font-weight: 400!important;
-    -webkit-font-smoothing: subpixel-antialiased;
-    outline-style: none;
-    margin: 0;
-    padding: 0;
-    user-select: none;
-    text-align: center;
-}
-
-.divButtonStyle{
-	margin-top: 34px;
-	font-size: .93333rem;
-    color: #6C86A1;
-    letter-spacing: -.08px;
-    font-weight: 400!important;
-    -webkit-font-smoothing: subpixel-antialiased;
-    outline-style: none;
-    margin: 0;
-    padding: 0;
-    user-select: none;
-    text-align: center;
-}
-
-.div2ButtonStyle{
-	width: 100%;
-    margin-top: 35px;
-    display: block;
-    font-weight: 400!important;
-    -webkit-font-smoothing: subpixel-antialiased;
-    outline-style: none;
-    margin-top: 25px;
-    padding: 0;
-    user-select: none;
-    font-size: .93333rem;
-    color: #6C86A1;
-    letter-spacing: -.08px;
-    text-align: center;
-}
-
-.ButtonStyle{
-	margin-top: 22px;
-    width: 250px;
-    display: inline-block;
-    text-decoration: none;
-    height: 46px;
-    background-image: linear-gradient(0deg,#137ECE 2%,#288BD5 98%);
-    border: 0;
-    text-align: center;
-    overflow: hidden;
-    font-size: .86667rem;
-    line-height: 46px;
-    letter-spacing: .8px;
-    padding: 0 30px;
-    cursor: pointer;
-    -webkit-app-region: no-drag;
-    border-radius: 3px;
-    box-shadow: 0 3px 6px 0 rgba(52,74,97,.1);
-    transition: all .15s ease-in-out;
-    transition-property: background-image,transform,box-shadow;
-    color: #FFF;
-    font-family: "Crisp Proxima Nova Regular",sans-serif;
-    font-weight: 400!important;
-    -webkit-font-smoothing: subpixel-antialiased;
-    outline-style: none;
-    margin: 0;
-    user-select: none;
-}
-
-button{
-	align-items: flex-start;
-    background-color: buttonface;
-    box-sizing: border-box;
-    text-rendering: auto;
-    word-spacing: normal;
-    text-transform: none;
-    text-indent: 0px;
-    text-shadow: none;
-    font: 400 13.3333px Arial;
-    -webkit-writing-mode: horizontal-tb !important;
-    -webkit-appearance: button;
-}
-
-.insideButtonStyle{
-	position: absolute;
-	font-weight: 400!important;
-    -webkit-font-smoothing: subpixel-antialiased;
-    outline-style: none;
-    margin-left: 0px;
-    padding: 0;
-    user-select: none;
-    text-align: center;
-    font-size: .86667rem;
-    line-height: 46px;
-    letter-spacing: .8px;
-    cursor: pointer;
-    color: #FFF;
-}
-
-.notesheadingstyle{
-    text-align: left;
-    margin-top: 55px;
+.icon-padding {
+    padding: 2px;
 }
