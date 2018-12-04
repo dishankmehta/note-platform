@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from  'redux';
 import { getPublicNotes } from '../../actions/sessionActions'
-
 import NotesPopup from '../NotesPopup/NotesPopup';
 import EditNotes from '../EditNotes/EditNotes';
 import DeleteNotes from '../DeleteNotes/DeleteNotes';
@@ -10,13 +9,9 @@ import { getPrivateNotes } from '../../actions/sessionActions'
 import { sendUpVoteNoteData } from '../../actions/sessionActions';
 import { sendDownVoteNoteData } from '../../actions/sessionActions';
 import { sendDeleteNoteData } from '../../actions/sessionActions';
-
 import { Card } from '../CustomComponents/Card';
-
-
 import isEmpty from 'lodash/isEmpty';
 import PropTypes from 'prop-types';
-
 import DeleteIcon from '@material-ui/icons/Delete';
 import LikeIcon from '@material-ui/icons/ThumbUp';
 import DisLikeIcon from '@material-ui/icons/ThumbDown';
@@ -142,11 +137,11 @@ class MainNotes extends Component {
               <NotesPopup />
             </div>
             {!isEmpty(publicNotes) ? <h2 className = "notesheadingstyle">My Public Notes</h2>: null}
-            <div style={{display: "inline-block", overflowY: "auto", overflowX: "hidden", marginTop: "5%", marginBottom: "5%"}}>
+            <div style={{overflowY: "auto", overflowX: "hidden"}}>
               {!isEmpty(publicNotes) ? this.renderAllNotes(publicNotes) : null}
             </div>
             {!isEmpty(privateNotes) ? <h2 className = "notesheadingstyle">My Private Notes</h2>: null}
-            <div style={{display: "inline-block", overflowY: "auto", overflowX: "hidden"}}>
+            <div style={{overflowY: "auto", overflowX: "hidden"}}>
               {!isEmpty(privateNotes) ? this.renderAllNotes(privateNotes) : null}
             </div>
         </div>   
