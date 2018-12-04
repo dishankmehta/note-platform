@@ -49,7 +49,7 @@ def edit_note():
     note = Note(title, note_type, note_body, upvotes, downvotes, views, tags, color)
     db.session.add(note)
     db.session.commit()
-    return jsonify(success = True)
+    return jsonify(success=True)
 
 
 @api.route('/createnote', methods=["POST"])
@@ -283,7 +283,7 @@ def get_private_notes():
     private_note = PrivateNotes.query.filter_by(user_id=data.get('user_id')).first()
 
     if private_note is None:
-        return jsonify(note=None, success=True)
+        return jsonify(notes={}, success=True)
     else:
         print(private_note.note_id)
         note_id_list = private_note.note_id
@@ -319,7 +319,7 @@ def get_public_notes():
     public_note = PublicNotes.query.filter_by(user_id=data.get('user_id')).first()
 
     if public_note is None:
-        return jsonify(note=None, success=True)
+        return jsonify(notes={}, success=True)
     else:
         print(public_note.note_id)
         note_id_list = public_note.note_id
