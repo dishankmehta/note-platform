@@ -4,12 +4,8 @@ from flask_login import login_user, logout_user, login_required, current_user
 from flask_cors import CORS
 from backend.extensions import cache
 from backend.forms import LoginForm
-<<<<<<< HEAD
 from backend.models import db, User, Note, PrivateNotes, UserGroupInfo, Group, PublicNotes, CheatSheet
-import operator
-=======
-from backend.models import db, User, Note, PrivateNotes, UserGroupInfo, Group, PublicNotes, CheatSheet, GroupNotes
->>>>>>> c97a7f115a4bd4c8752b91cdf413d65bb208a691
+import operator from backend.models import db, User, Note, PrivateNotes, UserGroupInfo, Group, PublicNotes, CheatSheet, GroupNotes
 
 api = Blueprint('api', __name__, url_prefix="/")
 # CORS(api)
