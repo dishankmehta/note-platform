@@ -122,8 +122,8 @@ export function sendDeleteNoteData(data) {
         API.sendDeleteNoteData(data)
             .then((res) => {
                 console.log(res);
-                // const new_data = { user_id: data.user_id };
-                // dispatch(getPublicNotes(new_data));
+                const new_data = { user_id: data.user_id };
+                dispatch(getPublicNotes(new_data));
             }).catch(() => {
             console.log("error");
         });

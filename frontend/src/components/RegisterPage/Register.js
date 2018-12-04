@@ -96,7 +96,7 @@ class Register extends Component{
 					<div className="error-register">
 						{errorFromRequest !== '' ? errorFromRequest:this.state.showError? registerError: null}
 					</div>
-					<Button houldFitContainer appearance="primary" className="register-btn" 
+					<Button shouldFitContainer appearance="primary" className="register-btn" 
 					onClick={() => this.onSubmit()}>Register</Button>
                 </Card>
             </div>	

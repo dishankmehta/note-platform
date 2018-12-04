@@ -8,6 +8,7 @@ export const Card = styled.div`
     width: 250px;
     height: 250px;
     border-radius: 5%;
+    float: left;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
     transition: 0.3s;
     background-color: ${props => props.color};

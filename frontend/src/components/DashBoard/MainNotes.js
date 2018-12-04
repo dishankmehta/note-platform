@@ -61,7 +61,8 @@ class MainNotes extends Component {
     this.props.sendDownVoteNoteData(data);
   };
 
-  onDeleteNote = (note_id, note_type, user_id) => {
+  onDeleteNote = (note_id, note_type_data, user_id) => {
+    const note_type = parseInt(note_type_data,10)
     let data = { user_id, note_id, note_type }
     console.log("reached on delete", data);
     this.props.sendDeleteNoteData(data);
@@ -139,7 +140,7 @@ class MainNotes extends Component {
               </div>
             </div>        
         </div>
-      );  
+      ); 
     } else {
       return(
         <div>
@@ -147,7 +148,7 @@ class MainNotes extends Component {
               <NotesPopup />
             </div>
             {!isEmpty(publicNotes) ? <h2 className = "notesheadingstyle">My Public Notes</h2>: null}
-            <div style={{display: "inline-block", overflowY: "auto", overflowX: "hidden"}}>
+            <div style={{display: "inline-block", overflowY: "auto", overflowX: "hidden", marginTop: "5%", marginBottom: "5%"}}>
               {!isEmpty(publicNotes) ? this.renderAllNotes(publicNotes) : null}
             </div>
             {!isEmpty(privateNotes) ? <h2 className = "notesheadingstyle">My Private Notes</h2>: null}
