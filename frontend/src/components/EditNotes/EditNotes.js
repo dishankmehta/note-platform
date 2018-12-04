@@ -92,6 +92,7 @@ class EditNotes extends Component{
 	}
 
 	onEditNote = () => {
+    console.log("Note ID",this.state.note_id);
 		const content = JSON.stringify(convertToRaw(this.state.note_body.getCurrentContent()));
 		const noteText = this.state.note_body.getCurrentContent().getPlainText();
 		let payload = {
