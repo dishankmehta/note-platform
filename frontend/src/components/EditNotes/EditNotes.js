@@ -3,17 +3,16 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from  'redux';
 import { sendNoteData } from '../../actions/sessionActions';
 import { sendEditedNoteData } from '../../actions/sessionActions';
-
+import { getPublicNotes} from '../../actions/sessionActions'
+import { getPrivateNotes } from '../../actions/sessionActions'
 import Switch from '@material-ui/core/Switch';
 import FieldText from '@atlaskit/field-text';
 import Button from '@atlaskit/button';
 import EditIcon from '@material-ui/icons/Edit';
 import { Editor } from 'react-draft-wysiwyg';
 import { EditorState, RichUtils, convertToRaw, convertFromRaw } from 'draft-js';
-
 import Popup from "reactjs-popup";
 import { TwitterPicker } from 'react-color';
-
 import '../NotesPopup/NotesPopup.css';
 
 
@@ -76,11 +75,11 @@ class EditNotes extends Component{
 	      }));
 	    }
 
-	    if ( this.state.tags.length && evt.keyCode === 8 && !this.state.tagInput.length ) {
-	      this.setState(state => ({
-	        tags: state.tags.slice(0, state.tags.length - 1)
-	      }));
-	    }
+	    // if ( this.state.tags.length && evt.keyCode === 8 && !this.state.tagInput.length ) {
+	    //   this.setState(state => ({
+	    //     tags: state.tags.slice(0, state.tags.length - 1)
+	    //   }));
+	    // }
 	}
 
 	handleRemoveTag = (index) => {
@@ -92,6 +91,7 @@ class EditNotes extends Component{
 	}
 
 	onEditNote = () => {
+    console.log("Note ID",this.state.note_id);
 		const content = JSON.stringify(convertToRaw(this.state.note_body.getCurrentContent()));
 		const noteText = this.state.note_body.getCurrentContent().getPlainText();
 		let payload = {
@@ -108,7 +108,23 @@ class EditNotes extends Component{
 			views: this.state.views,
 		}
     // this.props.sendNoteData(payload);
-    	this.props.sendEditedNoteData(payload);
+		this.props.sendEditedNoteData(payload);
+		this.setState({
+			title: '',
+			note_id: '',
+			note_body: EditorState.createEmpty(),
+			note_text: '',
+			color: '',
+			note_type: '2',
+			tags: [],
+			upvotes: 0,
+			downvotes: 0,
+			views: 0,
+			tagInput : '',
+			focused : false,
+			checked: false,
+			valuesInit : false,
+		});
 	}
 
 	onChangeColor = color => {
@@ -132,7 +148,9 @@ class EditNotes extends Component{
 	}
 
 	componentDidMount() {
-
+    let data = {user_id:this.props.session.currentUser};
+    this.props.getPrivateNotes(data);
+    this.props.getPublicNotes(data);
 	}
 
 	onEditorTextChange = (editorState) => {
@@ -140,7 +158,7 @@ class EditNotes extends Component{
 	}
 
 	render(){
-		console.log(this.state);
+		// console.log(this.state);
 		return(
 			<Popup
     			trigger={<EditIcon style={{padding: "5px", cursor: "pointer"}}/>}
@@ -156,11 +174,6 @@ class EditNotes extends Component{
 								autoFocus shouldFitContainer value={this.state.title}
 								onChange={e => this.setState({title: e.target.value})}/>
 						</div>
-						{/* <div>
-							<textarea className = "DescriptionStyle" placeholder="Enter Description ..." type="text" 
-							value={this.state.note_body}
-							onChange={(e) => this.setState({ note_body: e.target.value })} /> <br />
-						</div> */}
 						<Editor 
 							className={"editor"}
 							editorState={this.state.note_body}
@@ -178,7 +191,7 @@ class EditNotes extends Component{
 							/>
 							<div style={{width: "276px", height: "96px", marginTop: "10px", 
 								justifyContent: "center", textAlign: "center", fontSize: "1.5em"}}>
-								{this.state.note_type === '2' ? "Public" : "Private" }
+								Private?
 								<Switch color="primary"  checked={this.state.checked} 
 								onChange={this.handleOptionChange('checked')}/>
 							</div>
@@ -221,7 +234,9 @@ const mapStateToProps = (state) =>{
 function mapDispatchToProps(dispatch){
   return bindActionCreators({
     sendNoteData,
-    sendEditedNoteData
+    sendEditedNoteData,
+    getPublicNotes,
+    getPrivateNotes
   }, dispatch);
 }
 

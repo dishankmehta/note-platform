@@ -129,6 +129,23 @@ class PrivateNotes(db.Model):
             user_id=self.user_id,
             note_id=self.note_id
         )
+
+class GroupNotes(db.Model):
+
+    __tablename__ = 'group_notes'
+    id = db.Column(db.Integer(), primary_key=True)
+    user_id = db.Column(db.String())
+    note_id = db.Column(db.String())
+
+    def __init__(self, user_id, note_id):
+        self.user_id = user_id
+        self.note_id = note_id
+
+    def to_dict(self):
+        return dict(
+            user_id=self.user_id,
+            note_id=self.note_id
+        )
         
 class UserGroupInfo(db.Model):
     __tablename__ = 'user_group_info'

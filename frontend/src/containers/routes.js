@@ -9,6 +9,7 @@ import Demo from '../components/Note/Demo';
 import Note from '../components/Note/Note';
 import ProfilePage from "../components/ProfilePage/ProfilePage";
 import VizLineChart from "../components/Viz/VizLineChart";
+import AuthenticateUser from './AuthenticateUser';
 
 
 const AppRoutes = () => (
@@ -22,9 +23,7 @@ const AppRoutes = () => (
             <Route path="/demo" component={Demo}/>
             <Route path="/profile" component={ProfilePage}/>
             {/*<Route path="/viz" component={VizLineChart}/>*/}
-
-
-
+            <Route path="/dashboard" component={DashBoard} onEnter={AuthenticateUser}/>
 		</Switch>
 	</div>
 );

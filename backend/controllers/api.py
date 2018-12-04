@@ -4,7 +4,12 @@ from flask_login import login_user, logout_user, login_required, current_user
 from flask_cors import CORS
 from backend.extensions import cache
 from backend.forms import LoginForm
+<<<<<<< HEAD
 from backend.models import db, User, Note, PrivateNotes, UserGroupInfo, Group, PublicNotes, CheatSheet
+import operator
+=======
+from backend.models import db, User, Note, PrivateNotes, UserGroupInfo, Group, PublicNotes, CheatSheet, GroupNotes
+>>>>>>> c97a7f115a4bd4c8752b91cdf413d65bb208a691
 
 api = Blueprint('api', __name__, url_prefix="/")
 # CORS(api)
@@ -26,6 +31,18 @@ def api_after_request(response):
 @api.route('/')
 def home():
     return render_template('index.html')
+@api.route('/group_note', methods=['POST'])
+def group_note():
+    data = request.get_json() or dict()
+
+
+    if not data:
+        return jsonify(success=False)
+    
+    data = request.get_json()
+    title = data.get('title')
+    note_type = data.get('note_type')
+    note_body = data.get('note_body')
 
 @api.route('/sample')
 def sample():
@@ -33,108 +50,121 @@ def sample():
     return jsonify(data='sample api')
 
 
-@api.route('/edit_note', methods=["POST"])
-def edit_note():
-
-    data = request.get_json()
-    title = data.get('title')
-    note_type = data.get('note_type')
-    note_body = data.get('note_body')
     upvotes = data.get('upvotes')
     downvotes = data.get('downvotes')
     views = data.get('views')
     tags = data.get('tags')
     color = data.get('color')
-    print(data)
+    user_email = data.get('email')
+    group_user_ids = data.get('group_user_emails') 
     note = Note(title, note_type, note_body, upvotes, downvotes, views, tags, color)
     db.session.add(note)
     db.session.commit()
-    return jsonify(success=True)
 
+    user_list = []
+    user_list.append(user_email)
+    group_user_ids = group_user_ids.split(",")
+    for item in group_user_ids:
+        user_list.extend(item)
 
-@api.route('/createnote', methods=["POST"])
-def create_note():
-    data = request.get_json() or dict()
-    username = data.get('username')
-    note_obj = Note('test', 'private', '', 0, 0, 0, '', '')
-    db.session.add(note_obj)
-    user = User.query.filter_by(username=username).first()
-    user.note = note_obj
-    print("Incoming data in edit note:", data)
+    note_id = note.id
 
-    note = Note.query.filter_by(id=data.get('note_id')).first()
-    note.title = data.get('title')
-    note.note_type = data.get('note_type')
-    if data.get('note_type') == 1:
-
-        public_note = PublicNotes.query.filter_by(user_id=str(data.get('user_id'))).first()
-        note_list = public_note.note_id
-        note_list = note_list.split(",")
-        if data.get('note_id') in note_list:
-            # this means that the it was a public note and now it has become private
-            # deleting that entry from public notes
-            note_list.remove(str(data.get('note_id')))
-            result = ""
-            for item in note_list:
-                if item is not '':
-                    result += item + ","
-            public_note.note_id = result
-            db.session.commit()
-
-            # adding it to private note for that user.
-            user_id = str(data.get('user_id'))
-            user_data = PrivateNotes.query.filter_by(user_id=user_id).first()
-            print("User data; ", user_data)
-            if user_data is not None:
-                user_data.note_id += str(data.get('note_id'))
-                db.session.commit()
-            else:
-                private_note = PrivateNotes(user_id, str(data.get('note_id')))
-                db.session.add(private_note)
-                db.session.commit()
-
-    if data.get('note_type') == 2:
-
-        private_note = PrivateNotes.query.filter_by(user_id=str(data.get('user_id'))).first()
-        note_list = private_note.note_id
-        print("Inside here")
-        note_list = note_list.split(",")
-        print(note_list)
-        if data.get('note_id') in note_list:
-            # this means that the it was a public note and now it has become private
-            # deleting that entry from public notes
-            print("Inside here")
-            note_list.remove(str(data.get('note_id')))
-            result = ""
-            for item in note_list:
-                if item is not '':
-                    result += item + ","
-            private_note.note_id = result
-            db.session.commit()
-
-            # adding it to private note for that user.
-            user_id = str(data.get('user_id'))
-            user_data = PublicNotes.query.filter_by(user_id=user_id).first()
-            print("User data; ", user_data)
-            if user_data is not None:
-                user_data.note_id += str(data.get('note_id'))
-                db.session.commit()
-            else:
-                public_note = PublicNotes(user_id, str(data.get('note_id')))
-                db.session.add(public_note)
-                db.session.commit()
+    for user in user_list:
+        user = User.query.filter_by(email=user).first()
+        group_note = GroupNotes(user.id, note_id)
+        db.session.add(group_note)
+        db.session.commit()
 
 
 
-    note.note_body = data.get('note_body')
-    note.upvotes = data.get('upvotes')
-    note.downvotes = data.get('downvotes')
-    note.views = data.get('views')
-    note.tags = data.get('tags')
-    note.color = data.get('color')
-    db.session.commit()
     return jsonify(note=[], success=True)
 
+@api.route('/edit_note', methods=["POST"])
+def edit_note():
+
+        data = request.get_json()
+        print("Incoming data in edit note:", data)
+
+        note = Note.query.filter_by(id=data.get('note_id')).first()
+        note.title = data.get('title')
+        note.note_type = data.get('note_type')
+
+        if data.get('note_id') == 1:
+
+        if data.get('note_type') == 1:
+            public_note = PublicNotes.query.filter_by(user_id=str(data.get('user_id'))).first()
+            note_list = public_note.note_id
+            note_list = note_list.split(",")
+
+            if data.get('note_id') in note_list:
+
+                # this means that the it was a public note and now it has become private
+                # deleting that entry from public notes
+                note_list.remove(str(data.get('note_id')))
+                print ("rdtfygvbhuinjrdctfgvybhjkndrxcfgvhb jn")
+                result = ""
+                for item in note_list:
+                    if item is not '':
+                        result += item + ","
+                public_note.note_id = result
+                db.session.commit()
+
+                # adding it to private note for that user.
+                user_id = str(data.get('user_id'))
+                user_data = PrivateNotes.query.filter_by(user_id=user_id).first()
+
+                print("User data; ", user_data)
+                if user_data is not None:
+                    note_id = str(data.get('note_id')) + ","
+                    user_data.note_id += note_id
+                    db.session.commit()
+                else:
+                    note_id = str(data.get('note_id')) + ","
+                    private_note = PrivateNotes(user_id, note_id)
+                    db.session.add(private_note)
+                    db.session.commit()
+
+        if data.get('note_type') == 2:
+
+            private_note = PrivateNotes.query.filter_by(user_id=str(data.get('user_id'))).first()
+            note_list = private_note.note_id
+            print("Inside here")
+            note_list = note_list.split(",")
+            print(note_list)
+            if str(data.get('note_id')) in note_list:
+                # this means that the it was a public note and now it has become private
+                # deleting that entry from public notes
+                print("Inside here")
+                note_list.remove(str(data.get('note_id')))
+                result = ""
+                for item in note_list:
+                    if item is not '':
+                        result += item + ","
+                private_note.note_id = result
+                db.session.commit()
+
+                # adding it to private note for that user.
+                user_id = str(data.get('user_id'))
+                user_data = PublicNotes.query.filter_by(user_id=user_id).first()
+                print("User data; ", user_data)
+                if user_data is not None:
+                    note_id = str(data.get('note_id')) + ","
+                    user_data.note_id += note_id
+                    db.session.commit()
+                else:
+                    note_id = str(data.get('note_id')) + ","
+                    public_note = PublicNotes(user_id, note_id)
+                    db.session.add(public_note)
+                    db.session.commit()
+
+        note.note_body = data.get('note_body')
+        note.upvotes = data.get('upvotes')
+        note.downvotes = data.get('downvotes')
+        note.views = data.get('views')
+        note.tags = data.get('tags')
+        note.color = data.get('color')
+        db.session.commit()
+        return jsonify(note=[], success=True)
 
 @api.route('/add_note', methods=["POST"])
 def add_note():
@@ -404,20 +434,6 @@ def delete_note():
         private_note.note_id = result
         db.session.commit()
 
-    if data.get('note_type') == 1:
-        private_note = PrivateNotes.query.filter_by(user_id=str(data.get('user_id'))).first()
-        note_list = private_note.note_id
-
-        note_list = note_list.split(",")
-        print("Note list: ", note_list)
-        note_list.remove(str(data.get('note_id')))
-        result = ""
-        for item in note_list:
-            if item is not '':
-                result += item + ","
-        private_note.note_id = result
-        db.session.commit()
-
     if data.get('note_type') == 2:
         public_note = PublicNotes.query.filter_by(user_id=str(data.get('user_id'))).first()
         note_list = public_note.note_id
@@ -448,3 +464,66 @@ def delete_note():
         db.session.commit()
 
     return jsonify(notes=[], success=True)
+
+
+@api.route("/get_recommended_notes", methods=["POST"])
+def get_recommended_notes():
+
+    data = request.get_json()
+    username = str(data.get('user_id'))
+    counts = dict()
+
+    # getting the notes for this user and appending the tags to tag list
+    public_note = PublicNotes.query.filter_by(user_id=username).first()
+    note_list = public_note.note_id
+    note_list = note_list.split(",")
+    print("Note list:", note_list)
+    # getting a count for tags for the given user
+    for note_id in note_list:
+        if note_id is not '':
+                print("Note id:", note_id)
+                note = Note.query.filter_by(id=note_id).first()
+                tags_list = note.tags.split(",")
+                for tags in tags_list:
+                    if tags in counts:
+                        counts[tags] += 1
+                    else:
+                        counts[tags] = 1
+
+    max_tag = max(counts.items(), key=operator.itemgetter(1))[0]
+    print("Max Tag", max_tag)
+
+    final_data = dict()
+    # getting public notes of other users ordering by upvotes
+    notes = Note.query.filter(id != 0).all()
+    for note in notes:
+        if str(note.id) not in note_list:
+            tags_string = note.tags
+            if max_tag in tags_string:
+                 final_data[note.id] = note.upvotes
+
+    # now sorting notes by upvotes
+    sorted_by_value = sorted(final_data.items(), key=lambda kv: kv[1])
+    print(type(sorted_by_value))
+    sorted_by_value.reverse()
+    note_object = {}
+    i = 0
+    for items in sorted_by_value:
+
+        note_id = items[0]
+        note = Note.query.filter_by(id=note_id).first()
+        note_object[i] = {}
+        note_object[i]['id'] = note.id
+        note_object[i]['title'] = note.title
+        note_object[i]['note_type'] = note.note_type
+        note_object[i]['note_body'] = note.note_body
+        note_object[i]['upvotes'] = note.upvotes
+        note_object[i]['downvotes'] = note.downvotes
+        note_object[i]['views'] = note.views
+        note_object[i]['tags'] = note.tags
+        note_object[i]['color'] = note.color
+        i += 1
+
+    print(note_object)
+    print(type(note_object))
+    return jsonify(notes=note_object, success=True)
