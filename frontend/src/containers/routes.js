@@ -16,6 +16,7 @@ const AppRoutes = () => (
 				<Route path={"/dashboard"} exact={true} component={SideBar}/>  
                 <Route path={"/groupnotes"} exact={true} component={SideBar}/>  
                 <Route path={"/profile"} exact={true} component={SideBar}/>  
+				<Route path={"/viz"} exact={true} component={SideBar}/>
 		</Switch>
 	</div>
 );

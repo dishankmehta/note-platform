@@ -11,10 +11,8 @@ import Button from '@atlaskit/button';
 import EditIcon from '@material-ui/icons/Edit';
 import { Editor } from 'react-draft-wysiwyg';
 import { EditorState, RichUtils, convertToRaw, convertFromRaw } from 'draft-js';
-
 import Popup from "reactjs-popup";
 import { TwitterPicker } from 'react-color';
-
 import '../NotesPopup/NotesPopup.css';
 
 
@@ -129,6 +127,7 @@ class EditNotes extends Component{
 	}
 
 	onEditNote = () => {
+    console.log("Note ID",this.state.note_id);
 		const content = JSON.stringify(convertToRaw(this.state.note_body.getCurrentContent()));
 		const noteText = this.state.note_body.getCurrentContent().getPlainText();
 		let payload = {
@@ -191,7 +190,9 @@ class EditNotes extends Component{
 	}
 
 	componentDidMount() {
-
+    let data = {user_id:this.props.session.currentUser};
+    this.props.getPrivateNotes(data);
+    this.props.getPublicNotes(data);
 	}
 
 	onEditorTextChange = (editorState) => {

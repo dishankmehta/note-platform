@@ -158,6 +158,7 @@ export function sendEditedNoteData(data) {
                 console.log(res);
                 const new_data = { user_id: data.user_id } 
                 dispatch(getPublicNotes(new_data));
+                dispatch(getPrivateNotes(new_data));
             }).catch(() => {
                 console.log("error");
             });
@@ -190,12 +191,14 @@ function handlePrivateNotes(data) {
 export function sendUpVoteNoteData(data) {
     console.log("reached in upvote note data");
     return (dispatch) => {
-        console.log("data", data);
+        console.log("data in upvote", data);
         API.sendUpVoteNoteData(data)
             .then((res) => {
                 console.log(res);
-                // const new_data = { user_id: data.user_id } 
-                // dispatch(getPublicNotes(new_data));
+                const new_data = { user_id: data.user_id } 
+                console.log("user_id", new_data);
+                dispatch(getPublicNotes(new_data));
+                dispatch(getPrivateNotes(new_data));
             }).catch(() => {
                 console.log("error");
             });
@@ -209,8 +212,10 @@ export function sendDownVoteNoteData(data) {
         API.sendDownVoteNoteData(data)
             .then((res) => {
                 console.log(res);
-                // const new_data = { user_id: data.user_id } 
-                // dispatch(getPublicNotes(new_data));
+                const new_data = { user_id: data.user_id } 
+                console.log("USWR IN DOWNVOTE",new_data);
+                dispatch(getPublicNotes(new_data));
+                dispatch(getPrivateNotes(new_data));
             }).catch(() => {
                 console.log("error");
             });

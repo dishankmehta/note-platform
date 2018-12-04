@@ -14,6 +14,7 @@ import NoteIcon from '@material-ui/icons/Note';
 import CheetSheetIcon from '@material-ui/icons/Receipt';
 import GroupIcon from '@material-ui/icons/Group';
 import TrendIcon from '@material-ui/icons/TrendingUp';
+import ChartIcon from '@material-ui/icons/BarChart';
 import Popover from '@material-ui/core/Popover';
 
 import LoginPage from '../LoginPage/LoginPage';
@@ -25,6 +26,7 @@ import AuthenticateUser from '../../containers/AuthenticateUser';
 import { SideNav } from '../CustomComponents/SideNav';
 
 import './SideBar.css';
+import VizLineChart from "../Viz/VizLineChart";
 
 // const CustomLinkComponent = props => {
 //   return (
@@ -88,7 +90,7 @@ class SideBar extends Component {
             <div className="menu-icon" onClick={() => { this.setSideBarWidth() }}>
               <MenuIcon style={{color: "#0052cc"}}  />
             </div>
-            <div className="app-name-div">Note Platform</div>
+            <div className="app-name-div">LearnHub</div>
             <SearchBox searchChange={setSearchField}/>
 
             <Avatar className="avatar" onClick={(e) => {this.setState({ anchorEl: e.currentTarget });}}>U</Avatar>
@@ -140,12 +142,17 @@ class SideBar extends Component {
                   <GroupIcon style={{marginLeft: "5px", color: "#0052cc"}} />
                   <Link to = '/groupnotes'>Group Notes</Link>
                 </div>
+                  <div>
+                      <ChartIcon style={{marginLeft: "5px", color: "#0052cc"}} />
+                      <Link to = '/viz'>Visualization</Link>
+                  </div>
               </SideNav>
             </div>
             <div style={{width: "83%"}}>
               <div className="pages-container">
                 <Route path={"/dashboard"} exact={true} component={MainNotes}/>  
                 <Route path={"/groupnotes"} exact={true} component={GroupNotes}/>  
+                <Route path={"/viz"} exact={true} component={VizLineChart}/>
                 <Route path={"/profile"} exact={true} component={ProfilePage}/>  
               </div>
             </div>  

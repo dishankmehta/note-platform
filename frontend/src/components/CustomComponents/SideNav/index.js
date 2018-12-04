@@ -43,7 +43,7 @@ export const SideNav = styled.div`
         text-align: left;
         padding-left: 8px;
         text-decoration: none;
-        font-size: 18px;
+        // font-size: 18px;
         // color: #2196f3;
         color: #0052cc;
         transition: 0.1s;
