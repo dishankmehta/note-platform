@@ -68,27 +68,27 @@ class Register extends Component{
 						<div className="column-wrap"> 
 							<div style={{width: "50%", padding: "1.5%"}}>
 								<FieldText label={"Full Name"} type="text" name="name" placeholder="Full Name" 
-									required autoFocus shouldFitContainer
+									required autoFocus shouldFitContainer value={this.state.name}
 									onChange={e => this.setState({name: e.target.value})}/><br/>
 								<FieldText label={"Username"} type="text" name="username" placeholder="Username" 
-									required shouldFitContainer
+									required shouldFitContainer value={this.state.username}
 									onChange={e => this.setState({username: e.target.value})}/><br/>
 								<FieldText label={"Email"} type="email" name="email" placeholder="Email" 
-									required shouldFitContainer
+									required shouldFitContainer value={this.state.email}
 									onChange={e => this.setState({email: e.target.value})}/><br/>
 								<FieldText label={"Password"} type="password" name="password" placeholder="Password"
-									required  shouldFitContainer
+									required  shouldFitContainer value={this.state.password}
 									onChange={e => this.setState({password: e.target.value})}/> 
 							</div>
 							<div style={{width: "50%", padding: "1.5%"}}>
 								<FieldText label={"Confirm Password"} type="password" name="confirmpassword" 
-									placeholder="Confirm Password" required shouldFitContainer
+									placeholder="Confirm Password" required shouldFitContainer value={this.state.confirmpassword}
 									onChange={e => this.setState({confirmpassword: e.target.value})}/>
 								<FieldText label={"Major"} type="text" name="major" placeholder="Major" 
-									required shouldFitContainer
+									required shouldFitContainer value={this.state.major}
 									onChange={e => this.setState({major: e.target.value})}/><br/>
 								<FieldText label={"Interests"} type="text" name="tags" placeholder="Interests" 
-									required shouldFitContainer
+									required shouldFitContainer value={this.state.tags}
 									onChange={e => this.setState({tags: e.target.value})}/><br/>
 							</div>
 						</div>
@@ -107,6 +107,7 @@ class Register extends Component{
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({ registrationRequest }, dispatch);
 }
+
 
 function mapStateToProps(state) {
 	return {

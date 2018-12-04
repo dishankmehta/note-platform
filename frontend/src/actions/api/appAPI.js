@@ -12,10 +12,36 @@ export default class appAPI {
 		console.log("userID", data);
 		return API.post('/get_public_notes', data);
 	}
+
+	static getPrivateNotes(data){
+		console.log("userID", data);
+		return API.post('/get_private_notes', data);
+	}
+
 	static sendNoteData(data) {
 		console.log("Data:::::::: ", data);
 		return API.post('/add_note', data);
 	}
+
+	static sendEditedNoteData(data) {
+		console.log("Data:::::::: ", data);
+		return API.post('/edit_note', data);
+	}
+
+    static sendDeleteNoteData(data) {
+        console.log("Data:::::::: ", data);
+        return API.post('/delete_note', data);
+    }
+
+    static sendUpVoteNoteData(data) {
+        console.log("Data:::UpVote ", data);
+        return API.post('/upvote', data);
+    }
+
+    static sendDownVoteNoteData(data) {
+        console.log("Data:::DownVote ", data);
+        return API.post('/downvote', data);
+    }
 
 	static createNote(data) {
 		return API.post('/createnote', data);

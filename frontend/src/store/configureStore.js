@@ -1,11 +1,12 @@
 import thunkMiddleware from 'redux-thunk';
 import loggerMiddleware from 'redux-logger';
 import { applyMiddleware, createStore, compose } from 'redux';
+import { loadState, saveState } from './localStorage';
 import rootReducer from './reducers';
 
 const logger = loggerMiddleware;
 
-const initialState = {}
+const initialState = loadState();
 const enhancers = []
 const middleware = [
     thunkMiddleware,
@@ -30,5 +31,9 @@ const store = createStore(
   initialState,
   composedEnhancers
 )
+
+store.subscribe(() => {
+  saveState(store.getState());
+});
 
 export default store;

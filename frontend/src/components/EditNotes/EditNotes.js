@@ -2,29 +2,32 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from  'redux';
 import { sendNoteData } from '../../actions/sessionActions';
+import { sendEditedNoteData } from '../../actions/sessionActions';
 
 import Switch from '@material-ui/core/Switch';
 import FieldText from '@atlaskit/field-text';
 import Button from '@atlaskit/button';
+import EditIcon from '@material-ui/icons/Edit';
 import { Editor } from 'react-draft-wysiwyg';
 import { EditorState, RichUtils, convertToRaw, convertFromRaw } from 'draft-js';
 
 import Popup from "reactjs-popup";
 import { TwitterPicker } from 'react-color';
 
-import './NotesPopup.css';
+import '../NotesPopup/NotesPopup.css';
+
 
 const contentStyle = {
   width: "60%"
 };
 
-
-class NotesPopup extends Component{
-	constructor(props){
+class EditNotes extends Component{
+  constructor(props){
 		super(props);
 		this.state = {
 			user_id: this.props.session.currentUser,
 			title: '',
+			note_id: '',
 			note_body: EditorState.createEmpty(),
 			note_text: '',
 			color: '',
@@ -38,6 +41,25 @@ class NotesPopup extends Component{
 			checked: false,
 			valuesInit : false,
 		};
+	}
+
+	static getDerivedStateFromProps(props, state) {
+		if(!state.valuesInit){
+			return{
+				...state,
+				title : props.title,
+				note_body : EditorState.createEmpty(),
+				color : props.color,
+				note_type : props.note_type,
+				tags : props.tags,
+				note_id : props.note_id,
+				upvotes: 0,
+				downvotes: 0,
+				views: 0,
+				valuesInit : true,
+			}
+		}
+		return null;
 	}
 
 	handleTagInputChange = (evt) => {
@@ -69,22 +91,24 @@ class NotesPopup extends Component{
 	    }
 	}
 
-	onAddNote = () => {
+	onEditNote = () => {
 		const content = JSON.stringify(convertToRaw(this.state.note_body.getCurrentContent()));
 		const noteText = this.state.note_body.getCurrentContent().getPlainText();
 		let payload = {
+			note_id: this.state.note_id,
 			user_id: this.state.user_id,
 			title: this.state.title,
 			note_body: noteText,
 			// note_text: noteText,
 			color: this.state.color,
-			note_type: this.state.note_type,
+			note_type: parseInt(this.state.note_type, 10),
 			tags: this.state.tags,
 			upvotes: this.state.upvotes,
 			downvotes: this.state.downvotes,
 			views: this.state.views,
 		}
-		this.props.sendNoteData(payload);
+    // this.props.sendNoteData(payload);
+    	this.props.sendEditedNoteData(payload);
 	}
 
 	onChangeColor = color => {
@@ -107,16 +131,19 @@ class NotesPopup extends Component{
 		}
 	}
 
+	componentDidMount() {
+
+	}
 
 	onEditorTextChange = (editorState) => {
 		this.setState({ note_body: editorState });
 	}
 
 	render(){
-		console.log(this.props);
+		console.log(this.state);
 		return(
 			<Popup
-    			trigger={<Button houldFitContainer appearance="primary">Create a New Note </Button>}
+    			trigger={<EditIcon style={{padding: "5px", cursor: "pointer"}}/>}
     			modal
     			contentStyle={contentStyle}>
 
@@ -129,6 +156,11 @@ class NotesPopup extends Component{
 								autoFocus shouldFitContainer value={this.state.title}
 								onChange={e => this.setState({title: e.target.value})}/>
 						</div>
+						{/* <div>
+							<textarea className = "DescriptionStyle" placeholder="Enter Description ..." type="text" 
+							value={this.state.note_body}
+							onChange={(e) => this.setState({ note_body: e.target.value })} /> <br />
+						</div> */}
 						<Editor 
 							className={"editor"}
 							editorState={this.state.note_body}
@@ -170,7 +202,9 @@ class NotesPopup extends Component{
 							</label>		
 						</div>
 						<Button houldFitContainer appearance="primary" className="add-note-btn" 
-							onClick = {() => {this.onAddNote(); close(); }}>Add Note</Button>
+							onClick = {() => {this.onEditNote(); close(); }}>
+              {this.props.edit ? "Edit Note" : "Add Note"}
+            </Button>
 					</div>
 				)}
 			</Popup>
@@ -179,15 +213,16 @@ class NotesPopup extends Component{
 }
 
 const mapStateToProps = (state) =>{
-	return{
-		session: {...state.session}
-	}; 
+    return{
+        session: {...state.session}
+    }; 
 }
 
 function mapDispatchToProps(dispatch){
-	return bindActionCreators({
-		sendNoteData
-	}, dispatch);
+  return bindActionCreators({
+    sendNoteData,
+    sendEditedNoteData
+  }, dispatch);
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(NotesPopup);
+export default connect(mapStateToProps, mapDispatchToProps)(EditNotes);

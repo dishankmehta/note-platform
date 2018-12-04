@@ -60,12 +60,19 @@
 .container {
   height: 100vh;
   width: 100vw;
+  overflow: hidden;
+}
+
+.sub-container {
+  height: 95%;
+  width: 100%;
   display: flex;
-  flex: column wrap ;
+  flex: column wrap;
 }
 
 .app-nav {
-  height: 4%;
+  height: 3%;
+  width: 100%;
   padding: 1%;
   box-shadow: 0 4px 2px 0 rgba(0,0,0,0.2);
 }
@@ -74,4 +81,70 @@
   width: "5%";
 }
 
+.menu-icon {
+  float: left;
+  border-radius: 50%;
+  cursor: pointer;
+}
 
+.menu-icon:hover {
+  background-color: #eeeeee;
+}
+
+.app-name-div {
+  float: left;
+  padding: 0% 0%;
+  color: #0052cc;
+  margin-left: 2%;
+  font-weight: 600;
+  font-size: 1.1em;
+}
+
+.avatar {
+  float: right;
+  position: absolute !important;
+  top: 0.75%;
+  right: 5%;
+  cursor: pointer;
+}
+
+.avatar-div {
+  display: flex;
+  padding: 6%;
+  width: 100%;
+  height: 6%;
+  margin: 2% 0%;
+  cursor: pointer;
+  align-items: center;
+  border-bottom: 1px solid #eeeeee;
+
+}
+
+.avatar-div:hover {
+  background-color: #eeeeee;
+}
+
+.avatar-div:last-child {
+  border-bottom: 0;
+}
+
+.avatar-div > a {
+  width: 100%;
+  text-align: left;
+  text-decoration: none;
+  font-size: 18px;
+  color: #0052cc;
+  transition: 0.1s;
+  margin-left: 10px;
+}
+
+.MuiPopover-paper-13 {
+  width: 100% !important;
+  left: 1283px !important;
+}
+
+.pages-container {
+  height: 100%;
+  margin-left: 5%;
+  overflow-y: auto;
+}

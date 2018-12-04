@@ -1,0 +1,16 @@
+.searchbox{
+	width: 40%;
+    float: left;
+    margin-left: 18%;
+    position: relative;
+    top: -32px;
+}
+
+/* .searchbox > input {
+	position: relative;
+    width: 100%;
+    padding: 2%;
+    color: white;
+    background-color: #eeeeee;
+    top: -8.5px;
+} */
