@@ -3,17 +3,16 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from  'redux';
 import { sendNoteData } from '../../actions/sessionActions';
 import { sendEditedNoteData } from '../../actions/sessionActions';
-
+import { getPublicNotes} from '../../actions/sessionActions'
+import { getPrivateNotes } from '../../actions/sessionActions'
 import Switch from '@material-ui/core/Switch';
 import FieldText from '@atlaskit/field-text';
 import Button from '@atlaskit/button';
 import EditIcon from '@material-ui/icons/Edit';
 import { Editor } from 'react-draft-wysiwyg';
 import { EditorState, RichUtils, convertToRaw, convertFromRaw } from 'draft-js';
-
 import Popup from "reactjs-popup";
 import { TwitterPicker } from 'react-color';
-
 import '../NotesPopup/NotesPopup.css';
 
 
@@ -149,7 +148,9 @@ class EditNotes extends Component{
 	}
 
 	componentDidMount() {
-
+    let data = {user_id:this.props.session.currentUser};
+    this.props.getPrivateNotes(data);
+    this.props.getPublicNotes(data);
 	}
 
 	onEditorTextChange = (editorState) => {
@@ -233,7 +234,9 @@ const mapStateToProps = (state) =>{
 function mapDispatchToProps(dispatch){
   return bindActionCreators({
     sendNoteData,
-    sendEditedNoteData
+    sendEditedNoteData,
+    getPublicNotes,
+    getPrivateNotes
   }, dispatch);
 }
 

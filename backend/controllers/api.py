@@ -26,13 +26,6 @@ def api_after_request(response):
 @api.route('/')
 def home():
     return render_template('index.html')
-
-@api.route('/sample')
-def sample():
-    print('sample called')
-    return jsonify(data='sample api')
-
-
 @api.route('/group_note', methods=['POST'])
 def group_note():
     data = request.get_json() or dict()
@@ -45,6 +38,13 @@ def group_note():
     title = data.get('title')
     note_type = data.get('note_type')
     note_body = data.get('note_body')
+
+@api.route('/sample')
+def sample():
+    print('sample called')
+    return jsonify(data='sample api')
+
+
     upvotes = data.get('upvotes')
     downvotes = data.get('downvotes')
     views = data.get('views')
