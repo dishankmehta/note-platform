@@ -147,11 +147,11 @@ class MainNotes extends Component {
               <NotesPopup />
             </div>
             {!isEmpty(publicNotes) ? <h2 className = "notesheadingstyle">My Public Notes</h2>: null}
-            <div style={{display: "inline-block", overflowY: "auto"}}>
+            <div style={{display: "inline-block", overflowY: "auto", overflowX: "hidden"}}>
               {!isEmpty(publicNotes) ? this.renderAllNotes(publicNotes) : null}
             </div>
             {!isEmpty(privateNotes) ? <h2 className = "notesheadingstyle">My Private Notes</h2>: null}
-            <div style={{display: "inline-block", overflowY: "auto"}}>
+            <div style={{display: "inline-block", overflowY: "auto", overflowX: "hidden"}}>
               {!isEmpty(privateNotes) ? this.renderAllNotes(privateNotes) : null}
             </div>
         </div>   
