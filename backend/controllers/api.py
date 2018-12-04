@@ -5,7 +5,8 @@ from flask_cors import CORS
 from backend.extensions import cache
 from backend.forms import LoginForm
 from backend.models import db, User, Note, PrivateNotes, UserGroupInfo, Group, PublicNotes, CheatSheet
-import operator from backend.models import db, User, Note, PrivateNotes, UserGroupInfo, Group, PublicNotes, CheatSheet, GroupNotes
+import operator
+from backend.models import db, User, Note, PrivateNotes, UserGroupInfo, Group, PublicNotes, CheatSheet, GroupNotes
 
 api = Blueprint('api', __name__, url_prefix="/")
 # CORS(api)
@@ -85,7 +86,6 @@ def edit_note():
         note.title = data.get('title')
         note.note_type = data.get('note_type')
 
-        if data.get('note_id') == 1:
 
         if data.get('note_type') == 1:
             public_note = PublicNotes.query.filter_by(user_id=str(data.get('user_id'))).first()
