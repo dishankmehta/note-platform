@@ -40,24 +40,6 @@ class NotesPopup extends Component{
 		};
 	}
 
-	static getDerivedStateFromProps(props, state) {
-		return{
-			user_id: props.session.currentUser,
-			title: '',
-			note_text: '',
-			color: '',
-			note_type: '2',
-			tags: [],
-			upvotes: 0,
-			downvotes: 0,
-			views: 0,
-			tagInput : '',
-			focused : false,
-			checked: false,
-			valuesInit : false,
-		}
-	}
-
 	handleTagInputChange = (evt) => {
     	this.setState({ tagInput: evt.target.value });
 	}
@@ -125,9 +107,6 @@ class NotesPopup extends Component{
 		}
 	}
 
-	componentDidMount() {
-
-	}
 
 	onEditorTextChange = (editorState) => {
 		this.setState({ note_body: editorState });
@@ -150,11 +129,6 @@ class NotesPopup extends Component{
 								autoFocus shouldFitContainer value={this.state.title}
 								onChange={e => this.setState({title: e.target.value})}/>
 						</div>
-						{/* <div>
-							<textarea className = "DescriptionStyle" placeholder="Enter Description ..." type="text" 
-							value={this.state.note_body}
-							onChange={(e) => this.setState({ note_body: e.target.value })} /> <br />
-						</div> */}
 						<Editor 
 							className={"editor"}
 							editorState={this.state.note_body}
