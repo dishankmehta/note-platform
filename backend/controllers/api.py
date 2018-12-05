@@ -604,7 +604,7 @@ def get_recommended_notes():
 
             final_data = dict()
             # getting public notes of other users ordering by upvotes
-            notes = Note.query.filter(id != 0).all()
+            notes = Note.query.filter_by(note_type='2')
             for note in notes:
                 if str(note.id) not in note_list:
                     tags_string = note.tags

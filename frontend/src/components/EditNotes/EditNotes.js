@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from  'redux';
+import { getPublicNotes } from '../../actions/sessionActions'
+import { getPrivateNotes } from '../../actions/sessionActions'
 import { sendNoteData } from '../../actions/sessionActions';
 import { sendEditedNoteData } from '../../actions/sessionActions';
 import { sendEditGroupNoteData } from '../../actions/sessionActions';
@@ -30,7 +32,7 @@ class EditNotes extends Component{
 			note_body: EditorState.createEmpty(),
 			note_text: '',
 			color: '',
-			note_type: '2',
+			note_type: this.props.cheatsheet? '3' : '2',
 			tags: '',
 			upvotes: 0,
 			downvotes: 0,
@@ -56,12 +58,13 @@ class EditNotes extends Component{
 				note_type : props.note_type,
 				tags : props.tags+",",
 				note_id : props.note_id,
-				upvotes: 0,
-				downvotes: 0,
+				upvotes: props.upvotes,
+				downvotes: props.downvotes,
 				// emails: props.emails,
 				emailInput: '',
-				views: 0,
+				views: props.views,
 				valuesInit : true,
+				checked: props.note_type === '1' ? true : false
 			}
 		}
 		return null;
@@ -155,7 +158,7 @@ class EditNotes extends Component{
 			note_body: EditorState.createEmpty(),
 			note_text: '',
 			color: '',
-			note_type: '2',
+			note_type: this.props.cheatsheet? '3' : '2',
 			tags: '',
 			upvotes: 0,
 			downvotes: 0,
@@ -190,9 +193,9 @@ class EditNotes extends Component{
 	}
 
 	componentDidMount() {
-    let data = {user_id:this.props.session.currentUser};
-    this.props.getPrivateNotes(data);
-    this.props.getPublicNotes(data);
+		let data = {user_id:this.props.session.currentUser};
+		this.props.getPrivateNotes(data);
+		this.props.getPublicNotes(data);
 	}
 
 	onEditorTextChange = (editorState) => {
@@ -200,8 +203,8 @@ class EditNotes extends Component{
 	}
 
 	render(){
-		// console.log(this.state);
-		console.log(this.props.group);
+		console.log(this.state);
+		// console.log(this.props.group);
 		return(
 			<Popup
     			trigger={<EditIcon style={{padding: "5px", cursor: "pointer"}}/>}
@@ -233,7 +236,8 @@ class EditNotes extends Component{
 								onChange = {this.onChangeColor}
 							/>
 							{
-								!this.props.group?
+								(!this.props.group) || 
+								(!this.props.cheatsheet)?
 								<div style={{width: "276px", height: "96px", marginTop: "10px", 
 									justifyContent: "center", textAlign: "center", fontSize: "1.5em"}}>
 									Private?
@@ -241,34 +245,31 @@ class EditNotes extends Component{
 									onChange={this.handleOptionChange('checked')}/>
 								</div>:null
 							}
-							{/* <div style={{width: "276px", height: "96px", marginTop: "10px", 
-								justifyContent: "center", textAlign: "center", fontSize: "1.5em"}}>
-								Private?
-								<Switch color="primary"  checked={this.state.checked} 
-								onChange={this.handleOptionChange('checked')}/>
-							</div> */}
 						</div>
-						<div>
-							<label>
-								<ul className = "tagContainer">
-									<div>
-										{this.state.tags.split(",").map((tag, i) => {
-											if(tag !== ''){
-												return <li key={i} className = "tagItems" onClick={this.handleRemoveTag(i)}>
-													{tag}
-													<span>(x)</span>
-												</li>
-											}
-											return null
-										})}
-									</div>
-									<FieldText type="text" name="title" placeholder="Tag..." 
-									shouldFitContainer value={this.state.tagInput}
-									onChange={this.handleTagInputChange}
-									onKeyDown={this.handleTagInputKeyDown}/>
-								</ul>
-							</label>		
-						</div>
+						{
+							!this.props.cheatsheet?
+								<div>
+								<label>
+									<ul className = "tagContainer">
+										<div>
+											{this.state.tags.split(",").map((tag, i) => {
+												if(tag !== ''){
+													return <li key={i} className = "tagItems" onClick={this.handleRemoveTag(i)}>
+														{tag}
+														<span>(x)</span>
+													</li>
+												}
+												return null
+											})}
+										</div>
+										<FieldText type="text" name="title" placeholder="Tag..."
+										shouldFitContainer value={this.state.tagInput || ""}
+										onChange={this.handleTagInputChange}
+										onKeyDown={this.handleTagInputKeyDown}/>
+									</ul>
+								</label>		
+							</div>:null
+						}
 						{
 							this.props.group ? 
 							<div>
@@ -295,7 +296,7 @@ class EditNotes extends Component{
 						}
 						<Button houldFitContainer appearance="primary" className="add-note-btn" 
 							onClick = {() => {this.onEditNote(); close(); }}>
-              {this.props.edit ? "Edit Note" : "Add Note"}
+              				{this.props.edit ? this.props.cheatsheet? "Edit Cheatsheet" : "Edit Note" : "Add Note"}
             </Button>
 					</div>
 				)}
@@ -314,7 +315,9 @@ function mapDispatchToProps(dispatch){
   return bindActionCreators({
 	sendNoteData,
 	sendEditedNoteData,
-    sendEditGroupNoteData
+	sendEditGroupNoteData,
+	getPublicNotes,
+	getPrivateNotes
   }, dispatch);
 }
 

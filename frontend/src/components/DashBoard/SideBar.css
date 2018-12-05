@@ -138,9 +138,14 @@
   margin-left: 10px;
 }
 
-.MuiPopover-paper-13 {
+/* .MuiPopover-paper-13 {
   width: 100% !important;
   left: 1283px !important;
+} */
+
+.sidebar-popup {
+  width: 100% !important;
+  /* left: 1283px !important; */
 }
 
 .pages-container {

@@ -22,6 +22,14 @@ export default class appAPI {
 		return API.post('/get_group_notes', data);
 	}
 
+	static getRecommendedNotes(data){
+		return API.post('/get_recommended_notes', data);
+	}
+
+	static getCheatSheets(data){
+		return API.post('/get_cheatsheets', data);
+	}
+
 	static sendGroupNoteData(data){
 		return API.post('/group_note', data);
 	}

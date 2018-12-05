@@ -83,7 +83,7 @@ class MainNotes extends Component {
               Tags:&nbsp;
               {
                 tags.map((tag) => {
-                  return <span>{tag}</span>
+                  return <span key={tag}>{tag}</span>
                 })
               }
             </div>

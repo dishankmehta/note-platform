@@ -4,20 +4,14 @@ import { bindActionCreators } from  'redux';
 
 import NotesPopup from '../NotesPopup/NotesPopup';
 import EditNotes from '../EditNotes/EditNotes';
-import { getGroupNotes } from '../../actions/sessionActions'
-import { sendUpVoteNoteData } from '../../actions/sessionActions';
-import { sendDownVoteNoteData } from '../../actions/sessionActions';
+import { getCheatSheets } from '../../actions/sessionActions'
 import { sendDeleteNoteData } from '../../actions/sessionActions';
 import { Card } from '../CustomComponents/Card';
 
 
 import isEmpty from 'lodash/isEmpty';
 
-import TextField from '@material-ui/core/TextField';
 import DeleteIcon from '@material-ui/icons/Delete';
-import LikeIcon from '@material-ui/icons/ThumbUp';
-import DisLikeIcon from '@material-ui/icons/ThumbDown';
-
 import '../DashBoard/MainNotes.css';
 
 
@@ -41,18 +35,8 @@ class MainNotes extends Component {
 
   componentDidMount() {
     let data = {user_id:this.props.session.currentUser};
-    this.props.getGroupNotes(data);
+    this.props.getCheatSheets(data);
   }
-
-  onUpVoteNote = (note_id) => {
-    let data = { note_id  }
-    this.props.sendUpVoteNoteData(data);
-  };
-
-  onDownVoteNote = (note_id) => {
-    let data = { note_id }
-    this.props.sendDownVoteNoteData(data);
-  };
 
   onDeleteNote = (note_id, note_type_data, user_id) => {
     const note_type = parseInt(note_type_data,10)
@@ -79,26 +63,12 @@ class MainNotes extends Component {
             <div style={{height: "140px", overflow: "auto"}}>
               {note_item.note_text}
             </div>
-            <div>
-              Tags:&nbsp;
-              {
-                tags.map((tag) => {
-                  return <span key={tag}>{tag}</span>
-                })
-              }
-            </div>
             <br />
             <div style={{float: "right", marginTop: "5px"}}>
-              <LikeIcon  onClick = {() => {this.onUpVoteNote(note_item.id)}} 
-              style={{marginLeft: "7px", marginRight: "7px", padding: "5px", cursor: "pointer"}}/>
-              <TextField style = {{marginTop: 7, width: 20, height: 20, cursor:"none", pointerEvents:"none"}} value={note_item.upvotes}/>
-              <DisLikeIcon onClick = {() => {this.onDownVoteNote(note_item.id)}} 
-              style={{marginLeft: "7px", marginRight: "7px", padding: "5px", cursor: "pointer"}}/>
-              <TextField style = {{ marginTop: 7, height: 20, width: 20, cursor:"none", pointerEvents:"none"}} value={note_item.downvotes}/>
               <EditNotes 
                   style={{marginLeft: "7px", marginRight: "7px", padding: "5px", cursor: "pointer"}}
                   edit={true}
-                  group={true}
+                  cheatsheet={true}
                   title={note_item.title}
                   note_body={note_item.note_body}
                   note_text={note_item.note_text}
@@ -122,19 +92,13 @@ class MainNotes extends Component {
 
   render(){
     const username = this.props.session.currentUser;
-    const groupNotes = this.props.session.groupNotes;
-    if(isEmpty(groupNotes)){
+    const cheatsheets = this.props.session.cheatsheets;
+    if(isEmpty(cheatsheets)){
       return (
         <div>
             <div className = "main-style">
-              {/* <div className = "welcome-style">
-                { this.props.session.currentUser.toUpperCase()} , Welcome to Study Genie
-              </div>
-              <div className = "secondDiv-style">
-                <span> Note taking made easier! </span>
-              </div> */}
               <div className = "create-new-note">
-                <NotesPopup group={true} />
+                <NotesPopup cheatsheet={true}/>
               </div>
             </div>        
         </div>
@@ -143,11 +107,11 @@ class MainNotes extends Component {
       return(
         <div>
             <div className="col-xs-12" style={{float: "right", marginTop: "5px", marginRight: "10px"}}>
-              <NotesPopup group={true} />
+              <NotesPopup cheatsheet={true}/>
             </div>
-            {!isEmpty(groupNotes) ? <h2 className = "notesheadingstyle">My Group Notes</h2>: null}
+            {!isEmpty(cheatsheets) ? <h2 className = "notesheadingstyle">Cheatsheets</h2>: null}
             <div style={{overflowY: "auto", overflowX: "hidden", marginTop: "5%", marginBottom: "5%"}}>
-              {!isEmpty(groupNotes) ? this.renderAllNotes(groupNotes) : null}
+              {!isEmpty(cheatsheets) ? this.renderAllNotes(cheatsheets) : null}
             </div>
         </div>   
       );  
@@ -163,7 +127,7 @@ const mapStateToProps = (state) =>{
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ getGroupNotes,  sendUpVoteNoteData, sendDownVoteNoteData, sendDeleteNoteData }, dispatch);
+    return bindActionCreators({ getCheatSheets, sendDeleteNoteData }, dispatch);
 }
 
 export default connect(mapStateToProps,mapDispatchToProps)(MainNotes);

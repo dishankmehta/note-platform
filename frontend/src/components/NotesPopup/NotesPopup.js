@@ -29,7 +29,7 @@ class NotesPopup extends Component{
 			note_body: EditorState.createEmpty(),
 			note_text: '',
 			color: '',
-			note_type: '2',
+			note_type: this.props.cheatsheet? '3' : '2',
 			tags: '',
 			upvotes: 0,
 			downvotes: 0,
@@ -123,7 +123,7 @@ class NotesPopup extends Component{
 			note_body: EditorState.createEmpty(),
 			note_text: '',
 			color: '',
-			note_type: '2',
+			note_type: this.props.cheatsheet? '3' : '2',
 			tags: '',
 			upvotes: 0,
 			downvotes: 0,
@@ -163,10 +163,11 @@ class NotesPopup extends Component{
 	}
 
 	render(){
-		// console.log(this.state);
+		console.log(this.state);
 		return(
 			<Popup
-    			trigger={<Button houldFitContainer appearance="primary">{ this.props.group ? "Create a Group Note" : "Create a New Note" }</Button>}
+    			trigger={<Button houldFitContainer appearance="primary">{ 
+					this.props.group ? "Create a Group Note" : this.props.cheatsheet ? "Create a Cheatsheet" : "Create a New Note" }</Button>}
     			modal
     			contentStyle={contentStyle}>
 
@@ -195,7 +196,8 @@ class NotesPopup extends Component{
 								onChange = {this.onChangeColor}
 							/>
 							{
-								!this.props.group?
+								(!this.props.group ) ||
+								(!this.props.cheatsheet)?
 								<div style={{width: "276px", height: "96px", marginTop: "10px", 
 									justifyContent: "center", textAlign: "center", fontSize: "1.5em"}}>
 									Private?
@@ -203,34 +205,31 @@ class NotesPopup extends Component{
 									onChange={this.handleOptionChange('checked')}/>
 								</div>:null
 							}
-							{/* <div style={{width: "276px", height: "96px", marginTop: "10px", 
-								justifyContent: "center", textAlign: "center", fontSize: "1.5em"}}>
-								Private?
-								<Switch color="primary"  checked={this.state.checked} 
-								onChange={this.handleOptionChange('checked')}/>
-							</div> */}
 						</div>
-						<div>
-							<label>
-								<ul className = "tagContainer">
-									<div>
-										{this.state.tags.split(",").map((tag, i) => {
-											if(tag !== ''){
-												return <li key={i} className = "tagItems" onClick={this.handleRemoveTag(i)}>
-													{tag}
-													<span>(x)</span>
-												</li>
-											}
-											return null
-										})}
-									</div>
-									<FieldText type="text" name="title" placeholder="Tag..."
-									shouldFitContainer value={this.state.tagInput || ""}
-									onChange={this.handleTagInputChange}
-									onKeyDown={this.handleTagInputKeyDown}/>
-								</ul>
-							</label>		
-						</div>
+						{
+							!this.props.cheatsheet?
+								<div>
+								<label>
+									<ul className = "tagContainer">
+										<div>
+											{this.state.tags.split(",").map((tag, i) => {
+												if(tag !== ''){
+													return <li key={i} className = "tagItems" onClick={this.handleRemoveTag(i)}>
+														{tag}
+														<span>(x)</span>
+													</li>
+												}
+												return null
+											})}
+										</div>
+										<FieldText type="text" name="title" placeholder="Tag..."
+										shouldFitContainer value={this.state.tagInput || ""}
+										onChange={this.handleTagInputChange}
+										onKeyDown={this.handleTagInputKeyDown}/>
+									</ul>
+								</label>		
+							</div>:null
+						}
 						{
 							this.props.group ? 
 							<div>
@@ -256,7 +255,9 @@ class NotesPopup extends Component{
 							</div>:null
 						}
 						<Button shouldFitContainer appearance="primary" className="add-note-btn" 
-							onClick = {() => {this.onAddNote(); close(); }}>Add Note</Button>
+							onClick = {() => {this.onAddNote(); close(); }}>
+							{this.props.cheatsheet? "Add Cheatsheet" : "Add Note"}
+						</Button>
 					</div>
 				)}
 			</Popup>
