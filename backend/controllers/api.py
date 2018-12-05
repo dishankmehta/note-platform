@@ -195,69 +195,71 @@ def edit_note():
         note.note_type = data.get('note_type')
         if data.get('note_type') == 1:
             public_note = PublicNotes.query.filter_by(user_id=str(data.get('user_id'))).first()
-            note_list = public_note.note_id
-            note_list = note_list.split(",")
+            if public_note is not None:
+                note_list = public_note.note_id
+                note_list = note_list.split(",")
 
-            if data.get('note_id') in note_list:
+                if data.get('note_id') in note_list:
 
-                # this means that the it was a public note and now it has become private
-                # deleting that entry from public notes
-                note_list.remove(str(data.get('note_id')))
-                print ("rdtfygvbhuinjrdctfgvybhjkndrxcfgvhb jn")
-                result = ""
-                for item in note_list:
-                    if item is not '':
-                        result += item + ","
-                public_note.note_id = result
-                db.session.commit()
-
-                # adding it to private note for that user.
-                user_id = str(data.get('user_id'))
-                user_data = PrivateNotes.query.filter_by(user_id=user_id).first()
-
-                print("User data; ", user_data)
-                if user_data is not None:
-                    note_id = str(data.get('note_id')) + ","
-                    user_data.note_id += note_id
+                    # this means that the it was a public note and now it has become private
+                    # deleting that entry from public notes
+                    note_list.remove(str(data.get('note_id')))
+                    print ("rdtfygvbhuinjrdctfgvybhjkndrxcfgvhb jn")
+                    result = ""
+                    for item in note_list:
+                        if item is not '':
+                            result += item + ","
+                    public_note.note_id = result
                     db.session.commit()
-                else:
-                    note_id = str(data.get('note_id')) + ","
-                    private_note = PrivateNotes(user_id, note_id)
-                    db.session.add(private_note)
-                    db.session.commit()
+
+                    # adding it to private note for that user.
+                    user_id = str(data.get('user_id'))
+                    user_data = PrivateNotes.query.filter_by(user_id=user_id).first()
+
+                    print("User data; ", user_data)
+                    if user_data is not None:
+                        note_id = str(data.get('note_id')) + ","
+                        user_data.note_id += note_id
+                        db.session.commit()
+                    else:
+                        note_id = str(data.get('note_id')) + ","
+                        private_note = PrivateNotes(user_id, note_id)
+                        db.session.add(private_note)
+                        db.session.commit()
 
         if data.get('note_type') == 2:
 
             private_note = PrivateNotes.query.filter_by(user_id=str(data.get('user_id'))).first()
-            note_list = private_note.note_id
-            print("Inside here")
-            note_list = note_list.split(",")
-            print(note_list)
-            if str(data.get('note_id')) in note_list:
-                # this means that the it was a public note and now it has become private
-                # deleting that entry from public notes
+            if private_note is not None:
+                note_list = private_note.note_id
                 print("Inside here")
-                note_list.remove(str(data.get('note_id')))
-                result = ""
-                for item in note_list:
-                    if item is not '':
-                        result += item + ","
-                private_note.note_id = result
-                db.session.commit()
+                note_list = note_list.split(",")
+                print(note_list)
+                if str(data.get('note_id')) in note_list:
+                    # this means that the it was a public note and now it has become private
+                    # deleting that entry from public notes
+                    print("Inside here")
+                    note_list.remove(str(data.get('note_id')))
+                    result = ""
+                    for item in note_list:
+                        if item is not '':
+                            result += item + ","
+                    private_note.note_id = result
+                    db.session.commit()
 
-                # adding it to private note for that user.
-                user_id = str(data.get('user_id'))
-                user_data = PublicNotes.query.filter_by(user_id=user_id).first()
-                print("User data; ", user_data)
-                if user_data is not None:
-                    note_id = str(data.get('note_id')) + ","
-                    user_data.note_id += note_id
-                    db.session.commit()
-                else:
-                    note_id = str(data.get('note_id')) + ","
-                    public_note = PublicNotes(user_id, note_id)
-                    db.session.add(public_note)
-                    db.session.commit()
+                    # adding it to private note for that user.
+                    user_id = str(data.get('user_id'))
+                    user_data = PublicNotes.query.filter_by(user_id=user_id).first()
+                    print("User data; ", user_data)
+                    if user_data is not None:
+                        note_id = str(data.get('note_id')) + ","
+                        user_data.note_id += note_id
+                        db.session.commit()
+                    else:
+                        note_id = str(data.get('note_id')) + ","
+                        public_note = PublicNotes(user_id, note_id)
+                        db.session.add(public_note)
+                        db.session.commit()
 
         note.note_body = data.get('note_body')
         note.note_text = data.get('note_text')
@@ -781,7 +783,7 @@ def get_line_data_user_all():
 
 
 
- 
+
     return_list = []
     first_element = []
     first_element.append("popularity index")
