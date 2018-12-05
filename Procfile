@@ -1,3 +1,2 @@
-web: gunicorn manage:app
-
 release: python manage.py createdb
+web: gunicorn manage:app
