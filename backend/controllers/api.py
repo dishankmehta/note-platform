@@ -604,7 +604,7 @@ def get_recommended_notes():
 
             final_data = dict()
             # getting public notes of other users ordering by upvotes
-            notes = Note.query.filter(id != 0).all()
+            notes = Note.query.filter_by(note_type='2')
             for note in notes:
                 if str(note.id) not in note_list:
                     tags_string = note.tags
@@ -756,4 +756,42 @@ def get_pie_data_user_all():
     return_list.append(private_object)
 
     return jsonify(data=return_list, success=True)
+
+
+@api.route("/get_line_data_user_all", methods=["POST"])
+def get_line_data_user_all():
+
+    data = request.get_json()
+    user_id = data.get('user_id')
+
+    notes = Note.query.filter(id != 0).all()
+    tags_dict = dict()
+    for note in notes:
+        tags_list = note.tags.split(",")
+        for tags in tags_list:
+            if tags in tags_dict:
+                tags_dict[tags] += 1
+            else:
+                tags_dict[tags] = 1
+
+    total_tags = 0
+    for key, value in tags_dict.items():
+        total_tags += value
+
+    return_list = []
+    first_element = []
+    first_element.append("popularity index")
+    first_element.append("popularity amount")
+    first_element.append("Tag")
+    for key, value in tags_dict.items():
+        list_this = []
+        list_this.append((value/total_tags)*100)
+        list_this.append(value)
+        list_this.append(key)
+        return_list.append(list_this)
+
+    print(return_list)
+    return_dict = dict()
+    return_dict['source'] = return_list
+    return jsonify(dataset=return_dict, success=True)
 
