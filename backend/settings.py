@@ -1,4 +1,5 @@
 import tempfile
+import os
 db_file = tempfile.NamedTemporaryFile()
 
 
