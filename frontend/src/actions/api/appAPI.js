@@ -18,6 +18,18 @@ export default class appAPI {
 		return API.post('/get_private_notes', data);
 	}
 
+	static getGroupNotes(data){
+		return API.post('/get_group_notes', data);
+	}
+
+	static sendGroupNoteData(data){
+		return API.post('/group_note', data);
+	}
+
+	static sendEditGroupNoteData(data){
+		return API.post('/edit_group_note', data);
+	}
+
 	static sendNoteData(data) {
 		console.log("Data:::::::: ", data);
 		return API.post('/add_note', data);

@@ -1,5 +1,5 @@
 import json
-from flask import Blueprint, render_template, flash, request, redirect, url_for, jsonify
+from flask import Blueprint, render_template, flash, request, redirect, url_for, jsonify, session
 from flask_login import login_user, logout_user, login_required, current_user
 from flask_cors import CORS
 from backend.extensions import cache
@@ -29,6 +29,74 @@ def api_after_request(response):
 @api.route('/')
 def home():
     return render_template('index.html')
+
+@api.route('/sample')
+def sample():
+    print('sample called')
+    return jsonify(data='sample api')
+
+@api.route('/edit_group_note', methods=['POST'])
+def edit_group_note():
+    data = request.get_json() or dict()
+
+    if not data:
+        return jsonify(success=False)
+    
+    data = request.get_json()
+    title = data.get('title')
+    note_id = data.get('note_id')
+    user_id = data.get('user_id')
+    note_type = data.get('note_type')
+    note_body = data.get('note_body')
+    note_text = data.get('note_text')
+    upvotes = data.get('upvotes')
+    downvotes = data.get('downvotes')
+    views = data.get('views')
+    tags = data.get('tags')
+    color = data.get('color')
+    group_user_ids = data.get('group_user_emails') 
+
+    group_user_ids_list = group_user_ids.split(",")
+    group_notes = GroupNotes.query.all()
+    group_note_user_list = [item.user_id for item in group_notes]
+
+    for item in group_note_user_list:
+        note_ids = GroupNotes.query.filter_by(user_id=item).first().note_id.split(",")
+        if item not in group_user_ids_list:
+            for id in range(len(note_ids)):
+                if note_ids[id] is not None and note_ids[id] == note_id:
+                    del note_ids[id]
+                    if len(note_ids) == 0:
+                        note_ids = ""
+                    note_ids = ",".join(note_ids)
+                    group_obj = GroupNotes.query.filter_by(user_id=item)
+                    group_obj.note_id = note_ids+","
+                    db.session.commit()
+        else:
+            if note_id not in note_ids:
+                group_obj = GroupNotes.query.filter_by(user_id=item)
+                group_obj.note_id += str(note_id)+","
+                db.session.commit()
+           
+    for item in group_user_ids_list:
+        if item not in group_note_user_list:
+            note_id = str(note_id)+","
+            group_note = GroupNotes(item, note_id)
+            db.session.add(group_note)
+            db.session.commit()
+
+    note.title = title
+    note.note_body = note_body
+    note.note_text = note_text
+    note.upvotes = upvotes
+    note.downvotes = downvotes
+    note.views = views
+    note.tags = tags
+    note.color = color
+    db.session.commit()
+    
+    return jsonify(note=[], success=True)
+
 @api.route('/group_note', methods=['POST'])
 def group_note():
     data = request.get_json() or dict()
@@ -39,43 +107,82 @@ def group_note():
     
     data = request.get_json()
     title = data.get('title')
+    user_id = data.get('user_id')
     note_type = data.get('note_type')
     note_body = data.get('note_body')
-
-@api.route('/sample')
-def sample():
-    print('sample called')
-    return jsonify(data='sample api')
-
-
+    note_text = data.get('note_text')
     upvotes = data.get('upvotes')
     downvotes = data.get('downvotes')
     views = data.get('views')
     tags = data.get('tags')
     color = data.get('color')
-    user_email = data.get('email')
+    # user_email = data.get('email')
     group_user_ids = data.get('group_user_emails') 
-    note = Note(title, note_type, note_body, upvotes, downvotes, views, tags, color)
+    note = Note(title, note_type, note_body, note_text, upvotes, downvotes, views, tags, color)
     db.session.add(note)
     db.session.commit()
 
+    user_email = User.query.filter_by(username=user_id).first().email
     user_list = []
     user_list.append(user_email)
-    group_user_ids = group_user_ids.split(",")
+    group_user_ids = group_user_ids.split(',')
     for item in group_user_ids:
-        user_list.extend(item)
+        if item is not None:
+            user_list.append(item)
 
     note_id = note.id
-
+    del user_list[-1]
+    print(user_list)
     for user in user_list:
         user = User.query.filter_by(email=user).first()
-        group_note = GroupNotes(user.id, note_id)
-        db.session.add(group_note)
-        db.session.commit()
-
-
+        group = GroupNotes.query.filter_by(user_id=user.username).first()
+        if group is not None:
+            group.note_id += str(note_id)+","
+            db.session.commit()
+        else:
+            note_id = str(note_id)+","
+            group_note = GroupNotes(user.username, note_id)
+            db.session.add(group_note)
+            db.session.commit()
+        
 
     return jsonify(note=[], success=True)
+
+@api.route("/get_group_notes", methods=["POST"])
+def get_group_notes():
+
+    data = request.get_json()
+    group_note = GroupNotes.query.filter_by(user_id=data.get('user_id')).first()
+
+    if group_note is None:
+        return jsonify(notes={}, success=True)
+    else:
+        print(group_note.note_id)
+        note_id_list = group_note.note_id
+        print("Note_id_list", note_id_list)
+        note_object = {}
+        note_id_list = note_id_list.split(",")
+        i = 0
+
+        for id in note_id_list:
+                print("Note id:", id)
+                if id != '':
+                    note = Note.query.filter_by(id=id).first()
+                    note_object[i] = {}
+                    note_object[i]['id'] = note.id
+                    note_object[i]['title'] = note.title
+                    note_object[i]['note_type'] = note.note_type
+                    note_object[i]['note_body']= note.note_body
+                    note_object[i]['note_text']= note.note_text
+                    note_object[i]['upvotes'] = note.upvotes
+                    note_object[i]['downvotes'] = note.downvotes
+                    note_object[i]['views'] = note.views
+                    note_object[i]['tags'] = note.tags
+                    note_object[i]['color']= note.color
+                    i += 1
+        print(note_object)
+        print(type(note_object))
+        return jsonify(notes=note_object, success=True)
 
 @api.route('/edit_note', methods=["POST"])
 def edit_note():
@@ -153,6 +260,7 @@ def edit_note():
                     db.session.commit()
 
         note.note_body = data.get('note_body')
+        note.note_text = data.get('note_text')
         note.upvotes = data.get('upvotes')
         note.downvotes = data.get('downvotes')
         note.views = data.get('views')
@@ -168,6 +276,7 @@ def add_note():
     title = data.get('title')
     note_type = data.get('note_type')
     note_body = data.get('note_body')
+    note_text = data.get('note_text')
     upvotes = data.get('upvotes')
     downvotes = data.get('downvotes')
     views = data.get('views')
@@ -176,7 +285,7 @@ def add_note():
     user_id = data.get('user_id')
 
     print(data)
-    note = Note(title, note_type, note_body, upvotes, downvotes, views, tags, color)
+    note = Note(title, note_type, note_body, note_text, upvotes, downvotes, views, tags, color)
     db.session.add(note)
     db.session.commit()
     if note_type is not '':
@@ -326,6 +435,7 @@ def get_private_notes():
                     note_object[i]['title'] = note.title
                     note_object[i]['note_type'] = note.note_type
                     note_object[i]['note_body']= note.note_body
+                    note_object[i]['note_text']= note.note_text
                     note_object[i]['upvotes'] = note.upvotes
                     note_object[i]['downvotes'] = note.downvotes
                     note_object[i]['views'] = note.views
@@ -362,6 +472,7 @@ def get_public_notes():
                     note_object[i]['title'] = note.title
                     note_object[i]['note_type'] = note.note_type
                     note_object[i]['note_body']= note.note_body
+                    note_object[i]['note_text']= note.note_text
                     note_object[i]['upvotes'] = note.upvotes
                     note_object[i]['downvotes'] = note.downvotes
                     note_object[i]['views'] = note.views
@@ -398,6 +509,7 @@ def get_cheatsheets():
                     note_object[i]['title'] = note.title
                     note_object[i]['note_type'] = note.note_type
                     note_object[i]['note_body']= note.note_body
+                    note_object[i]['note_text']= note.note_text
                     note_object[i]['upvotes'] = note.upvotes
                     note_object[i]['downvotes'] = note.downvotes
                     note_object[i]['views'] = note.views

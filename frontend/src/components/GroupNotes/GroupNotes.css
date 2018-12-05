@@ -1,0 +1,23 @@
+.main-style {
+    padding: 20% 25%;
+}
+
+.welcome-style {
+    font-size: 1.3em;
+    font-weight: 600;
+    padding: 4% 0%;
+}
+
+.secondDiv-style {
+    font-size: 1.1em;
+    font-weight: 600;
+    padding: 4% 6%;
+}
+
+.create-new-note {
+    padding: 4% 12%;
+}
+
+.icon-padding {
+    padding: 2px;
+}

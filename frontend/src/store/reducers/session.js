@@ -7,6 +7,7 @@ const defaultState = {
     registerError: '',
     publicNotes: [],
     privateNotes: [],
+    groupNotes: [],
     searchField: '',
 };
 
@@ -43,6 +44,11 @@ function sessionReducer(state = defaultState, action) {
             return{
                 ...state,
                 privateNotes: action.payload
+            }
+        case SessionActionTypes.GROUP_NOTES:
+            return{
+                ...state,
+                groupNotes: action.payload
             }
         case SessionActionTypes.CHANGE_SEARCHFIELD:
             return{ 

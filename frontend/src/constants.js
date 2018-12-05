@@ -10,6 +10,7 @@ export const SessionActionTypes = KeyMirror({
     PUBLIC_NOTES: null,
     PRIVATE_NOTES: null,
     CHANGE_SEARCHFIELD:null,
+    GROUP_NOTES: null,
 });
 
 

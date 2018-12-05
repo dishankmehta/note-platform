@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from  'redux';
 import { sendNoteData } from '../../actions/sessionActions';
+import { sendGroupNoteData } from '../../actions/sessionActions';
 
 import Switch from '@material-ui/core/Switch';
 import FieldText from '@atlaskit/field-text';
@@ -29,10 +30,12 @@ class NotesPopup extends Component{
 			note_text: '',
 			color: '',
 			note_type: '2',
-			tags: [],
+			tags: '',
 			upvotes: 0,
 			downvotes: 0,
 			views: 0,
+			emails: '',
+			emailInput: '',
 			tagInput : '',
 			focused : false,
 			checked: false,
@@ -43,13 +46,42 @@ class NotesPopup extends Component{
     	this.setState({ tagInput: evt.target.value });
 	}
 
+	handleEmailInputChange = (evt) => {
+    	this.setState({ emailInput: evt.target.value });
+	}
+
+	handleEmailInputKeyDown = (evt) => {
+	    if ( evt.keyCode === 13 ) {
+			evt.preventDefault();
+	      	const {value} = evt.target;
+			
+			let emails = this.state.emails;
+			emails += value+",";
+			this.setState(state => ({
+				emails: emails,
+				emailInput: ''
+			}));
+			evt.currentTarget.value = "";
+		} 
+	}
+
+	handleRemoveEmailTag = (index) => {
+	    return () => {
+	      this.setState(state => ({
+	        emails: state.emails.split(",").filter((tag, i) => i !== index).join(",")
+	      }));
+	    }
+	}
+
 	handleTagInputKeyDown = (evt) => {
 	    if ( evt.keyCode === 13 ) {
 			evt.preventDefault();
 	      	const {value} = evt.target;
-	      
+			
+			let tags = this.state.tags;
+			tags += value+",";
 			this.setState(state => ({
-				tags: [...state.tags, value],
+				tags: tags,
 				tagInput: ''
 			}));
 			evt.currentTarget.value = "";
@@ -59,10 +91,11 @@ class NotesPopup extends Component{
 	handleRemoveTag = (index) => {
 	    return () => {
 	      this.setState(state => ({
-	        tags: state.tags.filter((tag, i) => i !== index)
+	        tags: state.tags.split(",").filter((tag, i) => i !== index).join(",")
 	      }));
 	    }
 	}
+
 
 	onAddNote = () => {
 		const content = JSON.stringify(convertToRaw(this.state.note_body.getCurrentContent()));
@@ -70,8 +103,8 @@ class NotesPopup extends Component{
 		let payload = {
 			user_id: this.state.user_id,
 			title: this.state.title,
-			note_body: noteText,
-			// note_text: noteText,
+			note_body: content,
+			note_text: noteText,
 			color: this.state.color,
 			note_type: this.state.note_type,
 			tags: this.state.tags,
@@ -79,18 +112,25 @@ class NotesPopup extends Component{
 			downvotes: this.state.downvotes,
 			views: this.state.views,
 		}
-		this.props.sendNoteData(payload);
+		if(this.props.group){
+			let new_payload = {...payload, group_user_emails: this.state.emails };
+			this.props.sendGroupNoteData(new_payload);
+		}else {
+			this.props.sendNoteData(payload);
+		}
 		this.setState({
 			title: '',
 			note_body: EditorState.createEmpty(),
 			note_text: '',
 			color: '',
 			note_type: '2',
-			tags: [],
+			tags: '',
 			upvotes: 0,
 			downvotes: 0,
 			views: 0,
 			tagInput : '',
+			emails: '',
+			emailInput: '',
 			focused : false,
 			checked: false,
 		});
@@ -123,10 +163,10 @@ class NotesPopup extends Component{
 	}
 
 	render(){
-		console.log(this.state);
+		// console.log(this.state);
 		return(
 			<Popup
-    			trigger={<Button houldFitContainer appearance="primary">Create a New Note </Button>}
+    			trigger={<Button houldFitContainer appearance="primary">{ this.props.group ? "Create a Group Note" : "Create a New Note" }</Button>}
     			modal
     			contentStyle={contentStyle}>
 
@@ -154,23 +194,35 @@ class NotesPopup extends Component{
 								onChangeComplete = {this.props.changeColor}
 								onChange = {this.onChangeColor}
 							/>
-							<div style={{width: "276px", height: "96px", marginTop: "10px", 
+							{
+								!this.props.group?
+								<div style={{width: "276px", height: "96px", marginTop: "10px", 
+									justifyContent: "center", textAlign: "center", fontSize: "1.5em"}}>
+									Private?
+									<Switch color="primary"  checked={this.state.checked} 
+									onChange={this.handleOptionChange('checked')}/>
+								</div>:null
+							}
+							{/* <div style={{width: "276px", height: "96px", marginTop: "10px", 
 								justifyContent: "center", textAlign: "center", fontSize: "1.5em"}}>
 								Private?
 								<Switch color="primary"  checked={this.state.checked} 
 								onChange={this.handleOptionChange('checked')}/>
-							</div>
+							</div> */}
 						</div>
 						<div>
 							<label>
 								<ul className = "tagContainer">
 									<div>
-										{this.state.tags.map((tag, i) => 
-											<li key={i} className = "tagItems" onClick={this.handleRemoveTag(i)}>
-												{tag}
-												<span>(x)</span>
-											</li>
-										)}
+										{this.state.tags.split(",").map((tag, i) => {
+											if(tag !== ''){
+												return <li key={i} className = "tagItems" onClick={this.handleRemoveTag(i)}>
+													{tag}
+													<span>(x)</span>
+												</li>
+											}
+											return null
+										})}
 									</div>
 									<FieldText type="text" name="title" placeholder="Tag..."
 									shouldFitContainer value={this.state.tagInput || ""}
@@ -179,6 +231,30 @@ class NotesPopup extends Component{
 								</ul>
 							</label>		
 						</div>
+						{
+							this.props.group ? 
+							<div>
+								<label>
+									<ul className = "tagContainer">
+										<div>
+											{this.state.emails.split(",").map((email, i) => {
+												if(email !== ''){
+													return <li key={i} className = "tagItems" onClick={this.handleRemoveEmailTag(i)}>
+														{email}
+														<span>(x)</span>
+													</li>
+												}
+												return null
+											})}
+										</div>
+										<FieldText type="text" name="title" placeholder="Email of Users to share..."
+										shouldFitContainer value={this.state.emailInput || ""}
+										onChange={this.handleEmailInputChange}
+										onKeyDown={this.handleEmailInputKeyDown}/>
+									</ul>
+								</label>		
+							</div>:null
+						}
 						<Button shouldFitContainer appearance="primary" className="add-note-btn" 
 							onClick = {() => {this.onAddNote(); close(); }}>Add Note</Button>
 					</div>
@@ -196,7 +272,7 @@ const mapStateToProps = (state) =>{
 
 function mapDispatchToProps(dispatch){
 	return bindActionCreators({
-		sendNoteData
+		sendNoteData, sendGroupNoteData
 	}, dispatch);
 }
 

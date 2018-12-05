@@ -204,7 +204,7 @@ div.DraftEditor-root {
 .tagItems{
     display: inline-block;
     padding: 2px;
-    border: 1px solid blue;
+    border: 1px solid black;
     font-family: Helvetica, sans-serif;
     border-radius: 5px;
     margin-right: 5px;
