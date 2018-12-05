@@ -192,7 +192,7 @@ class EditNotes extends Component{
 		}
 	}
 
-	componentDidMount() {
+	componentWillUnmount() {
 		let data = {user_id:this.props.session.currentUser};
 		this.props.getPrivateNotes(data);
 		this.props.getPublicNotes(data);

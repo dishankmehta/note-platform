@@ -46,20 +46,17 @@ class MainNotes extends Component {
 
   onUpVoteNote = (note_id,user_id) => {
     let data = { note_id , user_id }
-    console.log("reached on upvote", data);
     this.props.sendUpVoteNoteData(data);
   };
 
   onDownVoteNote = (note_id, user_id) => {
     let data = { note_id, user_id }
-    console.log("reached on downvote", data);
     this.props.sendDownVoteNoteData(data);
   };
 
   onDeleteNote = (note_id, note_type_data, user_id) => {
     const note_type = parseInt(note_type_data,10)
     let data = { user_id, note_id, note_type }
-    console.log("reached on delete", data);
     this.props.sendDeleteNoteData(data);
   };
 
@@ -69,6 +66,7 @@ class MainNotes extends Component {
       Object.keys(notes).map((item) => {
         const note_item = notes[item];
         const tags = note_item.tags.split(",");
+        console.log(note_item.note_body);
         tags.splice(-1, 1);
         return <Card key={item} color={note_item.color}>
           <div style={{fontSize: "1.2em"}}>
@@ -82,8 +80,8 @@ class MainNotes extends Component {
             <div>
               Tags:&nbsp;
               {
-                tags.map((tag) => {
-                  return <span key={tag}>{tag}</span>
+                tags.map((tag, index) => {
+                  return <span key={index}>{tag}</span>
                 })
               }
             </div>

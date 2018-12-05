@@ -1,0 +1,30 @@
+.profile {
+    width: 80%;
+    height: 80%;
+    overflow-y: scroll;
+}
+
+.register-btn {
+	margin-top: 6%;
+    margin-left: 45%;
+    text-align: center;
+    width: 10%;
+}
+
+.register-btn span {
+	text-align: center !important;
+}
+
+
+@media only screen and (max-width: 1300px) {
+	.register-btn {
+		margin-top: 3%;
+		margin-left: 45%;
+		text-align: center;
+		width: 13%;
+	}
+
+	.register-btn span {
+		text-align: center !important;
+	}
+}

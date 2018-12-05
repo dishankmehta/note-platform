@@ -9,17 +9,28 @@ export default class appAPI {
 	}
 
 	static getPublicNotes(data){
-		console.log("userID", data);
 		return API.post('/get_public_notes', data);
 	}
 
 	static getPrivateNotes(data){
-		console.log("userID", data);
+		
 		return API.post('/get_private_notes', data);
 	}
 
 	static getGroupNotes(data){
 		return API.post('/get_group_notes', data);
+	}
+
+	static getPieDataUser(data){
+		return API.post('/get_pie_data_user', data);
+	}
+
+	static getPieDataAll(data){
+		return API.post('/get_pie_data_user_all', data);
+	}
+
+	static getLineChartData(data){
+		return API.post('/get_line_data_user_all', data);
 	}
 
 	static getRecommendedNotes(data){
@@ -39,27 +50,26 @@ export default class appAPI {
 	}
 
 	static sendNoteData(data) {
-		console.log("Data:::::::: ", data);
+		
 		return API.post('/add_note', data);
 	}
 
 	static sendEditedNoteData(data) {
-		console.log("Data:::::::: ", data);
+		
 		return API.post('/edit_note', data);
 	}
 
     static sendDeleteNoteData(data) {
-        console.log("Data:::::::: ", data);
+        
         return API.post('/delete_note', data);
     }
 
     static sendUpVoteNoteData(data) {
-        console.log("Data:::UpVote ", data);
+        
         return API.post('/upvote', data);
     }
 
     static sendDownVoteNoteData(data) {
-        console.log("Data:::DownVote ", data);
         return API.post('/downvote', data);
     }
 

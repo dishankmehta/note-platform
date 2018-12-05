@@ -661,7 +661,7 @@ def get_pie_data_user():
     public_notes = PublicNotes.query.filter_by(user_id=user_id).first()
     public_notes_count = 0
     if public_notes is not None:
-        note_list = private_notes.note_id.split(",")
+        note_list = public_notes.note_id.split(",")
         for item in note_list:
             if '' == item:
                 note_list.remove(item)
@@ -789,6 +789,7 @@ def get_line_data_user_all():
     first_element.append("popularity index")
     first_element.append("popularity amount")
     first_element.append("Tag")
+    return_list.append(first_element)
     for key, value in tags_dict.items():
         list_this = []
         list_this.append((value/total_tags)*100)

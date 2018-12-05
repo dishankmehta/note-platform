@@ -10,6 +10,9 @@ const defaultState = {
     groupNotes: [],
     recommendedNotes: [],
     cheatsheets: [],
+    chart_user: [],
+    chart_all: [],
+    chart_line: [],
     searchField: '',
 };
 
@@ -66,6 +69,21 @@ function sessionReducer(state = defaultState, action) {
             return{ 
                 ...state,
                 searchField: action.payload
+            }
+        case SessionActionTypes.CHART_USER:
+            return{
+                ...state,
+                chart_user: action.payload
+            }
+        case SessionActionTypes.CHART_ALL:
+            return{
+                ...state,
+                chart_all: action.payload
+            }
+        case SessionActionTypes.CHART_LINE:
+            return{ 
+                ...state,
+                chart_line: action.payload
             }
         default:
             return state;

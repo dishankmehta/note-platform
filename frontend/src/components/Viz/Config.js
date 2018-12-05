@@ -1,8 +1,11 @@
 import echarts from 'echarts'
 
 
-export function PieChartUser() {
-
+export function PieChartUser(data) {
+    if(data === undefined) {
+        data = [];
+        return {};
+    }
     var option = {
             title: {
                 subtext: 'My Statistics',
@@ -18,14 +21,16 @@ export function PieChartUser() {
                     radius : '65%',
                     center: ['50%', '50%'],
                     selectedMode: 'single',
-                    data:[
-                        {
-                            value:30,
-                            name: 'Private Notes',
-                        },
-                        {value:23, name: 'Public Notes'},
-                        {value:42, name: 'Group Notes Shared'}
-                    ],
+                    data: data
+                    // [
+                    //     {
+                    //         value:30,
+                    //         name: 'Private Notes',
+                    //     },
+                    //     {value:23, name: 'Public Notes'},
+                    //     {value:42, name: 'Group Notes Shared'}
+                    // ]
+                    ,
                     itemStyle: {
                         emphasis: {
                             shadowBlur: 10,
@@ -40,7 +45,7 @@ export function PieChartUser() {
 }
 
 
-export function bubble() {
+export function bubble(data) {
 
     var data = [
         [[10,12,20,'Java'],[20,32.4,10,'Python']]];
@@ -100,7 +105,11 @@ export function bubble() {
 }
 
 
-export function PieChartAll() {
+export function PieChartAll(data) {
+    if(data === undefined) {
+        data = [];
+        return {};
+    }
 
     var option = {
         title: {
@@ -117,14 +126,16 @@ export function PieChartAll() {
                 radius : '65%',
                 center: ['50%', '50%'],
                 selectedMode: 'single',
-                data:[
-                    {
-                        value:150,
-                        name: 'Average Private Notes',
-                    },
-                    {value:535, name: 'Average Public Notes'},
-                    {value:510, name: 'Average Group Notes'}
-                ],
+                data: data
+                // [
+                //     {
+                //         value:150,
+                //         name: 'Average Private Notes',
+                //     },
+                //     {value:535, name: 'Average Public Notes'},
+                //     {value:510, name: 'Average Group Notes'}
+                // ]
+                ,
                 itemStyle: {
                     emphasis: {
                         shadowBlur: 10,
@@ -138,19 +149,26 @@ export function PieChartAll() {
     return option;
 }
 
-export function TagOfUser() {
+export function TagOfUser(data) {
+    if(data === undefined) {
+        data = {dataset: {}};
+        return {};
+    }
+    
     var option = {
         dataset: {
-            source: [
-                ['popularity index', 'popularity amount', 'Tag'],
-                [89.3, 58212, 'Java'],
-                [57.1, 78254, 'Python'],
-                [74.4, 41032, 'HTML'],
-                [30.1, 12755, 'C++'],
-                [57.1, 78254, 'Maths'],
-                [24.4, 41032, 'Science'],
-                [5.1, 12755, 'C'],
-            ]
+
+            ...data
+            // [
+            //     ['popularity index', 'popularity amount', 'Tag'],
+            //     [89.3, 58212, 'Java'],
+            //     [57.1, 78254, 'Python'],
+            //     [74.4, 41032, 'HTML'],
+            //     [30.1, 12755, 'C++'],
+            //     [57.1, 78254, 'Maths'],
+            //     [24.4, 41032, 'Science'],
+            //     [5.1, 12755, 'C'],
+            // ]
         },
         grid: {containLabel: true},
         xAxis: {name: 'popularity amount'},
@@ -184,7 +202,13 @@ export function TagOfUser() {
 }
 
 
-export function yourDetails() {
+export function yourDetails(data) {
+
+    if(data === undefined) {
+        data = [];
+        return {};
+    }
+    
 
 var option = {
 
@@ -202,26 +226,29 @@ var option = {
         formatter: "{b} : {c} ({d}%)"
     },
 
-    visualMap: {
-        show: false,
-        min: 0,
-        max: 600,
-        color: 'rgba(0, 0, 0, 0.5)',
-        inRange: {
-            colorLightness: [0, 1]
-        }
-    },
+    // visualMap: {
+    //     show: false,
+    //     min: 0,
+    //     max: 600,
+    //     // color: 'rgba(0, 0, 0, 0.5)',
+    //     // inRange: {
+    //     //     colorLightness: [0, 1]
+    //     // }
+    // }
+    
     series : [
         {
             type:'pie',
             radius : '55%',
             center: ['50%', '40%'],
-            data:[
-                {value:335, name:'Recommended Notes'},
-                {value:310, name:'Private Notes'},
-                {value:274, name:'Public Notes'},
-                {value:400, name:'Group Notes'}
-            ].sort(function (a, b) { return a.value - b.value; }),
+            data:data
+            // [
+            //     {value:335, name:'Recommended Notes'},
+            //     {value:310, name:'Private Notes'},
+            //     {value:274, name:'Public Notes'},
+            //     {value:400, name:'Group Notes'}
+            // ].sort(function (a, b) { return a.value - b.value; })
+            ,
             roseType: 'radius',
             label: {
                 normal: {
@@ -233,7 +260,7 @@ var option = {
             labelLine: {
                 normal: {
                     lineStyle: {
-                        color: 'rgba(0, 0, 50, 0.9)'
+                        // color: 'rgba(0, 0, 50, 0.9)'
                     },
                     smooth: 0.5,
                     length: 30,
@@ -243,15 +270,15 @@ var option = {
             itemStyle: {
                 normal: {
                     shadowBlur: 200,
-                    shadowColor: 'rgba(0, 0, 0, 0.9)'
+                    // shadowColor: 'rgba(0, 0, 0, 0.9)'
                 }
             },
 
             animationType: 'scale',
             animationEasing: 'elasticOut',
-            animationDelay: function (idx) {
-                return Math.random() * 200;
-            }
+            // animationDelay: function (idx) {
+            //     return Math.random() * 200;
+            // }
         }
     ]
 };

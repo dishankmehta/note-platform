@@ -7,7 +7,6 @@ export function loginRequest(data) {
     return (dispatch) => {
         API.login(data.username, data.password)
             .then((res) => {
-                console.log(res);
                 const user = res.data.user.username;
                 const success = res.data.success;
                 if(user && success){
@@ -87,10 +86,8 @@ function handleRecommendedNotes(data) {
 
 export function sendGroupNoteData(data) {
     return (dispatch) => {
-        console.log("data", data.note_type);
         API.sendGroupNoteData(data)
             .then((res) => {
-                console.log(res);
                 const new_data = { user_id: data.user_id } 
                 dispatch(getGroupNotes(new_data));
             }).catch(() => {
@@ -101,10 +98,8 @@ export function sendGroupNoteData(data) {
 
 export function sendEditGroupNoteData(data) {
     return (dispatch) => {
-        console.log("data", data.note_type);
         API.sendEditGroupNoteData(data)
             .then((res) => {
-                console.log(res);
                 const new_data = { user_id: data.user_id } 
                 dispatch(getGroupNotes(new_data));
             }).catch(() => {
@@ -134,6 +129,69 @@ function handleGroupNotes(data) {
     }
 }
 
+export function getUserData(data){
+    return(dispatch) => {
+        API.getPieDataUser(data)
+            .then((res) => {
+                if(isEmpty(res.data.data)){
+                    dispatch(handlegetUserData([]));
+                }
+                dispatch(handlegetUserData(res.data.data));
+            }).catch(() => {
+                console.log('error');
+            })
+    }
+}
+
+function handlegetUserData(data) {
+    return {
+        type: SessionActionTypes.CHART_USER,
+        payload: data
+    }
+}
+
+export function getAllData(data){
+    return(dispatch) => {
+        API.getPieDataAll(data)
+            .then((res) => {
+                if(isEmpty(res.data.getLineData)){
+                    dispatch(handlegetAllData([]));
+                }
+                dispatch(handlegetAllData(res.data.data));
+            }).catch(() => {
+                console.log('error');
+            })
+    }
+}
+
+function handlegetAllData(data) {
+    return {
+        type: SessionActionTypes.CHART_ALL,
+        payload: data
+    }
+}
+
+export function getLineData(data){
+    return(dispatch) => {
+        API.getLineChartData(data)
+            .then((res) => {
+                if(isEmpty(res.data.dataset)){
+                    dispatch(handlegetLineData([]));
+                }
+                dispatch(handlegetLineData(res.data.dataset));
+            }).catch(() => {
+                console.log('error');
+            })
+    }
+}
+
+function handlegetLineData(data) {
+    return {
+        type: SessionActionTypes.CHART_LINE,
+        payload: data
+    }
+}
+
 export function getPrivateNotes(data){
     return(dispatch) => {
         API.getPrivateNotes(data)
@@ -152,7 +210,6 @@ export function registrationRequest(data){
     return(dispatch) => {
         API.register(data)
             .then((res) => {
-                console.log(res);
                 const success = res.data.success;
                 if(success){
                     dispatch(handleRegisterError(''));
@@ -170,7 +227,6 @@ export function registrationRequest(data){
 
 export function sendNoteData(data) {
     return (dispatch) => {
-        console.log("data", data.note_type);
         API.sendNoteData(data)
             .then((res) => {
                 console.log(res);

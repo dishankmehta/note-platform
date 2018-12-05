@@ -13,6 +13,9 @@ export const SessionActionTypes = KeyMirror({
     GROUP_NOTES: null,
     RECOMMENDED_NOTES: null,
     CHEATSHEETS: null,
+    CHART_USER: null,
+    CHART_ALL: null,
+    CHART_LINE: null,
 });
 
 
