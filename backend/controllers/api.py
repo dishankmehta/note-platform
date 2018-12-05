@@ -637,3 +637,123 @@ def get_recommended_notes():
             print(type(note_object))
 
     return jsonify(notes=note_object, success=True)
+
+
+@api.route("/get_pie_data_user", methods=["POST"])
+def get_pie_data_user():
+
+    data = request.get_json()
+    user_id = data.get('user_id')
+
+    # getting count of private notes of user
+    private_notes = PrivateNotes.query.filter_by(user_id=user_id).first()
+    private_note_count = 0
+    if private_notes is not None:
+        note_list = private_notes.note_id.split(",")
+        for item in note_list:
+            if '' == item:
+                note_list.remove(item)
+        private_note_count = len(note_list)
+
+    # getting count of notes of user
+    public_notes = PublicNotes.query.filter_by(user_id=user_id).first()
+    public_notes_count = 0
+    if public_notes is not None:
+        note_list = private_notes.note_id.split(",")
+        for item in note_list:
+            if '' == item:
+                note_list.remove(item)
+        public_notes_count = len(note_list)
+
+    # getting count of notes of user
+    cheatsheets = CheatSheet.query.filter_by(user_id=user_id).first()
+    cheatsheet_count = 0
+    if cheatsheets is not None:
+        note_list = cheatsheets.note_id.split(",")
+        for item in note_list:
+            if '' == item:
+                note_list.remove(item)
+        cheatsheet_count = len(note_list)
+
+    return_list = []
+    private_object = dict()
+    private_object['value'] = private_note_count
+    private_object['name'] = 'Private Notes'
+    return_list.append(private_object)
+
+    private_object = dict()
+    private_object['value'] = public_notes_count
+    private_object['name'] = 'Public Notes'
+    return_list.append(private_object)
+
+    private_object = dict()
+    private_object['value'] = cheatsheet_count
+    private_object['name'] = 'CheatSheet'
+    return_list.append(private_object)
+
+    return jsonify(data=return_list, success=True)
+
+
+@api.route("/get_pie_data_user_all", methods=["POST"])
+def get_pie_data_user_all():
+
+    data = request.get_json()
+    user_id = data.get('user_id')
+
+    final_private_count = 0
+    final_public_count = 0
+    final_cheatsheet_count = 0
+    users = User.query.filter(id != 0).all()
+    for user in users:
+            user_id = user.name
+            # getting count of private notes of user
+            private_notes = PrivateNotes.query.filter_by(user_id=user_id).first()
+            private_note_count = 0
+            if private_notes is not None:
+                note_list = private_notes.note_id.split(",")
+                for item in note_list:
+                    if '' == item:
+                        note_list.remove(item)
+                private_note_count = len(note_list)
+
+            # getting count of notes of user
+            public_notes = PublicNotes.query.filter_by(user_id=user_id).first()
+            public_notes_count = 0
+            if public_notes is not None:
+                note_list = public_notes.note_id.split(",")
+                for item in note_list:
+                    if '' == item:
+                        note_list.remove(item)
+                public_notes_count = len(note_list)
+
+            # getting count of notes of user
+            cheatsheets = CheatSheet.query.filter_by(user_id=user_id).first()
+            cheatsheet_count = 0
+            if cheatsheets is not None:
+                note_list = cheatsheets.note_id.split(",")
+                for item in note_list:
+                    if '' == item:
+                        note_list.remove(item)
+                cheatsheet_count = len(note_list)
+            final_private_count += private_note_count
+            final_public_count += public_notes_count
+            final_cheatsheet_count += cheatsheet_count
+
+    return_list = []
+    private_object = dict()
+    private_object['value'] = final_private_count
+    private_object['name'] = 'Private Notes'
+    return_list.append(private_object)
+
+    private_object = dict()
+    private_object['value'] = final_public_count
+    private_object['name'] = 'Public Notes'
+    return_list.append(private_object)
+
+    private_object = dict()
+    private_object['value'] = final_cheatsheet_count
+    private_object['name'] = 'CheatSheet'
+    return_list.append(private_object)
+
+    return jsonify(data=return_list, success=True)
+
