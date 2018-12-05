@@ -12,7 +12,7 @@ class Config(object):
     # SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://postgres:password@127.0.0.1:5432/postgres'
     # SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://stormcold:password@127.0.0.1:5432/noteplatform'
     # SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://postgres:password@127.0.0.1:5432/noteplatform'
-    SQLALCHEMY_DATABASE_URI = os.environ['DATABASE_URL']
+    SQLALCHEMY_DATABASE_URI = os.environ['DATABASE_URL'] 
     # SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://postgres:1234@127.0.0.1:5432/postgres'
     # SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://postgres:password@127.0.0.1:5432/postgres'
 
