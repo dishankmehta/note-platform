@@ -10,6 +10,7 @@ class Note(db.Model):
     title = db.Column(db.String())
     note_type = db.Column(db.String())
     note_body = db.Column(db.String())
+    note_text = db.Column(db.String())
     upvotes = db.Column(db.Integer())
     downvotes = db.Column(db.Integer())
     tags = db.Column(db.String())
@@ -17,10 +18,11 @@ class Note(db.Model):
     views = db.Column(db.Integer())
 
 
-    def __init__(self, title, note_type, note_body, upvotes, downvotes, views, tags, color):
+    def __init__(self, title, note_type, note_body, note_text, upvotes, downvotes, views, tags, color):
         self.title = title
         self.note_type = note_type
         self.note_body = note_body
+        self.note_text = note_text
         self.upvotes = upvotes
         self.downvotes = downvotes
         self.views = views
@@ -32,6 +34,7 @@ class Note(db.Model):
             title = self.title,
             note_type = self.note_type,
             note_body = self.note_body,
+            note_text = self.note_text,
             upvotes = self.upvotes,
             downvotes = self.downvotes,
             views = self.views,

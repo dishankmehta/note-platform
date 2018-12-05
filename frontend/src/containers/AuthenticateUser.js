@@ -14,7 +14,7 @@ class AuthenticateUser extends Component {
         if(!this.isLoggedIn){
             history.push('/');
         }
-        console.log(this.isLoggedIn);
+        // console.log(this.isLoggedIn);
     }
 
 
