@@ -78,8 +78,11 @@ class RecommendedNotes extends Component {
             <div>
               Tags:&nbsp;
               {
-                tags.map((tag) => {
-                  return <span>{tag}</span>
+                tags.map((tag, index) => {
+                  if(index+1 === tags.length){
+                    return <span key={index}>{tag}</span>  
+                  }
+                  return <span key={index}>{tag+","}</span>
                 })
               }
             </div>

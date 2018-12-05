@@ -39,7 +39,7 @@ class VizLineChart extends Component {
                 } else if(routeTo === "Public Notes" || routeTo === "Private Notes"){
                     history.push("/dashboard");
                 }else {
-                    history.push("/recommendednotes")
+                    history.push("/cheatsheet")
                 }
             }
         };

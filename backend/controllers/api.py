@@ -628,6 +628,7 @@ def get_recommended_notes():
                 note_object[i]['title'] = note.title
                 note_object[i]['note_type'] = note.note_type
                 note_object[i]['note_body'] = note.note_body
+                note_object[i]['note_text'] = note.note_text
                 note_object[i]['upvotes'] = note.upvotes
                 note_object[i]['downvotes'] = note.downvotes
                 note_object[i]['views'] = note.views

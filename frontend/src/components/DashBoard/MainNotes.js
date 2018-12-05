@@ -81,7 +81,10 @@ class MainNotes extends Component {
               Tags:&nbsp;
               {
                 tags.map((tag, index) => {
-                  return <span key={index}>{tag}</span>
+                  if(index+1 === tags.length){
+                    return <span key={index}>{tag}</span>  
+                  }
+                  return <span key={index}>{tag+","}</span>
                 })
               }
             </div>
