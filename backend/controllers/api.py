@@ -777,7 +777,11 @@ def get_line_data_user_all():
     total_tags = 0
     for key, value in tags_dict.items():
         total_tags += value
+ 
 
+
+
+ 
     return_list = []
     first_element = []
     first_element.append("popularity index")
