@@ -11,6 +11,8 @@ export const SessionActionTypes = KeyMirror({
     PRIVATE_NOTES: null,
     CHANGE_SEARCHFIELD:null,
     GROUP_NOTES: null,
+    RECOMMENDED_NOTES: null,
+    CHEATSHEETS: null,
 });
 
 

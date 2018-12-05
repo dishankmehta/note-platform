@@ -14,6 +14,8 @@ const AppRoutes = () => (
 			<Route path="/register" component={Register}/>
 			<Route path="/dashboard" component={DashBoard} onEnter={AuthenticateUser}/>
 				<Route path={"/dashboard"} exact={true} component={SideBar}/>  
+				<Route path={"/cheatsheet"} exact={true} component={SideBar}/>  
+				<Route path={"/recommendednotes"} exact={true} component={SideBar}/>
                 <Route path={"/groupnotes"} exact={true} component={SideBar}/>  
                 <Route path={"/profile"} exact={true} component={SideBar}/>  
 				<Route path={"/viz"} exact={true} component={SideBar}/>

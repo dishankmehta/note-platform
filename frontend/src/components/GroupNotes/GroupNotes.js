@@ -13,6 +13,7 @@ import { Card } from '../CustomComponents/Card';
 
 import isEmpty from 'lodash/isEmpty';
 
+import TextField from '@material-ui/core/TextField';
 import DeleteIcon from '@material-ui/icons/Delete';
 import LikeIcon from '@material-ui/icons/ThumbUp';
 import DisLikeIcon from '@material-ui/icons/ThumbDown';
@@ -45,20 +46,17 @@ class MainNotes extends Component {
 
   onUpVoteNote = (note_id) => {
     let data = { note_id  }
-    console.log("reached on upvote", data);
     this.props.sendUpVoteNoteData(data);
   };
 
   onDownVoteNote = (note_id) => {
     let data = { note_id }
-    console.log("reached on downvote", data);
     this.props.sendDownVoteNoteData(data);
   };
 
   onDeleteNote = (note_id, note_type_data, user_id) => {
     const note_type = parseInt(note_type_data,10)
     let data = { user_id, note_id, note_type }
-    console.log("reached on delete", data);
     this.props.sendDeleteNoteData(data);
   };
 
@@ -85,7 +83,7 @@ class MainNotes extends Component {
               Tags:&nbsp;
               {
                 tags.map((tag) => {
-                  return <span>{tag}</span>
+                  return <span key={tag}>{tag}</span>
                 })
               }
             </div>
@@ -93,8 +91,10 @@ class MainNotes extends Component {
             <div style={{float: "right", marginTop: "5px"}}>
               <LikeIcon  onClick = {() => {this.onUpVoteNote(note_item.id)}} 
               style={{marginLeft: "7px", marginRight: "7px", padding: "5px", cursor: "pointer"}}/>
+              <TextField style = {{marginTop: 7, width: 20, height: 20, cursor:"none", pointerEvents:"none"}} value={note_item.upvotes}/>
               <DisLikeIcon onClick = {() => {this.onDownVoteNote(note_item.id)}} 
               style={{marginLeft: "7px", marginRight: "7px", padding: "5px", cursor: "pointer"}}/>
+              <TextField style = {{ marginTop: 7, height: 20, width: 20, cursor:"none", pointerEvents:"none"}} value={note_item.downvotes}/>
               <EditNotes 
                   style={{marginLeft: "7px", marginRight: "7px", padding: "5px", cursor: "pointer"}}
                   edit={true}

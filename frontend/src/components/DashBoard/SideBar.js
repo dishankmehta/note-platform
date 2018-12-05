@@ -21,6 +21,8 @@ import LoginPage from '../LoginPage/LoginPage';
 import ProfilePage from '../ProfilePage/ProfilePage';
 import MainNotes from './MainNotes';
 import GroupNotes from '../GroupNotes/GroupNotes';
+import RecommendedNotes from '../RecommendedNotes/RecommendedNotes';
+import CheatSheets from '../Cheatsheets/CheatSheet';
 import AuthenticateUser from '../../containers/AuthenticateUser';
 
 import { SideNav } from '../CustomComponents/SideNav';
@@ -111,9 +113,9 @@ class SideBar extends Component {
                 vertical: 'top',
                 horizontal: 'center',
               }}
-              style={{width: "8%"}}
+              className="sidebar-popup"
             >
-              <div>
+              <div style={{width: "135px"}}>
                 <div className="avatar-div">
                   <AccountIcon style={{color: "#0052cc"}}/> <Link to="/profile">Profile</Link>
                 </div>
@@ -151,7 +153,9 @@ class SideBar extends Component {
             <div style={{width: "83%"}}>
               <div className="pages-container">
                 <Route path={"/dashboard"} exact={true} component={MainNotes}/>  
+                <Route path={"/cheatsheet"} exact={true} component={CheatSheets}/>  
                 <Route path={"/groupnotes"} exact={true} component={GroupNotes}/>  
+                <Route path={"/recommendednotes"} exact={true} component={RecommendedNotes}/>
                 <Route path={"/viz"} exact={true} component={VizLineChart}/>
                 <Route path={"/profile"} exact={true} component={ProfilePage}/>  
               </div>

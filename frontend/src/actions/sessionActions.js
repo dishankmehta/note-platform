@@ -42,6 +42,49 @@ export function getPublicNotes(data){
     }
 }
 
+export function getCheatSheets(data){
+    return(dispatch) => {
+        API.getCheatSheets(data)
+            .then((res) => {
+                if(isEmpty(res.data.notes)){
+                    dispatch(handleCheatSheets([]));
+                }
+                console.log(res.data.notes);
+                dispatch(handleCheatSheets(res.data.notes));
+            }).catch(() => {
+                console.log('error');
+            })
+    }
+}
+
+function handleCheatSheets(data) {
+    return {
+        type: SessionActionTypes.CHEATSHEETS,
+        payload: data
+    }
+}
+
+export function getRecommendedNotes(data){
+    return(dispatch) => {
+        API.getRecommendedNotes(data)
+            .then((res) => {
+                if(isEmpty(res.data.notes)){
+                    dispatch(handleRecommendedNotes([]));
+                }
+                dispatch(handleRecommendedNotes(res.data.notes));
+            }).catch(() => {
+                console.log('error');
+            })
+    }
+}
+
+function handleRecommendedNotes(data) {
+    return {
+        type: SessionActionTypes.RECOMMENDED_NOTES,
+        payload: data
+    }
+}
+
 export function sendGroupNoteData(data) {
     return (dispatch) => {
         console.log("data", data.note_type);
@@ -134,6 +177,7 @@ export function sendNoteData(data) {
                 const new_data = { user_id: data.user_id } 
                 dispatch(getPublicNotes(new_data));
                 dispatch(getPrivateNotes(new_data));
+                dispatch(getCheatSheets(new_data));
             }).catch(() => {
                 console.log("error");
             });
@@ -175,6 +219,8 @@ export function sendDeleteNoteData(data) {
                 const new_data = { user_id: data.user_id };
                 dispatch(getPublicNotes(new_data));
                 dispatch(getPrivateNotes(new_data));
+                dispatch(getGroupNotes(new_data));
+                dispatch(getCheatSheets(new_data));
             }).catch(() => {
             console.log("error");
         });

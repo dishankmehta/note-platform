@@ -45,7 +45,7 @@ class LoginPage extends Component {
                     <PageHeader>Creating and Sharing Notes Easy.</PageHeader>
                 </div>
                 <Card className={"login-card"}>
-                    <PageHeader>Note-Platform</PageHeader>
+                    <PageHeader>LearnHub</PageHeader>
                     <FieldForm>
                         <FieldText label="Username" name="username" shouldFitContainer
                             placeholder="Username" type="text" autoFocus required value={this.state.username}

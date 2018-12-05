@@ -8,6 +8,8 @@ const defaultState = {
     publicNotes: [],
     privateNotes: [],
     groupNotes: [],
+    recommendedNotes: [],
+    cheatsheets: [],
     searchField: '',
 };
 
@@ -49,6 +51,16 @@ function sessionReducer(state = defaultState, action) {
             return{
                 ...state,
                 groupNotes: action.payload
+            }
+        case SessionActionTypes.RECOMMENDED_NOTES:
+            return{
+                ...state,
+                recommendedNotes: action.payload
+            }
+        case SessionActionTypes.CHEATSHEETS:
+            return{
+                ...state,
+                cheatsheets: action.payload
             }
         case SessionActionTypes.CHANGE_SEARCHFIELD:
             return{ 
